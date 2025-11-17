@@ -1,4 +1,4 @@
-.vs/
+.vs/*
 *.tlog
 *.obj
 *.log
@@ -8,3 +8,9 @@
 *.exe
 *.recipe
 *.*.recipe
+
+*/x64
+Debug/*
+Release/*
+CSFML/*
+*.sln
