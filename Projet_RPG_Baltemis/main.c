@@ -11,11 +11,15 @@ int main()
 	sfEvent events;
 	sfRenderWindow* window = sfRenderWindow_create(mode, "CSFML", sfResize | sfClose, NULL);
 
+	state = MENU;
+
 	initView();
 	initMap();
 	initTitleScreen();
+	initSound();
 
-	state = MENU;
+
+
 
 	float keytimer = 0.0f;
 
@@ -66,6 +70,7 @@ int main()
 		keytimer += GetDeltaTime();
 		updateView(window);
 		updateMap(window);
+		updateSound();
 
 		if (sfKeyboard_isKeyPressed(sfKeyEscape) && keytimer > 0.5f)
 		{
