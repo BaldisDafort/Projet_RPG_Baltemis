@@ -88,14 +88,13 @@ int main()
 
 		if (state == MENU)
 		{
-			displayEditorView(window);
+			displayView(window);
 			displayTitleScreen(window);
 
 		}
 
 		else if (state == EDITOR)
 		{
-			displayView(window);
 			displayMap(window);
 		}
 

@@ -1,5 +1,10 @@
 #include "editor.h"
 
+//view map dezoome
+sfView* viewEditor;
+sfVector2f posViewEditor = { mapsizeX * tilesize / 2 + 1.5 * tilesize, mapsizeY * tilesize / 2 };
+sfFloatRect rectViewEditor = { mapsizeX * tilesize / 2 + 1.5 * tilesize, mapsizeY * tilesize / 2, mapsizeX * tilesize, mapsizeY * tilesize };
+
 //tilemap
 sfSprite* tileset;
 sfTexture* textmap;
@@ -25,10 +30,18 @@ int tileChoice[2][12];
 //timer
 float posTimer = 0.0f;
 
+//block selectionne
+int block = 0.0f;
+
 void initMap()
 {
-	//int
-	int block = 0.0f;
+	//view map dezoome
+	viewEditor = sfView_create();
+	sfView_reset(viewEditor, rectViewEditor);
+
+
+
+	//int i
 	int i = 0;
 
 	//tileset
@@ -70,10 +83,17 @@ void initMap()
 
 void updateMap(sfRenderWindow* _window)
 {
+	//view map dezoome
+	sfView_setCenter(viewEditor, posViewEditor);
+	sfView_setSize(viewEditor, (sfVector2f) { mapsizeX* tilesize + 3 * tilesize, mapsizeY* tilesize + 3 * tilesize });
+
 }
 
 void displayMap(sfRenderWindow* _window)
 {
+	//view map dezoome
+	sfRenderWindow_setView(_window, viewEditor);
+
 	//valeurs
 	int posx = 0;
 	int posy = 0;
@@ -82,7 +102,6 @@ void displayMap(sfRenderWindow* _window)
 	int posEditorx = mapsizeX * tilesize;
 	int posEditory = 0;
 	sfVector2f originEditor = { (mapsizeX) * tilesize, tilesize };
-
 	//dessiner la map
 	for (int y = 0; y < mapsizeY; y++)
 	{
