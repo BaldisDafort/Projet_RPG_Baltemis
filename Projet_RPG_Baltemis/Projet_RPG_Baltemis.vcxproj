@@ -137,11 +137,13 @@
   <ItemGroup>
     <ClCompile Include="editor.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="title_screen.c" />
     <ClCompile Include="tools.c" />
     <ClCompile Include="view.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="editor.h" />
+    <ClInclude Include="title_screen.h" />
     <ClInclude Include="tools.h" />
     <ClInclude Include="view.h" />
   </ItemGroup>

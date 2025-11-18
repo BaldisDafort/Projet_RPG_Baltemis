@@ -10,9 +10,13 @@ int main()
 	sfVideoMode mode = { 800, 600 };
 	sfRenderWindow* window = sfRenderWindow_create(mode, "RPG", sfDefaultStyle, NULL);
 	sfEvent events;
+	sfRenderWindow* window = sfRenderWindow_create(mode, "CSFML", sfResize | sfClose, NULL);
 
 	initView();
 	initMap();
+	initTitleScreen();
+
+	state = GAME;
 
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
@@ -37,7 +41,8 @@ int main()
 
 		displayView(window);
 		displayMap(window);
+		if (state == MENU)
+			displayTitleScreen(window);
 
 		sfRenderWindow_display(window);
-	}
 }
