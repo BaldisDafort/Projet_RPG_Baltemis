@@ -15,7 +15,7 @@ int main()
 	initMap();
 	initTitleScreen();
 
-	state = GAME;
+	state = MENU;
 
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
@@ -28,6 +28,36 @@ int main()
 			{
 				sfRenderWindow_close(window);
 			}
+
+			else if (events.type == sfEvtMouseButtonPressed)
+			{
+				if (events.mouseButton.button == sfMouseLeft)
+				{
+					if (state == MENU)
+					{
+						sfFloatRect rectButton = sfRectangleShape_getGlobalBounds(StartButton);
+						if (sfFloatRect_contains(&rectButton, events.mouseButton.x, events.mouseButton.y))
+						{
+							state = GAME;
+						}
+
+						rectButton = sfRectangleShape_getGlobalBounds(EditorButton);
+						if (sfFloatRect_contains(&rectButton, events.mouseButton.x, events.mouseButton.y))
+						{
+							state = EDITOR;
+						}
+
+						rectButton = sfRectangleShape_getGlobalBounds(QuitButton);
+						if (sfFloatRect_contains(&rectButton, events.mouseButton.x, events.mouseButton.y))
+						{
+							state = QUIT;
+						}
+					}
+
+
+				}
+			}
+
 		}
 
 
@@ -38,10 +68,19 @@ int main()
 		//display
 		sfRenderWindow_clear(window, sfColor_fromRGBA(70, 70, 70, 255));
 
-		displayView(window);
-		displayMap(window);
+
+
 		if (state == MENU)
+		{
 			displayTitleScreen(window);
+		}
+
+		else if (state == EDITOR)
+		{
+			displayView(window);
+			displayMap(window);
+		}
+
 
 		sfRenderWindow_display(window);
 	}

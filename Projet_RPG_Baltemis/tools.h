@@ -9,7 +9,7 @@
 #include <time.h>
 #include "title_screen.h"
 
-typedef enum { MENU, GAME, EDITOR }State;
+typedef enum { MENU, GAME, EDITOR, QUIT }State;
 State state;
 
 void initTools();
