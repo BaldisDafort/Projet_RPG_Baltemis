@@ -9,6 +9,7 @@ sfVector2f posView = { 400, 300 };
 sfFloatRect rectView = { 400, 300, 800, 600 };
 
 
+
 void initView()
 {
 	//view map dezoome
