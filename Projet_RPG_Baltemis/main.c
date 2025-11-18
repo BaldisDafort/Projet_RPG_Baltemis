@@ -1,31 +1,48 @@
 #include "tools.h"
+#include "editor.h"
+#include "view.h"
 
 int main()
 {
-	sfVideoMode mode = { 800,600,32 };
+	//inits
+	initTools();
+
+	sfVideoMode mode = { 800, 600 };
+	sfRenderWindow* window = sfRenderWindow_create(mode, "RPG", sfDefaultStyle, NULL);
+	sfEvent events;
 	sfRenderWindow* window = sfRenderWindow_create(mode, "CSFML", sfResize | sfClose, NULL);
 
-	sfEvent event;
-
+	initView();
+	initMap();
 	initTitleScreen();
+
 	state = GAME;
-	while (sfRenderWindow_isOpen(window)) // Boucle de jeu
+
+	//boucle de jeu
+	while (sfRenderWindow_isOpen(window))
 	{
-		// Boucle de gestion des events
-		while (sfRenderWindow_pollEvent(window, &event))
+		restartClock();
+		//boucle d'events
+		while (sfRenderWindow_pollEvent(window, &events))
 		{
-			if (event.type == sfEvtClosed) //Gestion de la croix de la barre de titre
+			if (events.type == sfEvtClosed)
 			{
-				sfRenderWindow_close(window); // Ferme la fenêtre et coupe la boucle de jeu
+				sfRenderWindow_close(window);
 			}
 		}
 
-		// DISPLAY
-		sfRenderWindow_clear(window, sfBlue); 
 
-		if(state == MENU)
+		//updates
+		updateView(window);
+		updateMap(window);
+
+		//display
+		sfRenderWindow_clear(window, sfColor_fromRGBA(70, 70, 70, 255));
+
+		displayView(window);
+		displayMap(window);
+		if (state == MENU)
 			displayTitleScreen(window);
 
-		sfRenderWindow_display(window); // Affiche tout ce qui a été dessiné entre le clear et cette ligne
-	}
+		sfRenderWindow_display(window);
 }
