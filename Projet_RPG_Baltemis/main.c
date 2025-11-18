@@ -17,6 +17,8 @@ int main()
 
 	state = MENU;
 
+	float keytimer = 0.0f;
+
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
 	{
@@ -54,7 +56,6 @@ int main()
 						}
 					}
 
-
 				}
 			}
 
@@ -62,8 +63,23 @@ int main()
 
 
 		//updates
+		keytimer += GetDeltaTime();
 		updateView(window);
 		updateMap(window);
+
+		if (sfKeyboard_isKeyPressed(sfKeyEscape) && keytimer > 0.5f)
+		{
+			if (state != MENU)
+			{
+				state = MENU;
+				keytimer = 0.0f;
+			}
+		}
+
+		if (state == QUIT)
+		{
+			sfRenderWindow_close(window);
+		}
 
 		//display
 		sfRenderWindow_clear(window, sfColor_fromRGBA(70, 70, 70, 255));
@@ -72,7 +88,9 @@ int main()
 
 		if (state == MENU)
 		{
+			displayEditorView(window);
 			displayTitleScreen(window);
+
 		}
 
 		else if (state == EDITOR)
