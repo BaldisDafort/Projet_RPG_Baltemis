@@ -11,6 +11,7 @@ sfFloatRect rectView = { 400, 300, 800, 600 };
 sfView* viewEditor;
 sfView* view;
 
+
 void initView()
 {
 	//view map dezoome
