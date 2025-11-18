@@ -8,6 +8,7 @@
 #include "SFML/Audio.h"
 #include <time.h>
 #include "title_screen.h"
+#include "sound.h"
 
 typedef enum { MENU, GAME, EDITOR, QUIT }State;
 State state;
