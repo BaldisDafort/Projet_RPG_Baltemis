@@ -8,7 +8,6 @@ int main()
 	initTools();
 
 	sfVideoMode mode = { 800, 600 };
-	sfRenderWindow* window = sfRenderWindow_create(mode, "RPG", sfDefaultStyle, NULL);
 	sfEvent events;
 	sfRenderWindow* window = sfRenderWindow_create(mode, "CSFML", sfResize | sfClose, NULL);
 
@@ -45,4 +44,5 @@ int main()
 			displayTitleScreen(window);
 
 		sfRenderWindow_display(window);
+	}
 }
