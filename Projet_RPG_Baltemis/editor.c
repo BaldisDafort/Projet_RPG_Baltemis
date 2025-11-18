@@ -94,8 +94,6 @@ void updateMap(sfRenderWindow* _window)
 			worldGet.y -= tilesize;
 
 			block = tileChoice[(int)worldGet.x / tilesize][(int)worldGet.y / tilesize];
-
-			printf("block : %d\n\n", block);
 		}
 
 
