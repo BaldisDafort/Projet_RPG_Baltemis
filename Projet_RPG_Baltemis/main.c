@@ -1,4 +1,4 @@
-#include "Tools.h"
+#include "tools.h"
 
 int main()
 {
@@ -7,6 +7,8 @@ int main()
 
 	sfEvent event;
 
+	initTitleScreen();
+	state = GAME;
 	while (sfRenderWindow_isOpen(window)) // Boucle de jeu
 	{
 		// Boucle de gestion des events
@@ -17,7 +19,12 @@ int main()
 				sfRenderWindow_close(window); // Ferme la fenêtre et coupe la boucle de jeu
 			}
 		}
+
+		// DISPLAY
 		sfRenderWindow_clear(window, sfBlue); 
+
+		if(state == MENU)
+			displayTitleScreen(window);
 
 		sfRenderWindow_display(window); // Affiche tout ce qui a été dessiné entre le clear et cette ligne
 	}
