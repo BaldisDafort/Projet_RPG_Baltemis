@@ -39,8 +39,6 @@ void initMap()
 	viewEditor = sfView_create();
 	sfView_reset(viewEditor, rectViewEditor);
 
-
-
 	//int i
 	int i = 0;
 
@@ -60,15 +58,6 @@ void initMap()
 	tileEditor = sfSprite_create();
 	sfSprite_setTexture(tileEditor, textmap, sfTrue);
 	sfSprite_setPosition(tileEditor, originEditor);
-	
-	//initialiser les case du tableau a 1 pour pas que la map soit invisible
-	for (int x = 0; x < mapsizeX; x++)
-	{
-		for (int y = 0; y < mapsizeX; y++)
-		{
-			map[y][x] = 1;
-		}
-	}
 
 	//innitialiser le tableau des tiles a selectionner
 	for (int x = 0; x < 12; x++)
@@ -87,6 +76,39 @@ void updateMap(sfRenderWindow* _window)
 	sfView_setCenter(viewEditor, posViewEditor);
 	sfView_setSize(viewEditor, (sfVector2f) { mapsizeX* tilesize + 3 * tilesize, mapsizeY* tilesize + 3 * tilesize });
 
+	sfVector2f originEditor = { (mapsizeX) * tilesize, tilesize };
+	sfVector2i nexPosInTab = { 0, 0 };
+	sfVector2i posMouse = sfMouse_getPositionRenderWindow(_window);
+	sfVector2f worldGet = sfRenderWindow_mapPixelToCoords(_window, posMouse, viewEditor);
+
+	sfSprite_setPosition(tileEditor, originEditor);
+
+	posTimer += GetDeltaTime();
+
+	if (sfMouse_isButtonPressed(sfMouseLeft) && posTimer >= 0.002f)
+	{
+		//recuperer les tuiles
+		if (worldGet.x > (mapsizeX) * tilesize && worldGet.x < originEditor.x + 2*tilesize && worldGet.y < 13 * tilesize && worldGet.y > tilesize)
+		{
+			worldGet.x -= (mapsizeX) * tilesize;
+			worldGet.y -= tilesize;
+
+			block = tileChoice[(int)worldGet.x / tilesize][(int)worldGet.y / tilesize];
+		}
+
+
+		//poser les tuiles
+		else if (worldGet.x < mapsizeX * tilesize)
+		{
+			nexPosInTab.x = worldGet.x / tilesize;
+			nexPosInTab.y = worldGet.y / tilesize;
+
+			map[nexPosInTab.y][nexPosInTab.x] = block;
+		}
+
+		posTimer = 0.0f;
+	}
+
 }
 
 void displayMap(sfRenderWindow* _window)
@@ -102,6 +124,7 @@ void displayMap(sfRenderWindow* _window)
 	int posEditorx = mapsizeX * tilesize;
 	int posEditory = 0;
 	sfVector2f originEditor = { (mapsizeX) * tilesize, tilesize };
+
 	//dessiner la map
 	for (int y = 0; y < mapsizeY; y++)
 	{
