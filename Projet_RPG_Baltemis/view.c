@@ -8,6 +8,8 @@ sfFloatRect rectViewEditor = { mapsizeX * tilesize / 2 + 1.5 * tilesize, mapsize
 sfVector2f posView = { 400, 300 };
 sfFloatRect rectView = { 400, 300, 800, 600 };
 
+sfView* viewEditor;
+sfView* view;
 
 void initView()
 {
