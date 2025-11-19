@@ -67,6 +67,17 @@ int main()
 							state = QUIT;
 						}
 					}
+					else if (state == OPTION)
+					{
+						sfFloatRect rectGeneralButton = sfRectangleShape_getGlobalBounds(g_GeneralSoundButton_IsMuted);
+						if (sfFloatRect_contains(&rectGeneralButton, events.mouseButton.x, events.mouseButton.y))
+						{
+
+							printf("Ici");
+							SetGeneralMuted(!GetGeneralMuted());
+							ChangeVolume(g_musicTitleScreen, 100.0f);
+						}
+					}
 
 				}
 			}
