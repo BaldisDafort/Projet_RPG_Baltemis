@@ -53,6 +53,12 @@ int main()
 							state = EDITOR;
 						}
 
+						rectButton = sfRectangleShape_getGlobalBounds(OptionsButton);
+						if (sfFloatRect_contains(&rectButton, events.mouseButton.x, events.mouseButton.y))
+						{
+							state = OPTION;
+						}
+
 						rectButton = sfRectangleShape_getGlobalBounds(QuitButton);
 						if (sfFloatRect_contains(&rectButton, events.mouseButton.x, events.mouseButton.y))
 						{
@@ -102,6 +108,7 @@ int main()
 		{
 			displayMap(window);
 		}
+
 
 
 		sfRenderWindow_display(window);

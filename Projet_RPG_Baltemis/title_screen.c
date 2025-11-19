@@ -1,5 +1,11 @@
 #include "title_screen.h"
 
+sfSprite* sTitleScreen;
+sfRectangleShape* StartButton;
+sfRectangleShape* EditorButton;
+sfRectangleShape* OptionsButton;
+sfRectangleShape* QuitButton;
+
 void initTitleScreen()
 {
 	sTitleScreen = sfSprite_create();
@@ -27,9 +33,19 @@ void initTitleScreen()
 	sfRectangleShape_setOutlineThickness(EditorButton, 5.f);
 	sfRectangleShape_setOutlineColor(EditorButton, sfYellow);
 
+	OptionsButton = sfRectangleShape_create();
+	sfVector2f sizeOptionsButton = { 100.f, 35.f };
+	sfVector2f positionOptionsButton = { 375.f, 470.f };
+	sfColor OptionsButtonColor = sfColor_fromRGBA(70, 70, 70, 255);
+	sfRectangleShape_setSize(OptionsButton, sizeOptionsButton);
+	sfRectangleShape_setFillColor(OptionsButton, OptionsButtonColor);
+	sfRectangleShape_setPosition(OptionsButton, positionOptionsButton);
+	sfRectangleShape_setOutlineThickness(OptionsButton, 5.f);
+	sfRectangleShape_setOutlineColor(OptionsButton, sfYellow);
+
 	QuitButton = sfRectangleShape_create();
 	sfVector2f sizeQuitButton = { 100.f, 35.f };
-	sfVector2f positionQuitButton = { 375.f, 470.f };
+	sfVector2f positionQuitButton = { 375.f, 530.f };
 	sfRectangleShape_setSize(QuitButton, sizeQuitButton);
 	sfRectangleShape_setFillColor(QuitButton, sfBlue);
 	sfRectangleShape_setPosition(QuitButton, positionQuitButton);
@@ -43,5 +59,6 @@ void displayTitleScreen(sfRenderWindow* _window)
 	sfRenderWindow_drawSprite(_window, sTitleScreen, NULL);
 	sfRenderWindow_drawRectangleShape(_window, StartButton, NULL);
 	sfRenderWindow_drawRectangleShape(_window, EditorButton, NULL);
+	sfRenderWindow_drawRectangleShape(_window, OptionsButton, NULL);
 	sfRenderWindow_drawRectangleShape(_window, QuitButton, NULL);
 }
