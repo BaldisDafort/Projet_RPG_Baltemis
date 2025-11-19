@@ -9,7 +9,7 @@ sfRectangleShape* g_SFXSoundButton_IsMuted;
 sfRectangleShape* g_SFXSoundButtonVolumePlus;
 sfRectangleShape* g_SFXSoundButtonVolumeMinus;
 
-// Les boutons pour le son en g�n�ral
+// Les boutons pour le son en general
 sfRectangleShape* g_GeneralSoundButton_IsMuted;
 sfRectangleShape* g_GeneralSoundButtonVolumePlus;
 sfRectangleShape* g_GeneralSoundButtonVolumeMinus;
@@ -23,6 +23,8 @@ sfRectangleShape* g_MusicSoundButtonVolumeMinus;
 sfRectangleShape* g_SFXSoundButton_IsMuted;
 sfRectangleShape* g_SFXSoundButtonVolumePlus;
 sfRectangleShape* g_SFXSoundButtonVolumeMinus;
+
+
 
 void initOptions()
 {
