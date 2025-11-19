@@ -2,8 +2,14 @@
 #include "SFML/Graphics.h"
 
 sfRectangleShape* g_DisplayOptions;
+sfRectangleShape* g_GeneralSoundButton_IsMuted;
+sfRectangleShape* g_GeneralSoundButtonVolumePlus;
+sfRectangleShape* g_GeneralSoundButtonVolumeMinus;
+sfRectangleShape* g_SFXSoundButton_IsMuted;
+sfRectangleShape* g_SFXSoundButtonVolumePlus;
+sfRectangleShape* g_SFXSoundButtonVolumeMinus;
 
-// Les boutons pour le son en général
+// Les boutons pour le son en gï¿½nï¿½ral
 sfRectangleShape* g_GeneralSoundButton_IsMuted;
 sfRectangleShape* g_GeneralSoundButtonVolumePlus;
 sfRectangleShape* g_GeneralSoundButtonVolumeMinus;

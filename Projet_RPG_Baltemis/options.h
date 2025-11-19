@@ -4,6 +4,8 @@
 
 
 extern sfRectangleShape* g_DisplayOptions;
+extern sfRectangleShape* g_GeneralSoundButton_IsMuted;
+extern sfRectangleShape* g_SFXSoundButton_IsMuted;
 
 // Les boutons pour le son en général
 extern sfRectangleShape* g_GeneralSoundButton_IsMuted;
