@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="editor.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="options.c" />
     <ClCompile Include="sound.c" />
     <ClCompile Include="title_screen.c" />
     <ClCompile Include="tools.c" />
@@ -144,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="editor.h" />
+    <ClInclude Include="options.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="title_screen.h" />
     <ClInclude Include="tools.h" />
