@@ -1,48 +1,8 @@
 #include "editor.h"
 
-//view map dezoome
-sfView* viewEditor;
-sfVector2f posViewEditor = { mapsizeX * tileSize / 2 + 1.5 * tileSize, mapsizeY * tileSize / 2 };
-sfFloatRect rectViewEditor = { mapsizeX * tileSize / 2 + 1.5 * tileSize, mapsizeY * tileSize / 2, mapsizeX * tileSize, mapsizeY * tileSize };
-
-//tilemap
-sfSprite* tilesetGround;
-sfTexture* textmapGround;
-sfSprite* tilesetWall;
-sfTexture* textmapWall;
-sfIntRect rectile = { 0, 0, tileSize, tileSize };
-sfVector2f pos = { 0.0f, 0.0f };
-sfVector2f origin = { 0.0f, 0.0f };
-
-
-//rectangle noir pour les tiles
-sfRectangleShape* rectangleBlack;
-sfVector2f rectpos = { (mapsizeX)*tileSize, -2 * tileSize };
-sfVector2f rectSize = { 3 * tileSize, mapsizeY * tileSize + 4 * tileSize };
-
-//tile choix
-sfSprite* tileEditorGround;
-sfSprite* tileEditorWall;
-sfVector2f posEditor = { 0.0f, 0.0f };
-sfVector2f originEditorGround = { (mapsizeX)*tileSize, tileSize };
-sfVector2f originEditorWall = { (mapsizeX)*tileSize, -1 * tileSize };
-
-
-//tableau
-int mapGround[mapsizeY][mapsizeX];
-int mapWall[mapsizeY][mapsizeX];
-int mapWall1[mapsizeY][mapsizeX];
-int mapWall2[mapsizeY][mapsizeX];
-int mapWall3[mapsizeY][mapsizeX];
-int tileGround[2][13];
-int tileWall[2][28];
-int tileWall1[2][28];
-int tileWall2[2][28];
-int tileWall3[2][28];
-
 //timer
-float posTimer = 0.0f;
-float timer = 0.0f;
+float posTimer;
+float timer;
 
 //block selectionne
 int blockGround = 0.0f;
@@ -51,44 +11,57 @@ int blockWall = 0.0f;
 void initMap()
 {
 	//view map dezoome
-	viewEditor = sfView_create();
-	sfView_reset(viewEditor, rectViewEditor);
+	viewEditor.viewEditor = sfView_create();
+	viewEditor.posViewEditor = (sfVector2f){ mapsizeX * tileSize / 2 + 1.5 * tileSize, mapsizeY * tileSize / 2 };
+	viewEditor.rectViewEditor = (sfFloatRect){mapsizeX * tileSize / 2 + 1.5 * tileSize, mapsizeY * tileSize / 2, mapsizeX * tileSize, mapsizeY * tileSize};
+	sfView_reset(viewEditor.viewEditor, viewEditor.rectViewEditor);
 
-	//int i
-	int i = 0;
-
+	//tilemap
+	tilemap.rectile = (sfIntRect){ 0.0f, 0.0f, tileSize, tileSize };
+	tilemap.pos = (sfVector2f){ 0.0f, 0.0f };
+	tilemap.origin = (sfVector2f){ 0.0f, 0.0f };
 	//tilesetGround
-	tilesetGround = sfSprite_create();
-	textmapGround = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetground.png", NULL);
-	sfSprite_setTexture(tilesetGround, textmapGround, sfTrue);
-	sfSprite_setPosition(tilesetGround, origin);
-	//tilesetWall 
-	tilesetWall = sfSprite_create();
-	textmapWall = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetwall.png", NULL);
-	sfSprite_setTexture(tilesetWall, textmapWall, sfTrue);
-	sfSprite_setPosition(tilesetWall, origin);
+	tilemap.tilesetGround = sfSprite_create();
+	tilemap.textmapGround = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetground.png", NULL);
+	sfSprite_setTexture(tilemap.tilesetGround, tilemap.textmapGround, sfTrue);
+	sfSprite_setPosition(tilemap.tilesetGround, tilemap.origin);
+	//tilesetWall
+	tilemap.tilesetWall = sfSprite_create();
+	tilemap.textmapWall = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetwall.png", NULL);
+	sfSprite_setTexture(tilemap.tilesetWall, tilemap.textmapWall, sfTrue);
+	sfSprite_setPosition(tilemap.tilesetWall, tilemap.origin);
 
 
 	//rectangle noir pour les tiles
-	rectangleBlack = sfRectangleShape_create();
-	sfRectangleShape_setFillColor(rectangleBlack, sfBlack);
-	sfRectangleShape_setPosition(rectangleBlack, rectpos);
-	sfRectangleShape_setSize(rectangleBlack, rectSize);
+	rectBlack.rectangle = sfRectangleShape_create();
+	rectBlack.position = (sfVector2f){ (mapsizeX)*tileSize, -2*tileSize };
+	rectBlack.size = (sfVector2f){ 3 * tileSize, mapsizeY * tileSize + 4*tileSize };
+	sfRectangleShape_setFillColor(rectBlack.rectangle, sfBlack);
+	sfRectangleShape_setPosition(rectBlack.rectangle, rectBlack.position);
+	sfRectangleShape_setSize(rectBlack.rectangle, rectBlack.size);
 
-	//choix
-	tileEditorGround = sfSprite_create();
-	sfSprite_setTexture(tileEditorGround, textmapGround, sfTrue);
-	sfSprite_setPosition(tileEditorGround, originEditorGround);
-	tileEditorWall = sfSprite_create();
-	sfSprite_setTexture(tileEditorWall, textmapWall, sfTrue);
-	sfSprite_setPosition(tileEditorWall, originEditorWall);
+	//tile choix
+	tileEditor.tileEditorGround = sfSprite_create();
+	tileEditor.tileEditorWall = sfSprite_create();
+	tileEditor.posEditor = (sfVector2f){ 0.0f, 0.0f };
+	tileEditor.originEditorGround = (sfVector2f){ (mapsizeX)*tileSize, tileSize };
+	tileEditor.originEditorWall = (sfVector2f){ (mapsizeX)*tileSize, -1 * tileSize };
+	sfSprite_setTexture(tileEditor.tileEditorGround, tilemap.textmapGround, sfTrue);
+	sfSprite_setPosition(tileEditor.tileEditorGround, tileEditor.originEditorGround);
+	sfSprite_setTexture(tileEditor.tileEditorWall, tilemap.textmapWall, sfTrue);
+	sfSprite_setPosition(tileEditor.tileEditorWall, tileEditor.originEditorWall);
+
+	//timer
+	posTimer = 0.0f;
+	timer = 0.0f;
 
 	//innitialiser les tableau des tiles a selectionner
+	int i = 0;
 	for (int x = 0; x < 12; x++)
 	{
 		for (int y = 0; y < 2; y++)
 		{
-			tileGround[y][x] = i;
+			arr.tileGround[y][x] = i;
 			i++;
 		}
 	}
@@ -97,10 +70,7 @@ void initMap()
 	{
 		for (int y = 0; y < 2; y++)
 		{
-			tileWall[y][x] = i;
-			tileWall1[y][x] = i;
-			tileWall2[y][x] = i;
-			tileWall3[y][x] = i;
+			arr.tileWall[y][x] = i;
 			i++;
 		}
 	}
@@ -109,16 +79,16 @@ void initMap()
 void updateMap(sfRenderWindow* _window)
 {
 	//view map dezoome
-	sfView_setCenter(viewEditor, posViewEditor);
-	sfView_setSize(viewEditor, (sfVector2f) { mapsizeX* tileSize + 3 * tileSize, mapsizeY* tileSize + 3 * tileSize });
+	sfView_setCenter(viewEditor.viewEditor, viewEditor.posViewEditor);
+	sfView_setSize(viewEditor.viewEditor, (sfVector2f) { mapsizeX* tileSize + 3 * tileSize, mapsizeY* tileSize + 3 * tileSize });
 
 	sfVector2f originEditor = { (mapsizeX)*tileSize, tileSize };
 	sfVector2i nexPosInTab = { 0, 0 };
 	sfVector2i posMouse = sfMouse_getPositionRenderWindow(_window);
-	sfVector2f worldGet = sfRenderWindow_mapPixelToCoords(_window, posMouse, viewEditor);
+	sfVector2f worldGet = sfRenderWindow_mapPixelToCoords(_window, posMouse, viewEditor.viewEditor);
 
-	sfSprite_setPosition(tileEditorGround, originEditor);
-	sfSprite_setPosition(tileEditorWall, originEditor);
+	sfSprite_setPosition(tileEditor.tileEditorGround, originEditor);
+	sfSprite_setPosition(tileEditor.tileEditorWall, originEditor);
 
 	posTimer += GetDeltaTime();
 
@@ -130,7 +100,7 @@ void updateMap(sfRenderWindow* _window)
 			worldGet.x -= (mapsizeX)*tileSize;
 			worldGet.y -= tileSize;
 
-			blockGround = tileGround[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+			blockGround = arr.tileGround[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
 
 		}
 		else if (worldGet.x > mapsizeX * tileSize) //recuperer les tuiles du wall
@@ -140,19 +110,18 @@ void updateMap(sfRenderWindow* _window)
 			switch (currentTileset)
 			{
 			case WALL:
-				blockWall = tileWall[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+				blockWall = arr.tileWall[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
 				break;
 			case WALL1:
-				blockWall = tileWall1[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+				blockWall = arr.tileWall[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
 				break;
 			case WALL2:
-				blockWall = tileWall2[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+				blockWall = arr.tileWall[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
 				break;
 			case WALL3:
-				blockWall = tileWall3[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+				blockWall = arr.tileWall[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
 				break;
 			}
-			printf("%d", blockGround);
 		}
 
 		//poser les tuiles
@@ -164,19 +133,19 @@ void updateMap(sfRenderWindow* _window)
 			switch (currentTileset)
 			{
 			case GROUND:
-				mapGround[nexPosInTab.y][nexPosInTab.x] = blockGround;
+				arr.mapGround[nexPosInTab.y][nexPosInTab.x] = blockGround;
 				break;
 			case WALL:
-				mapWall[nexPosInTab.y][nexPosInTab.x] = blockWall;
+				arr.mapWall[nexPosInTab.y][nexPosInTab.x] = blockWall;
 				break;
 			case WALL1:
-				mapWall1[nexPosInTab.y][nexPosInTab.x] = blockWall;
+				arr.mapWall1[nexPosInTab.y][nexPosInTab.x] = blockWall;
 				break;
 			case WALL2:
-				mapWall2[nexPosInTab.y][nexPosInTab.x] = blockWall;
+				arr.mapWall2[nexPosInTab.y][nexPosInTab.x] = blockWall;
 				break;
 			case WALL3:
-				mapWall3[nexPosInTab.y][nexPosInTab.x] = blockWall;
+				arr.mapWall3[nexPosInTab.y][nexPosInTab.x] = blockWall;
 				break;
 			}
 		}
@@ -206,7 +175,7 @@ void updateMap(sfRenderWindow* _window)
 void displayMap(sfRenderWindow* _window)
 {
 	//view map dezoome
-	sfRenderWindow_setView(_window, viewEditor);
+	sfRenderWindow_setView(_window, viewEditor.viewEditor);
 
 	//valeurs
 	int posGroundX = 0;
@@ -229,11 +198,11 @@ void displayMap(sfRenderWindow* _window)
 	{
 		for (int x = 0; x < mapsizeX; x++)
 		{
-			posGroundX = mapGround[y][x] * tileSize;
-			posWallX = mapWall[y][x] * tileSize;
-			posWall1X = mapWall1[y][x] * tileSize;
-			posWall2X = mapWall2[y][x] * tileSize;
-			posWall3X = mapWall3[y][x] * tileSize;
+			posGroundX = arr.mapGround[y][x] * tileSize;
+			posWallX = arr.mapWall[y][x] * tileSize;
+			posWall1X = arr.mapWall1[y][x] * tileSize;
+			posWall2X = arr.mapWall2[y][x] * tileSize;
+			posWall3X = arr.mapWall3[y][x] * tileSize;
 
 			sfIntRect rectileGround = { posGroundX, posy, tileSize, tileSize };
 			sfIntRect rectileWall = { posWallX, posy, tileSize, tileSize };
@@ -242,25 +211,25 @@ void displayMap(sfRenderWindow* _window)
 			sfIntRect rectileWall3 = { posWall3X, 3 * tileSize, tileSize, tileSize };
 			sfVector2f pos = { origin.x, origin.y };
 			//dessiner ground
-			sfSprite_setPosition(tilesetGround, pos);
-			sfSprite_setTextureRect(tilesetGround, rectileGround);
-			sfRenderWindow_drawSprite(_window, tilesetGround, NULL);
+			sfSprite_setPosition(tilemap.tilesetGround, pos);
+			sfSprite_setTextureRect(tilemap.tilesetGround, rectileGround);
+			sfRenderWindow_drawSprite(_window, tilemap.tilesetGround, NULL);
 			//dessiner wall
-			sfSprite_setPosition(tilesetWall, pos);
-			sfSprite_setTextureRect(tilesetWall, rectileWall);
-			sfRenderWindow_drawSprite(_window, tilesetWall, NULL);
+			sfSprite_setPosition(tilemap.tilesetWall, pos);
+			sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall);
+			sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
 			//dessiner wall1
-			sfSprite_setPosition(tilesetWall, pos);
-			sfSprite_setTextureRect(tilesetWall, rectileWall1);
-			sfRenderWindow_drawSprite(_window, tilesetWall, NULL);
+			sfSprite_setPosition(tilemap.tilesetWall, pos);
+			sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall1);
+			sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
 			//dessiner wall2
-			sfSprite_setPosition(tilesetWall, pos);
-			sfSprite_setTextureRect(tilesetWall, rectileWall2);
-			sfRenderWindow_drawSprite(_window, tilesetWall, NULL);
+			sfSprite_setPosition(tilemap.tilesetWall, pos);
+			sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall2);
+			sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
 			//dessiner wall3
-			sfSprite_setPosition(tilesetWall, pos);
-			sfSprite_setTextureRect(tilesetWall, rectileWall3);
-			sfRenderWindow_drawSprite(_window, tilesetWall, NULL);
+			sfSprite_setPosition(tilemap.tilesetWall, pos);
+			sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall3);
+			sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
 
 			origin.x += tileSize;
 
@@ -273,7 +242,7 @@ void displayMap(sfRenderWindow* _window)
 	}
 
 	//dessiner le rectangle noir pour les tiles
-	sfRenderWindow_drawRectangleShape(_window, rectangleBlack, NULL);
+	sfRenderWindow_drawRectangleShape(_window, rectBlack.rectangle, NULL);
 
 	//dessiner les tiles a selectionner
 	switch (currentTileset)
@@ -283,12 +252,12 @@ void displayMap(sfRenderWindow* _window)
 		{
 			for (int x = 0; x < 2; x++)
 			{
-				posEditorx = tileGround[x][y] * tileSize;
+				posEditorx = arr.tileGround[x][y] * tileSize;
 				sfIntRect rectile = { posEditorx, posEditory, tileSize, tileSize };
 				sfVector2f pos = { originEditorGround.x, originEditorGround.y };
-				sfSprite_setTextureRect(tileEditorGround, rectile);
-				sfSprite_setPosition(tileEditorGround, pos);
-				sfRenderWindow_drawSprite(_window, tileEditorGround, NULL);
+				sfSprite_setTextureRect(tileEditor.tileEditorGround, rectile);
+				sfSprite_setPosition(tileEditor.tileEditorGround, pos);
+				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorGround, NULL);
 				originEditorGround.x += tileSize;
 
 				if (originEditorGround.x >= 2 * tileSize + (mapsizeX)*tileSize)
@@ -304,12 +273,12 @@ void displayMap(sfRenderWindow* _window)
 		{
 			for (int x = 0; x < 2; x++)
 			{
-				posEditorx = tileWall[x][y] * tileSize;
+				posEditorx = arr.tileWall[x][y] * tileSize;
 				sfIntRect rectile = { posEditorx, posEditory, tileSize, tileSize };
 				sfVector2f pos = { originEditorWall.x, originEditorWall.y };
-				sfSprite_setTextureRect(tileEditorWall, rectile);
-				sfSprite_setPosition(tileEditorWall, pos);
-				sfRenderWindow_drawSprite(_window, tileEditorWall, NULL);
+				sfSprite_setTextureRect(tileEditor.tileEditorWall, rectile);
+				sfSprite_setPosition(tileEditor.tileEditorWall, pos);
+				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorWall, NULL);
 				originEditorWall.x += tileSize;
 
 				if (originEditorWall.x >= 2 * tileSize + (mapsizeX)*tileSize)
@@ -325,12 +294,12 @@ void displayMap(sfRenderWindow* _window)
 		{
 			for (int x = 0; x < 2; x++)
 			{
-				posEditorx = tileWall1[x][y] * tileSize;
+				posEditorx = arr.tileWall[x][y] * tileSize;
 				sfIntRect rectile = { posEditorx, 1 * tileSize , tileSize, tileSize };
 				sfVector2f pos = { originEditorWall.x, originEditorWall.y };
-				sfSprite_setTextureRect(tileEditorWall, rectile);
-				sfSprite_setPosition(tileEditorWall, pos);
-				sfRenderWindow_drawSprite(_window, tileEditorWall, NULL);
+				sfSprite_setTextureRect(tileEditor.tileEditorWall, rectile);
+				sfSprite_setPosition(tileEditor.tileEditorWall, pos);
+				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorWall, NULL);
 				originEditorWall.x += tileSize;
 
 				if (originEditorWall.x >= 2 * tileSize + (mapsizeX)*tileSize)
@@ -346,12 +315,12 @@ void displayMap(sfRenderWindow* _window)
 		{
 			for (int x = 0; x < 2; x++)
 			{
-				posEditorx = tileWall2[x][y] * tileSize;
+				posEditorx = arr.tileWall[x][y] * tileSize;
 				sfIntRect rectile = { posEditorx, 2 * tileSize, tileSize, tileSize };
 				sfVector2f pos = { originEditorWall.x, originEditorWall.y };
-				sfSprite_setTextureRect(tileEditorWall, rectile);
-				sfSprite_setPosition(tileEditorWall, pos);
-				sfRenderWindow_drawSprite(_window, tileEditorWall, NULL);
+				sfSprite_setTextureRect(tileEditor.tileEditorWall, rectile);
+				sfSprite_setPosition(tileEditor.tileEditorWall, pos);
+				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorWall, NULL);
 				originEditorWall.x += tileSize;
 
 				if (originEditorWall.x >= 2 * tileSize + (mapsizeX)*tileSize)
@@ -367,12 +336,12 @@ void displayMap(sfRenderWindow* _window)
 		{
 			for (int x = 0; x < 2; x++)
 			{
-				posEditorx = tileWall3[x][y] * tileSize;
+				posEditorx = arr.tileWall[x][y] * tileSize;
 				sfIntRect rectile = { posEditorx, 3 * tileSize, tileSize, tileSize };
 				sfVector2f pos = { originEditorWall.x, originEditorWall.y };
-				sfSprite_setTextureRect(tileEditorWall, rectile);
-				sfSprite_setPosition(tileEditorWall, pos);
-				sfRenderWindow_drawSprite(_window, tileEditorWall, NULL);
+				sfSprite_setTextureRect(tileEditor.tileEditorWall, rectile);
+				sfSprite_setPosition(tileEditor.tileEditorWall, pos);
+				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorWall, NULL);
 				originEditorWall.x += tileSize;
 
 				if (originEditorWall.x >= 2 * tileSize + (mapsizeX)*tileSize)
