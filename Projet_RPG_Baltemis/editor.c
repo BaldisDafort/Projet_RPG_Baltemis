@@ -189,6 +189,39 @@ void updateMap(sfRenderWindow* _window)
 		timer = 0.0f;
 	}
 
+	sfVector2f originEditor = { (mapsizeX) * tilesize, tilesize };
+	sfVector2i nexPosInTab = { 0, 0 };
+	sfVector2i posMouse = sfMouse_getPositionRenderWindow(_window);
+	sfVector2f worldGet = sfRenderWindow_mapPixelToCoords(_window, posMouse, viewEditor);
+
+	sfSprite_setPosition(tileEditor, originEditor);
+
+	posTimer += GetDeltaTime();
+
+	if (sfMouse_isButtonPressed(sfMouseLeft) && posTimer >= 0.002f)
+	{
+		//recuperer les tuiles
+		if (worldGet.x > (mapsizeX) * tilesize && worldGet.x < originEditor.x + 2*tilesize && worldGet.y < 13 * tilesize && worldGet.y > tilesize)
+		{
+			worldGet.x -= (mapsizeX) * tilesize;
+			worldGet.y -= tilesize;
+
+			block = tileChoice[(int)worldGet.x / tilesize][(int)worldGet.y / tilesize];
+		}
+
+
+		//poser les tuiles
+		else if (worldGet.x < mapsizeX * tilesize)
+		{
+			nexPosInTab.x = worldGet.x / tilesize;
+			nexPosInTab.y = worldGet.y / tilesize;
+
+			map[nexPosInTab.y][nexPosInTab.x] = block;
+		}
+
+		posTimer = 0.0f;
+	}
+
 }
 
 void displayMap(sfRenderWindow* _window)

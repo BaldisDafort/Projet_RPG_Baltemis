@@ -2,10 +2,11 @@
 
 #include "tools.h"
 
-sfSprite* sTitleScreen;
-sfRectangleShape* StartButton;
-sfRectangleShape* EditorButton;
-sfRectangleShape* QuitButton;
+extern sfSprite* sTitleScreen;
+extern sfRectangleShape* StartButton;
+extern sfRectangleShape* EditorButton;
+extern sfRectangleShape* OptionsButton;
+extern sfRectangleShape* QuitButton;
 
 void initTitleScreen();
 void displayTitleScreen(sfRenderWindow* _window);
