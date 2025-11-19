@@ -2,6 +2,12 @@
 #include "SFML/Graphics.h"
 
 sfRectangleShape* g_DisplayOptions;
+sfRectangleShape* g_GeneralSoundButton_IsMuted;
+sfRectangleShape* g_GeneralSoundButtonVolumePlus;
+sfRectangleShape* g_GeneralSoundButtonVolumeMinus;
+sfRectangleShape* g_SFXSoundButton_IsMuted;
+sfRectangleShape* g_SFXSoundButtonVolumePlus;
+sfRectangleShape* g_SFXSoundButtonVolumeMinus;
 
 void initOptions()
 {
@@ -14,9 +20,71 @@ void initOptions()
 	sfRectangleShape_setPosition(g_DisplayOptions, positionDisplayOptions);
 	sfRectangleShape_setOutlineThickness(g_DisplayOptions, 5.f);
 	sfRectangleShape_setOutlineColor(g_DisplayOptions, sfYellow);
+
+	g_GeneralSoundButton_IsMuted = sfRectangleShape_create();
+	sfVector2f sizeGeneralSound = { 575.f, 50.f };
+	sfVector2f positionGeneralSound = { 110.f, 110.f };
+	sfRectangleShape_setSize(g_GeneralSoundButton_IsMuted, sizeGeneralSound);
+	sfRectangleShape_setFillColor(g_GeneralSoundButton_IsMuted, sfBlack);
+	sfRectangleShape_setPosition(g_GeneralSoundButton_IsMuted, positionGeneralSound);
+	sfRectangleShape_setOutlineThickness(g_GeneralSoundButton_IsMuted, 5.f);
+	sfRectangleShape_setOutlineColor(g_GeneralSoundButton_IsMuted, sfYellow);
+
+	g_GeneralSoundButtonVolumeMinus = sfRectangleShape_create();
+	sfVector2f sizeGeneralVolumeMinus = { 75.f, 50.f };
+	sfVector2f positionGeneralVolumeMinus = { 515.f, 180.f };
+	sfRectangleShape_setSize(g_GeneralSoundButtonVolumeMinus, sizeGeneralVolumeMinus);
+	sfRectangleShape_setFillColor(g_GeneralSoundButtonVolumeMinus, sfBlack);
+	sfRectangleShape_setPosition(g_GeneralSoundButtonVolumeMinus, positionGeneralVolumeMinus);
+	sfRectangleShape_setOutlineThickness(g_GeneralSoundButtonVolumeMinus, 5.f);
+	sfRectangleShape_setOutlineColor(g_GeneralSoundButtonVolumeMinus, sfYellow);
+
+	g_GeneralSoundButtonVolumePlus = sfRectangleShape_create();
+	sfVector2f sizeGeneralVolumePlus = { 75.f, 50.f };
+	sfVector2f positionGeneralVolumePlus = { 610.f, 180.f };
+	sfRectangleShape_setSize(g_GeneralSoundButtonVolumePlus, sizeGeneralVolumePlus);
+	sfRectangleShape_setFillColor(g_GeneralSoundButtonVolumePlus, sfBlack);
+	sfRectangleShape_setPosition(g_GeneralSoundButtonVolumePlus, positionGeneralVolumePlus);
+	sfRectangleShape_setOutlineThickness(g_GeneralSoundButtonVolumePlus, 5.f);
+	sfRectangleShape_setOutlineColor(g_GeneralSoundButtonVolumePlus, sfYellow);
+	
+	g_SFXSoundButton_IsMuted = sfRectangleShape_create();
+	sfVector2f sizeSFXSound = { 575.f, 50.f };
+	sfVector2f positionSFXSound = { 110.f, 300.f };
+	sfRectangleShape_setSize(g_SFXSoundButton_IsMuted, sizeSFXSound);
+	sfRectangleShape_setFillColor(g_SFXSoundButton_IsMuted, sfBlack);
+	sfRectangleShape_setPosition(g_SFXSoundButton_IsMuted, positionSFXSound);
+	sfRectangleShape_setOutlineThickness(g_SFXSoundButton_IsMuted, 5.f);
+	sfRectangleShape_setOutlineColor(g_SFXSoundButton_IsMuted, sfYellow);
+
+	g_SFXSoundButtonVolumeMinus = sfRectangleShape_create();
+	sfVector2f sizeSFXVolumeMinus = { 75.f, 50.f };
+	sfVector2f positionSFXVolumeMinus = { 515.f, 370.f };
+	sfRectangleShape_setSize(g_SFXSoundButtonVolumeMinus, sizeSFXVolumeMinus);
+	sfRectangleShape_setFillColor(g_SFXSoundButtonVolumeMinus, sfBlack);
+	sfRectangleShape_setPosition(g_SFXSoundButtonVolumeMinus, positionSFXVolumeMinus);
+	sfRectangleShape_setOutlineThickness(g_SFXSoundButtonVolumeMinus, 5.f);
+	sfRectangleShape_setOutlineColor(g_SFXSoundButtonVolumeMinus, sfYellow);
+
+	g_SFXSoundButtonVolumePlus = sfRectangleShape_create();
+	sfVector2f sizeSFXVolumePlus = { 75.f, 50.f };
+	sfVector2f positionSFXVolumePlus = { 610.f, 370.f };
+	sfRectangleShape_setSize(g_SFXSoundButtonVolumePlus, sizeSFXVolumePlus);
+	sfRectangleShape_setFillColor(g_SFXSoundButtonVolumePlus, sfBlack);
+	sfRectangleShape_setPosition(g_SFXSoundButtonVolumePlus, positionSFXVolumePlus);
+	sfRectangleShape_setOutlineThickness(g_SFXSoundButtonVolumePlus, 5.f);
+	sfRectangleShape_setOutlineColor(g_SFXSoundButtonVolumePlus, sfYellow);
+
 }
 
 void displayOptions(sfRenderWindow* _window)
 {
+	sfRenderWindow_drawSprite(_window, sTitleScreen, NULL);
 	sfRenderWindow_drawRectangleShape(_window, g_DisplayOptions, NULL);
+	sfRenderWindow_drawRectangleShape(_window, g_GeneralSoundButton_IsMuted, NULL);
+	sfRenderWindow_drawRectangleShape(_window, g_GeneralSoundButtonVolumeMinus, NULL);
+	sfRenderWindow_drawRectangleShape(_window, g_GeneralSoundButtonVolumePlus, NULL);
+	sfRenderWindow_drawRectangleShape(_window, g_SFXSoundButton_IsMuted, NULL);
+	sfRenderWindow_drawRectangleShape(_window, g_SFXSoundButtonVolumeMinus, NULL);
+	sfRenderWindow_drawRectangleShape(_window, g_SFXSoundButtonVolumePlus, NULL);
 }

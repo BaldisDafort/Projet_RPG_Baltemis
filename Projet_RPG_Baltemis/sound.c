@@ -15,13 +15,13 @@ void initSound()
 void updateSound()
 {
 	sTimer += GetDeltaTime();
-	if (state != MENU && sTimer > 0.2f)
+	if ((state != MENU && state != OPTION) && sTimer > 0.2f)
 	{
 		sfMusic_pause(musicTitleScreen);
 		musicTitleScreenIsPlaying = 0;
 		sTimer = 0.0f;
 	}
-	else if (state == MENU && sTimer > 0.2f)
+	else if ((state == MENU || state == OPTION) && sTimer > 0.2f)
 	{
 		if (musicTitleScreenIsPlaying == 0)
 		{
