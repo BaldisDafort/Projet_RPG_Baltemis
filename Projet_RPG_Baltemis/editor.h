@@ -6,6 +6,7 @@
 #define mapSizeY 25
 #define tileSize 16
 
+//tileset
 typedef enum Tileset Tileset;
 typedef enum Tileset
 { 
@@ -16,6 +17,18 @@ typedef enum Tileset
 	WALL3
 };
 Tileset currentTileset;
+
+//map
+typedef enum Map
+{
+	MAP,
+	MAP1,
+	MAP2,
+	MAP3,
+
+}Map;
+Map currentMap;
+
 
 typedef struct ViewEditor
 {

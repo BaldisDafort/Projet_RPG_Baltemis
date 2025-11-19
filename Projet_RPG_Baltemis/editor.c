@@ -103,7 +103,7 @@ void updateMap(sfRenderWindow* _window)
 			blockGround = arr.tileGround[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
 
 		}
-		else if (worldGet.x > mapSizeX * tileSize) //recuperer les tuiles du wall
+		else if (worldGet.x > mapSizeX * tileSize && worldGet.y > tileSize && worldGet.y < mapSizeY * tileSize +tileSize) //recuperer les tuiles du wall
 		{
 			worldGet.x -= (mapSizeX)*tileSize;
 			worldGet.y -= -1 * tileSize;
@@ -125,7 +125,7 @@ void updateMap(sfRenderWindow* _window)
 		}
 
 		//poser les tuiles
-		else if (worldGet.x < mapSizeX * tileSize)
+		else if (worldGet.x < mapSizeX * tileSize && worldGet.x > 0 && worldGet.y > 0 && worldGet.y < mapSizeY * tileSize)
 		{
 			nexPosInTab.x = worldGet.x / tileSize;
 			nexPosInTab.y = worldGet.y / tileSize;
@@ -136,7 +136,7 @@ void updateMap(sfRenderWindow* _window)
 				arr.mapGround[nexPosInTab.y][nexPosInTab.x] = blockGround;
 				break;
 			case WALL:
-				arr.mapWall[nexPosInTab.y][nexPosInTab.x] = blockWall;
+				arr.mapWall1[nexPosInTab.y][nexPosInTab.x] = blockWall;
 				break;
 			case WALL1:
 				arr.mapWall1[nexPosInTab.y][nexPosInTab.x] = blockWall;
@@ -153,6 +153,7 @@ void updateMap(sfRenderWindow* _window)
 		posTimer = 0.0f;
 	}
 
+	//gestion des bouton (fleche)
 	if ((sfKeyboard_isScancodePressed(sfScanUp)) && (timer >= 0.2f))
 	{
 		if (currentTileset == GROUND)
@@ -171,14 +172,35 @@ void updateMap(sfRenderWindow* _window)
 	}
 	if ((sfKeyboard_isScancodePressed(sfScanRight)) && (timer >= 0.2f))
 	{
-		saveMap();
+		if (currentMap == MAP3)
+			currentMap = MAP;
+		else
+			currentMap++;
+		loadMap();
 		timer = 0.0f;
 	}
 	else if ((sfKeyboard_isScancodePressed(sfScanLeft)) && (timer >= 0.2f))
 	{
+		if (currentMap == MAP)
+			currentMap = MAP3;
+		else
+			currentMap--;
 		loadMap();
 		timer = 0.0f;
 	}
+
+	//gestion des bouton pour save and load
+	if ((sfKeyboard_isScancodePressed(sfScanS)) && (timer >= 0.2f))
+	{
+		saveMap();
+		timer = 0.0f;
+	}
+	else if ((sfKeyboard_isScancodePressed(sfScanL)) && (timer >= 0.2f))
+	{
+		loadMap();
+		timer = 0.0f;
+	}
+	printf(" Current Map : %d \n", currentMap);
 
 }
 
@@ -371,48 +393,206 @@ void displayMap(sfRenderWindow* _window)
 //save and load
 void saveMap()
 {
-	//save map ground
-	FILE* fileGround = fopen("map_ground", "w+");
-	fwrite(arr.mapGround, sizeof(int), mapSizeX * mapSizeY , fileGround);
-	fclose(fileGround);
-	//save map wall
-	FILE* fileWall = fopen("map_wall", "w+");
-	fwrite(arr.mapWall, sizeof(int), mapSizeX * mapSizeY , fileWall);
-	fclose(fileWall);
-	//save map wall1
-	FILE* fileWall1 = fopen("map_wall1", "w+");
-	fwrite(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY , fileWall1);
-	fclose(fileWall1);
-	//save map wall2
-	FILE* fileWall2 = fopen("map_wall2", "w+");
-	fwrite(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY , fileWall2);
-	fclose(fileWall2);
-	//save map wall3
-	FILE* fileWall3 = fopen("map_wall3", "w+");
-	fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY , fileWall3);
-	fclose(fileWall3);
+	// on doit pas declarer une fonction juste apres un case d un switch apparemment donc je fais comme ca (visual studio m'aime pas je crois)
+	FILE* fileGroundMap;
+	FILE* fileGroundMap1;
+	FILE* fileGroundMap2;
+	FILE* fileGroundMap3;
+	switch (currentMap)
+	{
+	case MAP:
+		//save map ground
+		fileGroundMap = fopen("groundMap.bin", "wb");
+		fwrite(arr.mapGround, sizeof(int), mapSizeX * mapSizeY, fileGroundMap);
+		fclose(fileGroundMap);
+		//save map wall
+		FILE* fileWallMap = fopen("basicMap.bin", "wb");
+		fwrite(arr.mapWall, sizeof(int), mapSizeX * mapSizeY, fileWallMap);
+		fclose(fileWallMap);
+		//save map wall1
+		FILE* fileWallSkeletonMap = fopen("skeletonMap.bin", "wb");
+		fwrite(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY, fileWallSkeletonMap);
+		fclose(fileWallSkeletonMap);
+		//save map wall2
+		FILE* fileWallToxicMap = fopen("toxicMap.bin", "wb");
+		fwrite(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY, fileWallToxicMap);
+		fclose(fileWallToxicMap);
+		//save map wall3
+		FILE* fileWallLavaMap = fopen("lavaMap.bin", "wb");
+		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap);
+		fclose(fileWallLavaMap);
+		break;
+
+	case MAP1:
+		//save map ground
+		fileGroundMap1 = fopen("groundMap1.bin", "wb");
+		fwrite(arr.mapGround, sizeof(int), mapSizeX * mapSizeY, fileGroundMap1);
+		fclose(fileGroundMap1);
+		//save map wall
+		FILE* fileWallMap1 = fopen("basicMap1.bin", "wb");
+		fwrite(arr.mapWall, sizeof(int), mapSizeX * mapSizeY, fileWallMap1);
+		fclose(fileWallMap1);
+		//save map wall1
+		FILE* fileWallSkeletonMap1 = fopen("skeletonMap1.bin", "wb");
+		fwrite(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY, fileWallSkeletonMap1);
+		fclose(fileWallSkeletonMap1);
+		//save map wall2
+		FILE* fileWallToxicMap1 = fopen("toxicMap1.bin", "wb");
+		fwrite(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY, fileWallToxicMap1);
+		fclose(fileWallToxicMap1);
+		//save map wall3
+		FILE* fileWallLavaMap1 = fopen("lavaMap1.bin", "wb");
+		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap1);
+		fclose(fileWallLavaMap1);
+		break;
+
+	case MAP2:
+		//save map ground
+		fileGroundMap2 = fopen("groundMap2.bin", "wb");
+		fwrite(arr.mapGround, sizeof(int), mapSizeX * mapSizeY, fileGroundMap2);
+		fclose(fileGroundMap2);
+		//save map wall
+		FILE* fileWallMap2 = fopen("basicMap2.bin", "wb");
+		fwrite(arr.mapWall, sizeof(int), mapSizeX * mapSizeY, fileWallMap2);
+		fclose(fileWallMap2);
+		//save map wall1
+		FILE* fileWallSkeletonMap2 = fopen("skeletonMap2.bin", "wb");
+		fwrite(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY, fileWallSkeletonMap2);
+		fclose(fileWallSkeletonMap2);
+		//save map wall2
+		FILE* fileWallToxicMap2 = fopen("toxicMap2.bin", "wb");
+		fwrite(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY, fileWallToxicMap2);
+		fclose(fileWallToxicMap2);
+		//save map wall3
+		FILE* fileWallLavaMap2 = fopen("lavaMap2.bin", "wb");
+		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap2);
+		fclose(fileWallLavaMap2);
+		break;
+
+	case MAP3:
+		//save map ground
+		fileGroundMap3 = fopen("groundMap3.bin", "wb");
+		fwrite(arr.mapGround, sizeof(int), mapSizeX * mapSizeY, fileGroundMap3);
+		fclose(fileGroundMap3);
+		//save map wall
+		FILE* fileWallMap3 = fopen("basicMap3.bin", "wb");
+		fwrite(arr.mapWall, sizeof(int), mapSizeX * mapSizeY, fileWallMap3);
+		fclose(fileWallMap3);
+		//save map wall1
+		FILE* fileWallSkeletonMap3 = fopen("skeletonMap3.bin", "wb");
+		fwrite(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY, fileWallSkeletonMap3);
+		fclose(fileWallSkeletonMap3);
+		//save map wall2
+		FILE* fileWallToxicMap3 = fopen("toxicMap3.bin", "wb");
+		fwrite(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY, fileWallToxicMap3);
+		fclose(fileWallToxicMap3);
+		//save map wall3
+		FILE* fileWallLavaMap3 = fopen("lavaMap3.bin", "wb");
+		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap3);
+		fclose(fileWallLavaMap3);
+		break;
+	}
 }
 
 void loadMap()
 {
-	//load map ground
-	FILE* fileGround = fopen("map_ground", "rb");
-	fread(arr.mapGround, sizeof(int), mapSizeX * mapSizeY, fileGround);
-	fclose(fileGround);
-	//load map wall
-	FILE* fileWall = fopen("map_wall", "rb");
-	fread(arr.mapWall, sizeof(int), mapSizeX * mapSizeY, fileWall);
-	fclose(fileWall);
-	//load map wall1
-	FILE* fileWall1 = fopen("map_wall1", "rb");
-	fread(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY, fileWall1);
-	fclose(fileWall1);
-	//load map wall2
-	FILE* fileWall2 = fopen("map_wall2", "rb");
-	fread(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY, fileWall2);
-	fclose(fileWall2);
-	//load map wall3
-	FILE* fileWall3 = fopen("map_wall3", "rb");
-	fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWall3);
-	fclose(fileWall3);
+	// on doit pas declarer une fonction juste apres un case d un switch apparemment donc je fais comme ca (visual studio m'aime pas je crois)
+	FILE* fileGroundMap;
+	FILE* fileGroundMap1;
+	FILE* fileGroundMap2;
+	FILE* fileGroundMap3;
+	switch (currentMap)
+	{
+	case MAP:
+		//save map ground
+		fileGroundMap = fopen("groundMap.bin", "rb");
+		fread(arr.mapGround, sizeof(int), mapSizeX * mapSizeY, fileGroundMap);
+		fclose(fileGroundMap);
+		//save map wall
+		FILE* fileWallMap = fopen("basicMap.bin", "rb");
+		fread(arr.mapWall, sizeof(int), mapSizeX * mapSizeY, fileWallMap);
+		fclose(fileWallMap);
+		//save map wall1
+		FILE* fileWallSkeletonMap = fopen("skeletonMap.bin", "rb");
+		fread(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY, fileWallSkeletonMap);
+		fclose(fileWallSkeletonMap);
+		//save map wall2
+		FILE* fileWallToxicMap = fopen("toxicMap.bin", "rb");
+		fread(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY, fileWallToxicMap);
+		fclose(fileWallToxicMap);
+		//save map wall3
+		FILE* fileWallLavaMap = fopen("lavaMap.bin", "rb");
+		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap);
+		fclose(fileWallLavaMap);
+		break;
+
+	case MAP1:
+		//save map ground
+		fileGroundMap1 = fopen("groundMap1.bin", "rb");
+		fread(arr.mapGround, sizeof(int), mapSizeX * mapSizeY, fileGroundMap1);
+		fclose(fileGroundMap1);
+		//save map wall
+		FILE* fileWallMap1 = fopen("basicMap1.bin", "rb");
+		fread(arr.mapWall, sizeof(int), mapSizeX * mapSizeY, fileWallMap1);
+		fclose(fileWallMap1);
+		//save map wall1
+		FILE* fileWallSkeletonMap1 = fopen("skeletonMap1.bin", "rb");
+		fread(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY, fileWallSkeletonMap1);
+		fclose(fileWallSkeletonMap1);
+		//save map wall2
+		FILE* fileWallToxicMap1 = fopen("toxicMap1.bin", "rb");
+		fread(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY, fileWallToxicMap1);
+		fclose(fileWallToxicMap1);
+		//save map wall3
+		FILE* fileWallLavaMap1 = fopen("lavaMap1.bin", "rb");
+		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap1);
+		fclose(fileWallLavaMap1);
+		break;
+
+	case MAP2:
+		//save map ground
+		fileGroundMap2 = fopen("groundMap2.bin", "rb");
+		fread(arr.mapGround, sizeof(int), mapSizeX * mapSizeY, fileGroundMap2);
+		fclose(fileGroundMap2);
+		//save map wall
+		FILE* fileWallMap2 = fopen("basicMap2.bin", "rb");
+		fread(arr.mapWall, sizeof(int), mapSizeX * mapSizeY, fileWallMap2);
+		fclose(fileWallMap2);
+		//save map wall1
+		FILE* fileWallSkeletonMap2 = fopen("skeletonMap2.bin", "rb");
+		fread(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY, fileWallSkeletonMap2);
+		fclose(fileWallSkeletonMap2);
+		//save map wall2
+		FILE* fileWallToxicMap2 = fopen("toxicMap2.bin", "rb");
+		fread(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY, fileWallToxicMap2);
+		fclose(fileWallToxicMap2);
+		//save map wall3
+		FILE* fileWallLavaMap2 = fopen("lavaMap2.bin", "rb");
+		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap2);
+		fclose(fileWallLavaMap2);
+		break;
+
+	case MAP3:
+		//save map ground
+		fileGroundMap3 = fopen("groundMap3.bin", "rb");
+		fread(arr.mapGround, sizeof(int), mapSizeX * mapSizeY, fileGroundMap3);
+		fclose(fileGroundMap3);
+		//save map wall
+		FILE* fileWallMap3 = fopen("basicMap3.bin", "rb");
+		fread(arr.mapWall, sizeof(int), mapSizeX * mapSizeY, fileWallMap3);
+		fclose(fileWallMap3);
+		//save map wall1
+		FILE* fileWallSkeletonMap3 = fopen("skeletonMap3.bin", "rb");
+		fread(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY, fileWallSkeletonMap3);
+		fclose(fileWallSkeletonMap3);
+		//save map wall2
+		FILE* fileWallToxicMap3 = fopen("toxicMap3.bin", "rb");
+		fread(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY, fileWallToxicMap3);
+		fclose(fileWallToxicMap3);
+		//save map wall3
+		FILE* fileWallLavaMap3 = fopen("lavaMap3.bin", "rb");
+		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap3);
+		fclose(fileWallLavaMap3);
+		break;
+	}
 }
