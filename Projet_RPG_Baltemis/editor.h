@@ -2,8 +2,8 @@
 
 #include "tools.h"
 
-#define mapsizeX 34
-#define mapsizeY 25
+#define mapSizeX 34
+#define mapSizeY 25
 #define tileSize 16
 
 typedef enum Tileset Tileset;
@@ -65,16 +65,21 @@ rectangleBlack rectBlack;
 typedef struct Array
 {
 	//tableau
-	int mapGround[mapsizeY][mapsizeX];
-	int mapWall[mapsizeY][mapsizeX];
-	int mapWall1[mapsizeY][mapsizeX];
-	int mapWall2[mapsizeY][mapsizeX];
-	int mapWall3[mapsizeY][mapsizeX];
+	int mapGround[mapSizeY][mapSizeX];
+	int mapWall[mapSizeY][mapSizeX];
+	int mapWall1[mapSizeY][mapSizeX];
+	int mapWall2[mapSizeY][mapSizeX];
+	int mapWall3[mapSizeY][mapSizeX];
 	int tileGround[2][13];
 	int tileWall[2][28];
 }Array;
 Array arr;
 
+//map creation
 void initMap();
 void updateMap(sfRenderWindow* _window);
 void displayMap(sfRenderWindow* _window);
+
+//map save and load
+void saveMap();
+void loadMap();

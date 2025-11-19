@@ -21,8 +21,6 @@ int main()
 	initOptions();
 
 
-
-
 	float keytimer = 0.0f;
 
 	//boucle de jeu
@@ -114,7 +112,6 @@ int main()
 		{
 			displayView(window);
 			displayTitleScreen(window);
-
 		}
 
 		else if (state == EDITOR)
