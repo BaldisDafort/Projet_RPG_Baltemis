@@ -1,6 +1,7 @@
 #include "tools.h"
 #include "editor.h"
 #include "view.h"
+#include "options.h"
 
 int main()
 {
@@ -17,6 +18,7 @@ int main()
 	initMap();
 	initTitleScreen();
 	initSound();
+	initOptions();
 
 
 
@@ -107,6 +109,11 @@ int main()
 		else if (state == EDITOR)
 		{
 			displayMap(window);
+		}
+
+		else if (state == OPTION)
+		{
+			displayOptions(window);
 		}
 
 
