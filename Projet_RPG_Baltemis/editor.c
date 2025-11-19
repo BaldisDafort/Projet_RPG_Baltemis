@@ -12,8 +12,8 @@ void initMap()
 {
 	//view map dezoome
 	viewEditor.viewEditor = sfView_create();
-	viewEditor.posViewEditor = (sfVector2f){ mapsizeX * tileSize / 2 + 1.5 * tileSize, mapsizeY * tileSize / 2 };
-	viewEditor.rectViewEditor = (sfFloatRect){mapsizeX * tileSize / 2 + 1.5 * tileSize, mapsizeY * tileSize / 2, mapsizeX * tileSize, mapsizeY * tileSize};
+	viewEditor.posViewEditor = (sfVector2f){ mapSizeX * tileSize / 2 + 1.5 * tileSize, mapSizeY * tileSize / 2 };
+	viewEditor.rectViewEditor = (sfFloatRect){mapSizeX * tileSize / 2 + 1.5 * tileSize, mapSizeY * tileSize / 2, mapSizeX * tileSize, mapSizeY * tileSize};
 	sfView_reset(viewEditor.viewEditor, viewEditor.rectViewEditor);
 
 	//tilemap
@@ -34,8 +34,8 @@ void initMap()
 
 	//rectangle noir pour les tiles
 	rectBlack.rectangle = sfRectangleShape_create();
-	rectBlack.position = (sfVector2f){ (mapsizeX)*tileSize, -2*tileSize };
-	rectBlack.size = (sfVector2f){ 3 * tileSize, mapsizeY * tileSize + 4*tileSize };
+	rectBlack.position = (sfVector2f){ (mapSizeX)*tileSize, -2*tileSize };
+	rectBlack.size = (sfVector2f){ 3 * tileSize, mapSizeY * tileSize + 4*tileSize };
 	sfRectangleShape_setFillColor(rectBlack.rectangle, sfBlack);
 	sfRectangleShape_setPosition(rectBlack.rectangle, rectBlack.position);
 	sfRectangleShape_setSize(rectBlack.rectangle, rectBlack.size);
@@ -44,8 +44,8 @@ void initMap()
 	tileEditor.tileEditorGround = sfSprite_create();
 	tileEditor.tileEditorWall = sfSprite_create();
 	tileEditor.posEditor = (sfVector2f){ 0.0f, 0.0f };
-	tileEditor.originEditorGround = (sfVector2f){ (mapsizeX)*tileSize, tileSize };
-	tileEditor.originEditorWall = (sfVector2f){ (mapsizeX)*tileSize, -1 * tileSize };
+	tileEditor.originEditorGround = (sfVector2f){ (mapSizeX)*tileSize, tileSize };
+	tileEditor.originEditorWall = (sfVector2f){ (mapSizeX)*tileSize, -1 * tileSize };
 	sfSprite_setTexture(tileEditor.tileEditorGround, tilemap.textmapGround, sfTrue);
 	sfSprite_setPosition(tileEditor.tileEditorGround, tileEditor.originEditorGround);
 	sfSprite_setTexture(tileEditor.tileEditorWall, tilemap.textmapWall, sfTrue);
@@ -80,9 +80,9 @@ void updateMap(sfRenderWindow* _window)
 {
 	//view map dezoome
 	sfView_setCenter(viewEditor.viewEditor, viewEditor.posViewEditor);
-	sfView_setSize(viewEditor.viewEditor, (sfVector2f) { mapsizeX* tileSize + 3 * tileSize, mapsizeY* tileSize + 3 * tileSize });
+	sfView_setSize(viewEditor.viewEditor, (sfVector2f) { mapSizeX* tileSize + 3 * tileSize, mapSizeY* tileSize + 3 * tileSize });
 
-	sfVector2f originEditor = { (mapsizeX)*tileSize, tileSize };
+	sfVector2f originEditor = { (mapSizeX)*tileSize, tileSize };
 	sfVector2i nexPosInTab = { 0, 0 };
 	sfVector2i posMouse = sfMouse_getPositionRenderWindow(_window);
 	sfVector2f worldGet = sfRenderWindow_mapPixelToCoords(_window, posMouse, viewEditor.viewEditor);
@@ -95,17 +95,17 @@ void updateMap(sfRenderWindow* _window)
 	if (sfMouse_isButtonPressed(sfMouseLeft) && posTimer >= 0.002f)
 	{
 		//recuperer les tuiles du ground
-		if (worldGet.x > (mapsizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y < 13 * tileSize && worldGet.y > tileSize && currentTileset == GROUND)
+		if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y < 13 * tileSize && worldGet.y > tileSize && currentTileset == GROUND)
 		{
-			worldGet.x -= (mapsizeX)*tileSize;
+			worldGet.x -= (mapSizeX)*tileSize;
 			worldGet.y -= tileSize;
 
 			blockGround = arr.tileGround[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
 
 		}
-		else if (worldGet.x > mapsizeX * tileSize) //recuperer les tuiles du wall
+		else if (worldGet.x > mapSizeX * tileSize) //recuperer les tuiles du wall
 		{
-			worldGet.x -= (mapsizeX)*tileSize;
+			worldGet.x -= (mapSizeX)*tileSize;
 			worldGet.y -= -1 * tileSize;
 			switch (currentTileset)
 			{
@@ -125,7 +125,7 @@ void updateMap(sfRenderWindow* _window)
 		}
 
 		//poser les tuiles
-		else if (worldGet.x < mapsizeX * tileSize)
+		else if (worldGet.x < mapSizeX * tileSize)
 		{
 			nexPosInTab.x = worldGet.x / tileSize;
 			nexPosInTab.y = worldGet.y / tileSize;
@@ -169,6 +169,16 @@ void updateMap(sfRenderWindow* _window)
 			currentTileset++;
 		timer = 0.0f;
 	}
+	if ((sfKeyboard_isScancodePressed(sfScanRight)) && (timer >= 0.2f))
+	{
+		saveMap();
+		timer = 0.0f;
+	}
+	else if ((sfKeyboard_isScancodePressed(sfScanLeft)) && (timer >= 0.2f))
+	{
+		loadMap();
+		timer = 0.0f;
+	}
 
 }
 
@@ -188,15 +198,15 @@ void displayMap(sfRenderWindow* _window)
 	//timer
 	timer += GetDeltaTime();
 
-	int posEditorx = mapsizeX * tileSize;
+	int posEditorx = mapSizeX * tileSize;
 	int posEditory = 0;
-	sfVector2f originEditorGround = { (mapsizeX)*tileSize, tileSize };
-	sfVector2f originEditorWall = { (mapsizeX)*tileSize, -1 * tileSize };
+	sfVector2f originEditorGround = { (mapSizeX)*tileSize, tileSize };
+	sfVector2f originEditorWall = { (mapSizeX)*tileSize, -1 * tileSize };
 
 	//dessiner la map
-	for (int y = 0; y < mapsizeY; y++)
+	for (int y = 0; y < mapSizeY; y++)
 	{
-		for (int x = 0; x < mapsizeX; x++)
+		for (int x = 0; x < mapSizeX; x++)
 		{
 			posGroundX = arr.mapGround[y][x] * tileSize;
 			posWallX = arr.mapWall[y][x] * tileSize;
@@ -233,7 +243,7 @@ void displayMap(sfRenderWindow* _window)
 
 			origin.x += tileSize;
 
-			if (origin.x >= mapsizeX * tileSize)
+			if (origin.x >= mapSizeX * tileSize)
 			{
 				origin.x = 0;
 				origin.y += tileSize;
@@ -260,9 +270,9 @@ void displayMap(sfRenderWindow* _window)
 				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorGround, NULL);
 				originEditorGround.x += tileSize;
 
-				if (originEditorGround.x >= 2 * tileSize + (mapsizeX)*tileSize)
+				if (originEditorGround.x >= 2 * tileSize + (mapSizeX)*tileSize)
 				{
-					originEditorGround.x = (mapsizeX)*tileSize;
+					originEditorGround.x = (mapSizeX)*tileSize;
 					originEditorGround.y += tileSize;
 				}
 			}
@@ -281,9 +291,9 @@ void displayMap(sfRenderWindow* _window)
 				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorWall, NULL);
 				originEditorWall.x += tileSize;
 
-				if (originEditorWall.x >= 2 * tileSize + (mapsizeX)*tileSize)
+				if (originEditorWall.x >= 2 * tileSize + (mapSizeX)*tileSize)
 				{
-					originEditorWall.x = (mapsizeX)*tileSize;
+					originEditorWall.x = (mapSizeX)*tileSize;
 					originEditorWall.y += tileSize;
 				}
 			}
@@ -302,9 +312,9 @@ void displayMap(sfRenderWindow* _window)
 				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorWall, NULL);
 				originEditorWall.x += tileSize;
 
-				if (originEditorWall.x >= 2 * tileSize + (mapsizeX)*tileSize)
+				if (originEditorWall.x >= 2 * tileSize + (mapSizeX)*tileSize)
 				{
-					originEditorWall.x = (mapsizeX)*tileSize;
+					originEditorWall.x = (mapSizeX)*tileSize;
 					originEditorWall.y += tileSize;
 				}
 			}
@@ -323,9 +333,9 @@ void displayMap(sfRenderWindow* _window)
 				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorWall, NULL);
 				originEditorWall.x += tileSize;
 
-				if (originEditorWall.x >= 2 * tileSize + (mapsizeX)*tileSize)
+				if (originEditorWall.x >= 2 * tileSize + (mapSizeX)*tileSize)
 				{
-					originEditorWall.x = (mapsizeX)*tileSize;
+					originEditorWall.x = (mapSizeX)*tileSize;
 					originEditorWall.y += tileSize;
 				}
 			}
@@ -344,9 +354,9 @@ void displayMap(sfRenderWindow* _window)
 				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorWall, NULL);
 				originEditorWall.x += tileSize;
 
-				if (originEditorWall.x >= 2 * tileSize + (mapsizeX)*tileSize)
+				if (originEditorWall.x >= 2 * tileSize + (mapSizeX)*tileSize)
 				{
-					originEditorWall.x = (mapsizeX)*tileSize;
+					originEditorWall.x = (mapSizeX)*tileSize;
 					originEditorWall.y += tileSize;
 				}
 			}
@@ -354,4 +364,55 @@ void displayMap(sfRenderWindow* _window)
 		break;
 
 	}
+}
+
+
+
+//save and load
+void saveMap()
+{
+	//save map ground
+	FILE* fileGround = fopen("map_ground", "w+");
+	fwrite(arr.mapGround, sizeof(int), mapSizeX * mapSizeY , fileGround);
+	fclose(fileGround);
+	//save map wall
+	FILE* fileWall = fopen("map_wall", "w+");
+	fwrite(arr.mapWall, sizeof(int), mapSizeX * mapSizeY , fileWall);
+	fclose(fileWall);
+	//save map wall1
+	FILE* fileWall1 = fopen("map_wall1", "w+");
+	fwrite(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY , fileWall1);
+	fclose(fileWall1);
+	//save map wall2
+	FILE* fileWall2 = fopen("map_wall2", "w+");
+	fwrite(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY , fileWall2);
+	fclose(fileWall2);
+	//save map wall3
+	FILE* fileWall3 = fopen("map_wall3", "w+");
+	fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY , fileWall3);
+	fclose(fileWall3);
+}
+
+void loadMap()
+{
+	//load map ground
+	FILE* fileGround = fopen("map_ground", "rb");
+	fread(arr.mapGround, sizeof(int), mapSizeX * mapSizeY, fileGround);
+	fclose(fileGround);
+	//load map wall
+	FILE* fileWall = fopen("map_wall", "rb");
+	fread(arr.mapWall, sizeof(int), mapSizeX * mapSizeY, fileWall);
+	fclose(fileWall);
+	//load map wall1
+	FILE* fileWall1 = fopen("map_wall1", "rb");
+	fread(arr.mapWall1, sizeof(int), mapSizeX * mapSizeY, fileWall1);
+	fclose(fileWall1);
+	//load map wall2
+	FILE* fileWall2 = fopen("map_wall2", "rb");
+	fread(arr.mapWall2, sizeof(int), mapSizeX * mapSizeY, fileWall2);
+	fclose(fileWall2);
+	//load map wall3
+	FILE* fileWall3 = fopen("map_wall3", "rb");
+	fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWall3);
+	fclose(fileWall3);
 }
