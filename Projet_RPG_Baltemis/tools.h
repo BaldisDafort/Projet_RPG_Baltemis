@@ -10,7 +10,7 @@
 #include "title_screen.h"
 #include "sound.h"
 
-typedef enum { MENU, GAME, EDITOR, QUIT }State;
+typedef enum { MENU, GAME, EDITOR, OPTION, QUIT }State;
 State state;
 
 void initTools();
