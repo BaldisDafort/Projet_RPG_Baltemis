@@ -176,6 +176,7 @@ void updateMap(sfRenderWindow* _window)
 			currentMap = MAP;
 		else
 			currentMap++;
+		printf(" Current Map : %d \n", currentMap);
 		loadMap();
 		timer = 0.0f;
 	}
@@ -185,6 +186,7 @@ void updateMap(sfRenderWindow* _window)
 			currentMap = MAP3;
 		else
 			currentMap--;
+		printf(" Current Map : %d \n", currentMap);
 		loadMap();
 		timer = 0.0f;
 	}
@@ -200,8 +202,6 @@ void updateMap(sfRenderWindow* _window)
 		loadMap();
 		timer = 0.0f;
 	}
-	printf(" Current Map : %d \n", currentMap);
-
 }
 
 void displayMap(sfRenderWindow* _window)
