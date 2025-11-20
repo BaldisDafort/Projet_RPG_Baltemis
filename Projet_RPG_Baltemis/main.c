@@ -51,6 +51,7 @@ int main()
 						if (sfFloatRect_contains(&rectButton, events.mouseButton.x, events.mouseButton.y))
 						{
 							state = EDITOR;
+							printf(" Current Map : %d \n", currentMap);
 							loadMap();
 						}
 
