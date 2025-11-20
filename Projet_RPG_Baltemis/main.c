@@ -2,6 +2,7 @@
 #include "editor.h"
 #include "view.h"
 #include "options.h"
+#include "player.h"
 
 int main()
 {
