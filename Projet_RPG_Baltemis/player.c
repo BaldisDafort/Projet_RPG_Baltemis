@@ -1,87 +1,84 @@
 #include "player.h"
 
 State state = GAME;
-//init bat player
-sfSprite* spBat;
-sfTexture* texBat;
-sfFloatRect playerRect;
-sfIntRect irectBat = { 0, 0, 16, 16 };
-sfVector2f SpritePositionBat = { 0.0f, 0.0f };
-sfVector2f vitesse = { 100.0f, 100.0f };
-float animBatTime = 0.0f;
-float timerBat = 0.0f;
-float animBatSpeed = 0.13f;
-int frameBatX = 0;
-int frameBatY = 0;
-
-sfBool batIsMoving = sfFalse;
 
 void initPlayer()
 {
+	//init bat player
+	bat.batIsMoving = sfFalse;
+	bat.irectBat = (sfIntRect){ 0, 0, 16, 16 };
+	bat.SpritePositionBat = (sfVector2f){ 0.0f, 0.0f };
+	bat.vitesse = (sfVector2f){ 100.0f, 100.0f };
+	bat.animBatTime = 0.0f;
+	bat.timerBat = 0.0f;
+	bat.animBatSpeed = 0.13f;
+	bat.frameBatX = 0;
+	bat.frameBatY = 0;
+
 
 	//create bat player sprite
-	spBat = sfSprite_create();
-	texBat = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetbat.png", NULL);
-	sfSprite_setTexture(spBat, texBat, sfTrue);
-	sfSprite_setTextureRect(spBat, irectBat);
-	sfSprite_setPosition(spBat, SpritePositionBat);
+	bat.spBat = sfSprite_create();
+	bat.texBat = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetbat.png", NULL);
+	sfSprite_setTexture(bat.spBat, bat.texBat, sfTrue);
+	sfSprite_setTextureRect(bat.spBat, bat.irectBat);
+	sfSprite_setPosition(bat.spBat, bat.SpritePositionBat);
 }
 
 void updatePlayer()
 {
-	timerBat += GetDeltaTime();
+	bat.timerBat += GetDeltaTime();
 	if (state == GAME)
 	{
 
 		//player Bat
-		playerRect = sfSprite_getGlobalBounds(spBat);
+		bat.playerRect = sfSprite_getGlobalBounds(bat.spBat);
 		batIsMoving = sfFalse;
 		if (sfKeyboard_isScancodePressed(sfScanW))
 		{
 			batIsMoving = sfTrue;
-			frameBatY = HAUT;
-			SpritePositionBat.y -= vitesse.y * GetDeltaTime();
+			bat.frameBatY = HAUT;
+			bat.SpritePositionBat.y -= bat.vitesse.y * GetDeltaTime();
 		}
 		if (sfKeyboard_isScancodePressed(sfScanS))
 		{
 			batIsMoving = sfTrue;
-			frameBatY = BAS;
-			SpritePositionBat.y += vitesse.y * GetDeltaTime();
+			bat.frameBatY = BAS;
+			bat.SpritePositionBat.y += bat.vitesse.y * GetDeltaTime();
 		}
 		if (sfKeyboard_isScancodePressed(sfScanA))
 		{
 			batIsMoving = sfTrue;
-			frameBatY = GAUCHE;
-			SpritePositionBat.x -= vitesse.x * GetDeltaTime();
+			bat.frameBatY = GAUCHE;
+			bat.SpritePositionBat.x -= bat.vitesse.x * GetDeltaTime();
 		}
 		if (sfKeyboard_isScancodePressed(sfScanD))
 		{
 			batIsMoving = sfTrue;
-			frameBatY = DROITE;
-			SpritePositionBat.x += vitesse.x * GetDeltaTime();
+			bat.frameBatY = DROITE;
+			bat.SpritePositionBat.x += bat.vitesse.x * GetDeltaTime();
 		}
 		else   
 		{
 			batIsMoving = sfFalse;
 		}
 
-		animBatTime += GetDeltaTime();
-		if (animBatTime > animBatSpeed)
+		bat.animBatTime += GetDeltaTime();
+		if (bat.animBatTime > bat.animBatSpeed)
 		{
 
-			frameBatX++;
-			if (frameBatX >= 4) frameBatX = 0;
-				irectBat.left = frameBatX * irectBat.width;
-				irectBat.top = frameBatY * irectBat.height;
-				sfSprite_setTextureRect(spBat, irectBat);
-				animBatTime = 0.0f;
+			bat.frameBatX++;
+			if (bat.frameBatX >= 4) bat.frameBatX = 0;
+			bat.irectBat.left = bat.frameBatX * bat.irectBat.width;
+			bat.irectBat.top = bat.frameBatY * bat.irectBat.height;
+			sfSprite_setTextureRect(bat.spBat, bat.irectBat);
+			bat.animBatTime = 0.0f;
 		}
 
-		sfSprite_setPosition(spBat, SpritePositionBat);
+		sfSprite_setPosition(bat.spBat, bat.SpritePositionBat);
 	}
 }
 
 void displayPlayer(sfRenderWindow* _window)
 {
-	sfRenderWindow_drawSprite(_window, spBat, NULL);
+	sfRenderWindow_drawSprite(_window, bat.spBat, NULL);
 }

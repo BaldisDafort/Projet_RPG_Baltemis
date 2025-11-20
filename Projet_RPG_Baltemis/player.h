@@ -12,6 +12,7 @@ enum Direction
 
 typedef struct BatPlayer
 {
+	sfBool batIsMoving;
 	sfSprite* spBat;
 	sfTexture* texBat;
 	sfFloatRect playerRect;
@@ -25,9 +26,8 @@ typedef struct BatPlayer
 	int frameBatY;
 
 }BatPlayer;
-BatPlayer batPlayer;
+BatPlayer bat;
 
-sfVector2f vitesse;
 sfBool batIsMoving;
 
 void initPlayer();
