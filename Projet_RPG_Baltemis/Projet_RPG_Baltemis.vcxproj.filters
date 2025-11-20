@@ -36,17 +36,11 @@
     <ClCompile Include="options.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="player.c">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="tools.h">
-      <Filter>Fichiers de ressources</Filter>
-    </ClInclude>
-    <ClInclude Include="view.h">
-      <Filter>Fichiers de ressources</Filter>
-    </ClInclude>
-    <ClInclude Include="editor.h">
-      <Filter>Fichiers de ressources</Filter>
-    </ClInclude>
     <ClInclude Include="sound.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -54,6 +48,18 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="options.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="editor.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="tools.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="view.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
