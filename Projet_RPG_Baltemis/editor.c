@@ -143,7 +143,7 @@ void updateMap(sfRenderWindow* _window)
 				arr.mapGround[nexPosInTab.y][nexPosInTab.x] = blockGround;
 				break;
 			case WALL:
-				arr.mapWall1[nexPosInTab.y][nexPosInTab.x] = blockWall;
+				arr.mapWall[nexPosInTab.y][nexPosInTab.x] = blockWall;
 				break;
 			case WALL1:
 				arr.mapWall1[nexPosInTab.y][nexPosInTab.x] = blockWall;
