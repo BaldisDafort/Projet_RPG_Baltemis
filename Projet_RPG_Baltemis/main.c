@@ -90,6 +90,7 @@ int main()
 		//updates
 		keytimer += GetDeltaTime();
 		updateView(window);
+		updateTitleScreen(window);
 		updateMap(window);
 		updateSound();
 		updatePlayer();
