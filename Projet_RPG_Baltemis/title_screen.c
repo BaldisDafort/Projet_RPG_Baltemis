@@ -1,7 +1,11 @@
 #include "title_screen.h"
 
 sfSprite* sTitleScreen;
+
 sfRectangleShape* StartButton;
+sfSprite* spriteStartButton;
+sfIntRect startButtonAnimationRect = { 0,0,100,35 };
+
 sfRectangleShape* EditorButton;
 sfRectangleShape* OptionsButton;
 sfRectangleShape* QuitButton;
@@ -19,10 +23,13 @@ void initTitleScreen()
 	sfVector2f sizeStartButton = { 100.f, 35.f };
 	sfVector2f positionStartButton = { 375.f, 350.f };
 	sfRectangleShape_setSize(StartButton, sizeStartButton);
-	sfRectangleShape_setFillColor(StartButton, sfRed);
 	sfRectangleShape_setPosition(StartButton, positionStartButton);
-	sfRectangleShape_setOutlineThickness(StartButton, 5.f);
-	sfRectangleShape_setOutlineColor(StartButton, sfYellow);
+
+	spriteStartButton = sfSprite_create();
+	sfTexture* textureStartButton = sfTexture_createFromFile("..\\Resources\\Textures\\start-button-sheet.png", NULL);
+	sfSprite_setTexture(spriteStartButton, textureStartButton, sfTrue);
+	sfSprite_setTextureRect(spriteStartButton, startButtonAnimationRect);
+	sfSprite_setPosition(spriteStartButton, positionStartButton);
 
 	EditorButton = sfRectangleShape_create();
 	sfVector2f sizeEditorButton = { 100.f, 35.f };
@@ -58,6 +65,7 @@ void displayTitleScreen(sfRenderWindow* _window)
 {
 	sfRenderWindow_drawSprite(_window, sTitleScreen, NULL);
 	sfRenderWindow_drawRectangleShape(_window, StartButton, NULL);
+	sfRenderWindow_drawSprite(_window, spriteStartButton, NULL);
 	sfRenderWindow_drawRectangleShape(_window, EditorButton, NULL);
 	sfRenderWindow_drawRectangleShape(_window, OptionsButton, NULL);
 	sfRenderWindow_drawRectangleShape(_window, QuitButton, NULL);
