@@ -88,13 +88,70 @@ void initTitleScreen()
 
 }
 
+void updateTitleScreen(sfRenderWindow* _window)
+{
+	sfVector2i mousePixelPos = sfMouse_getPositionRenderWindow(_window);
+	sfFloatRect rectStartButton = sfRectangleShape_getGlobalBounds(StartButton);
+	sfFloatRect rectEditorButton = sfRectangleShape_getGlobalBounds(EditorButton);
+	sfFloatRect rectOptionsButton = sfRectangleShape_getGlobalBounds(OptionsButton);
+	sfFloatRect rectQuitButton = sfRectangleShape_getGlobalBounds(QuitButton);
+
+	sfVector2f mouseWorldPos = sfRenderWindow_mapPixelToCoords(_window, mousePixelPos, g_viewGame);
+
+	// Start Hover Animation
+	if (sfFloatRect_contains(&rectStartButton, mouseWorldPos.x, mouseWorldPos.y))
+	{
+		startButtonAnimationRect.left = startButtonAnimationRect.width;
+		sfSprite_setTextureRect(spriteStartButton, startButtonAnimationRect);
+	}
+	else
+	{
+		startButtonAnimationRect.left = 0;
+		sfSprite_setTextureRect(spriteStartButton, startButtonAnimationRect);
+	}
+	// Editor Hover Animation
+	if (sfFloatRect_contains(&rectEditorButton, mouseWorldPos.x, mouseWorldPos.y))
+	{
+		editorButtonAnimationRect.left = editorButtonAnimationRect.width;
+		sfSprite_setTextureRect(spriteEditorButton, editorButtonAnimationRect);
+	}
+	else
+	{
+		editorButtonAnimationRect.left = 0;
+		sfSprite_setTextureRect(spriteEditorButton, editorButtonAnimationRect);
+	}
+	// Option Hover Animation
+	if (sfFloatRect_contains(&rectOptionsButton, mouseWorldPos.x, mouseWorldPos.y))
+	{
+		optionsButtonAnimationRect.left = optionsButtonAnimationRect.width;
+		sfSprite_setTextureRect(spriteOptionsButton, optionsButtonAnimationRect);
+	}
+	else
+	{
+		optionsButtonAnimationRect.left = 0;
+		sfSprite_setTextureRect(spriteOptionsButton, optionsButtonAnimationRect);
+	}
+	// Exit Hover Animation
+	if (sfFloatRect_contains(&rectQuitButton, mouseWorldPos.x, mouseWorldPos.y))
+	{
+		quitButtonAnimationRect.left = quitButtonAnimationRect.width;
+		sfSprite_setTextureRect(spriteQuitButton, quitButtonAnimationRect);
+	}
+	else
+	{
+		quitButtonAnimationRect.left = 0;
+		sfSprite_setTextureRect(spriteQuitButton, quitButtonAnimationRect);
+	}
+}
+
 void displayTitleScreen(sfRenderWindow* _window)
 {
 	sfRenderWindow_drawSprite(_window, sTitleScreen, NULL);
-
+	
 	sfRenderWindow_drawRectangleShape(_window, StartButton, NULL);
 	sfRenderWindow_drawSprite(_window, spriteStartButton, NULL);
 
+	
 	sfRenderWindow_drawRectangleShape(_window, EditorButton, NULL);
 	sfRenderWindow_drawSprite(_window, spriteEditorButton, NULL);
 
