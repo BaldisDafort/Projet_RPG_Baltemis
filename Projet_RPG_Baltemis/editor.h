@@ -85,6 +85,9 @@ typedef struct Array
 	int mapWall3[mapSizeY][mapSizeX];
 	int tileGround[2][13];
 	int tileWall[2][28];
+	int tileWall1[2][28];
+	int tileWall2[2][28];
+	int tileWall3[2][28];
 }Array;
 Array arr;
 
