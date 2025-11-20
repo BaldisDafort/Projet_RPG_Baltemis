@@ -5,7 +5,6 @@
 
 int main()
 {
-	//inits
 	initTools();
 
 	sfVideoMode mode = { 800, 600 };
@@ -14,11 +13,13 @@ int main()
 
 	state = MENU;
 
+	//inits
 	initView();
 	initMap();
 	initTitleScreen();
 	initSound();
 	initOptions();
+	initPlayer();
 
 
 	float keytimer = 0.0f;
@@ -90,6 +91,7 @@ int main()
 		updateView(window);
 		updateMap(window);
 		updateSound();
+		updatePlayer();
 
 		if (sfKeyboard_isKeyPressed(sfKeyEscape) && keytimer > 0.5f)
 		{
@@ -109,23 +111,23 @@ int main()
 		sfRenderWindow_clear(window, sfColor_fromRGBA(70, 70, 70, 255));
 
 
-
-		if (state == MENU)
+		switch (state)
 		{
-			displayView(window);
-			displayTitleScreen(window);
+		case GAME:
+				displayView(window);
+				displayPlayer(window);
+				break;
+		case MENU:
+				displayView(window);
+				displayTitleScreen(window);
+				break;
+		case EDITOR:
+				displayMap(window);
+				break;
+		case OPTION:
+				displayOptions(window);
+				break;
 		}
-
-		else if (state == EDITOR)
-		{
-			displayMap(window);
-		}
-
-		else if (state == OPTION)
-		{
-			displayOptions(window);
-		}
-
 
 
 		sfRenderWindow_display(window);
