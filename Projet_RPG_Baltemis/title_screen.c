@@ -2,6 +2,7 @@
 
 sfSprite* sTitleScreen;
 
+
 sfRectangleShape* StartButton;
 sfSprite* spriteStartButton;
 sfIntRect startButtonAnimationRect = { 0,0,100,35 };
@@ -13,11 +14,13 @@ sfRectangleShape* QuitButton;
 void initTitleScreen()
 {
 	sTitleScreen = sfSprite_create();
-	sfTexture* tTitleScreen = sfTexture_createFromFile("..\\Resources\\Images\\sketch_title_screen.png", NULL);
+	sfTexture* tTitleScreen = sfTexture_createFromFile("..\\Resources\\Images\\titleScreen.png", NULL);
 	sfSprite_setTexture(sTitleScreen, tTitleScreen, sfTrue);
 
-	sfVector2f scale = { 2.f,2.65f };
-	sfSprite_scale(sTitleScreen, scale);
+
+
+	//sfVector2f scale = { 2.f,2.65f };
+	//sfSprite_scale(sTitleScreen, scale);
 
 	StartButton = sfRectangleShape_create();
 	sfVector2f sizeStartButton = { 100.f, 35.f };
