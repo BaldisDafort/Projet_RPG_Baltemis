@@ -95,6 +95,7 @@ Array arr;
 void initMap();
 void updateMap(sfRenderWindow* _window);
 void displayMap(sfRenderWindow* _window);
+void displayEditor(sfRenderWindow* _window);
 
 //map save and load
 void saveMap();
