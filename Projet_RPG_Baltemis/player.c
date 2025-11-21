@@ -15,6 +15,18 @@ void initPlayer()
 	bat.frameBatX = 0;
 	bat.frameBatY = 0;
 
+	//init skeleton player
+	skeleton.skeletonIsMoving = sfFalse;
+	skeleton.skeletonIsIdle = sfFalse;
+	skeleton.irectSkeleton = (sfIntRect){ 0, 0, 16, 16 };
+	skeleton.SpritePositionSkeleton = (sfVector2f){ 100.0f, 100.0f };
+	skeleton.vitesse = (sfVector2f){ 80.0f, 80.0f };
+	skeleton.animSkeletonTime = 0.0f;
+	skeleton.timerSkeleton = 0.0f;
+	skeleton.animSkeletonSpeed = 0.20f;
+	skeleton.frameSkeletonX = 0;
+	skeleton.frameSkeletonY = 0;
+
 
 	//create bat player sprite
 	bat.spBat = sfSprite_create();
@@ -22,44 +34,48 @@ void initPlayer()
 	sfSprite_setTexture(bat.spBat, bat.texBat, sfTrue);
 	sfSprite_setTextureRect(bat.spBat, bat.irectBat);
 	sfSprite_setPosition(bat.spBat, bat.SpritePositionBat);
+
+	//create skeleton player sprite
+	skeleton.spSkeleton = sfSprite_create();
+	skeleton.texSkeleton = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetskeleton.png", NULL);
+	sfSprite_setTexture(skeleton.spSkeleton, skeleton.texSkeleton, sfTrue);
+	sfSprite_setTextureRect(skeleton.spSkeleton, skeleton.irectSkeleton);
+	sfSprite_setPosition(skeleton.spSkeleton, skeleton.SpritePositionSkeleton);
 }
 
 void updatePlayer()
 {
 	bat.timerBat += GetDeltaTime();
+	skeleton.animSkeletonTime += GetDeltaTime();
+
 	if (state == GAME)
 	{
-
 		//player Bat
 		bat.playerRect = sfSprite_getGlobalBounds(bat.spBat);
 		batIsMoving = sfFalse;
-		if (sfKeyboard_isScancodePressed(sfScanW))
+		if (sfKeyboard_isScancodePressed(sfScanUp))
 		{
-			batIsMoving = sfTrue;
-			bat.frameBatY = HAUT;
+			bat.batIsMoving = sfTrue;
+			bat.frameBatY = B_HAUT;
 			bat.SpritePositionBat.y -= bat.vitesse.y * GetDeltaTime();
 		}
-		if (sfKeyboard_isScancodePressed(sfScanS))
+		if (sfKeyboard_isScancodePressed(sfScanDown))
 		{
-			batIsMoving = sfTrue;
-			bat.frameBatY = BAS;
+			bat.batIsMoving = sfTrue;
+			bat.frameBatY = B_BAS;
 			bat.SpritePositionBat.y += bat.vitesse.y * GetDeltaTime();
 		}
-		if (sfKeyboard_isScancodePressed(sfScanA))
+		if (sfKeyboard_isScancodePressed(sfScanLeft))
 		{
-			batIsMoving = sfTrue;
-			bat.frameBatY = GAUCHE;
+			bat.batIsMoving = sfTrue;
+			bat.frameBatY = B_GAUCHE;
 			bat.SpritePositionBat.x -= bat.vitesse.x * GetDeltaTime();
 		}
-		if (sfKeyboard_isScancodePressed(sfScanD))
+		if (sfKeyboard_isScancodePressed(sfScanRight))
 		{
-			batIsMoving = sfTrue;
-			bat.frameBatY = DROITE;
+			bat.batIsMoving = sfTrue;
+			bat.frameBatY = B_DROITE;
 			bat.SpritePositionBat.x += bat.vitesse.x * GetDeltaTime();
-		}
-		else   
-		{
-			batIsMoving = sfFalse;
 		}
 
 		bat.animBatTime += GetDeltaTime();
@@ -75,10 +91,74 @@ void updatePlayer()
 		}
 
 		sfSprite_setPosition(bat.spBat, bat.SpritePositionBat);
+
+
+
+
+		//player Skeleton
+		skeleton.playerRect = sfSprite_getGlobalBounds(skeleton.spSkeleton);
+		skeleton.skeletonIsMoving = sfFalse;
+		if (sfKeyboard_isScancodePressed(sfScanW))
+		{
+			skeleton.skeletonIsMoving = sfTrue;
+			skeleton.skeletonIsIdle = sfFalse;
+			skeleton.frameSkeletonY = SK_HAUT;
+			skeleton.SpritePositionSkeleton.y -= skeleton.vitesse.y * GetDeltaTime();
+		}
+		else if (sfKeyboard_isScancodePressed(sfScanS))
+		{
+			skeleton.skeletonIsMoving = sfTrue;
+			skeleton.skeletonIsIdle = sfFalse;
+			skeleton.frameSkeletonY = SK_BAS;
+			skeleton.SpritePositionSkeleton.y += skeleton.vitesse.y * GetDeltaTime();
+		}
+		else if (sfKeyboard_isScancodePressed(sfScanA))
+		{
+			skeleton.skeletonIsMoving = sfTrue;
+			skeleton.skeletonIsIdle = sfFalse;
+			skeleton.frameSkeletonY = SK_GAUCHE;
+			skeleton.SpritePositionSkeleton.x -= skeleton.vitesse.x * GetDeltaTime();
+		}
+		else if (sfKeyboard_isScancodePressed(sfScanD))
+		{
+			skeleton.skeletonIsMoving = sfTrue;
+			skeleton.skeletonIsIdle = sfFalse;
+			skeleton.frameSkeletonY = SK_DROITE;
+			skeleton.SpritePositionSkeleton.x += skeleton.vitesse.x * GetDeltaTime();
+		}
+
+		if (skeleton.skeletonIsIdle == sfFalse && skeleton.skeletonIsMoving == sfFalse)
+		{
+			skeleton.skeletonIsIdle = sfTrue;
+			skeleton.frameSkeletonY++;
+		}
+
+		skeleton.animSkeletonTime += GetDeltaTime();
+		if (skeleton.animSkeletonTime > skeleton.animSkeletonSpeed)
+		{
+
+			skeleton.frameSkeletonX++;
+			if (skeleton.frameSkeletonY == 1 || skeleton.frameSkeletonY == 3 || skeleton.frameSkeletonY == 5 || skeleton.frameSkeletonY == 7)
+			{
+				if (skeleton.frameSkeletonX >= 8) skeleton.frameSkeletonX = 0;
+			}
+			else
+			{
+				if (skeleton.frameSkeletonX >= 4) skeleton.frameSkeletonX = 0;
+			}
+			skeleton.irectSkeleton.left = skeleton.frameSkeletonX * skeleton.irectSkeleton.width;
+			skeleton.irectSkeleton.top = skeleton.frameSkeletonY * skeleton.irectSkeleton.height;
+			sfSprite_setTextureRect(skeleton.spSkeleton, skeleton.irectSkeleton);
+			skeleton.animSkeletonTime = 0.0f;
+		}
+
+		sfSprite_setPosition(skeleton.spSkeleton, skeleton.SpritePositionSkeleton);
 	}
 }
 
 void displayPlayer(sfRenderWindow* _window)
 {
+	//le skeleton doit etre dessiner avant le bat pour etre en dessous
+	sfRenderWindow_drawSprite(_window, skeleton.spSkeleton, NULL);
 	sfRenderWindow_drawSprite(_window, bat.spBat, NULL);
 }
