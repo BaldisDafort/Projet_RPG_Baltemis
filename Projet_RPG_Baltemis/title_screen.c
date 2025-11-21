@@ -66,7 +66,7 @@ void initTitleScreen()
 	sfRectangleShape_setPosition(OptionsButton, positionOptionsButton);
 
 	spriteOptionsButton = sfSprite_create();
-	sfTexture* textureOptionsButton = sfTexture_createFromFile("..\\Resources\\Textures\\option.png", NULL);
+	sfTexture* textureOptionsButton = sfTexture_createFromFile("..\\Resources\\Textures\\settings.png", NULL);
 	sfSprite_setTexture(spriteOptionsButton, textureOptionsButton, sfTrue);
 	sfSprite_setTextureRect(spriteOptionsButton, optionsButtonAnimationRect);
 	sfSprite_setPosition(spriteOptionsButton, positionOptionsButton);
