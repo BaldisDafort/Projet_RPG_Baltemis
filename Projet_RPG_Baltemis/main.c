@@ -22,7 +22,6 @@ int main()
 	initOptions();
 	initPlayer();
 
-
 	float keytimer = 0.0f;
 
 	//boucle de jeu
@@ -88,6 +87,11 @@ int main()
 
 
 		//updates
+		if (state == GAME)
+		{
+			currentMap = MAP3;
+			loadMap();
+		}
 		keytimer += GetDeltaTime();
 		updateView(window);
 		updateTitleScreen(window);
@@ -113,10 +117,12 @@ int main()
 		sfRenderWindow_clear(window, sfColor_fromRGBA(70, 70, 70, 255));
 
 
+
 		switch (state)
 		{
 		case GAME:
 				displayView(window);
+				displayMap(window);
 				displayPlayer(window);
 				break;
 		case MENU:
@@ -124,6 +130,7 @@ int main()
 				displayTitleScreen(window);
 				break;
 		case EDITOR:
+				displayEditor(window);
 				displayMap(window);
 				break;
 		case OPTION:

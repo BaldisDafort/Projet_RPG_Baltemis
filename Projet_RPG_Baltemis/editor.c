@@ -2,7 +2,7 @@
 
 //timer
 float posTimer;
-float timerBat;
+float timer;
 
 //block selectionne
 int blockGround = 0.0f;
@@ -53,7 +53,7 @@ void initMap()
 
 	//timer
 	posTimer = 0.0f;
-	timerBat = 0.0f;
+	timer = 0.0f;
 
 	//innitialiser les tableau des tiles a selectionner
 	int i = 0;
@@ -84,6 +84,9 @@ void updateMap(sfRenderWindow* _window)
 	//view map dezoome
 	sfView_setCenter(viewEditor.viewEditor, viewEditor.posViewEditor);
 	sfView_setSize(viewEditor.viewEditor, (sfVector2f) { mapSizeX* tileSize + 3 * tileSize, mapSizeY* tileSize + 3 * tileSize });
+
+	//timer
+	timer += GetDeltaTime();
 
 	sfVector2f originEditor = { (mapSizeX)*tileSize, tileSize };
 	sfVector2i nexPosInTab = { 0, 0 };
@@ -161,23 +164,23 @@ void updateMap(sfRenderWindow* _window)
 	}
 
 	//gestion des bouton (fleche)
-	if ((sfKeyboard_isScancodePressed(sfScanUp)) && (timerBat >= 0.2f))
+	if ((sfKeyboard_isScancodePressed(sfScanUp)) && (timer >= 0.2f))
 	{
 		if (currentTileset == GROUND)
 			currentTileset = WALL3;
 		else
 			currentTileset--;
-		timerBat = 0.0f;
+		timer = 0.0f;
 	}
-	else if ((sfKeyboard_isScancodePressed(sfScanDown)) && (timerBat >= 0.2f))
+	else if ((sfKeyboard_isScancodePressed(sfScanDown)) && (timer >= 0.2f))
 	{
 		if (currentTileset == WALL3)
 			currentTileset = GROUND;
 		else
 			currentTileset++;
-		timerBat = 0.0f;
+		timer = 0.0f;
 	}
-	if ((sfKeyboard_isScancodePressed(sfScanRight)) && (timerBat >= 0.2f))
+	if ((sfKeyboard_isScancodePressed(sfScanRight)) && (timer >= 0.2f))
 	{
 		saveMap();
 		if (currentMap == MAP3)
@@ -186,9 +189,9 @@ void updateMap(sfRenderWindow* _window)
 			currentMap++;
 		printf(" Current Map : %d \n", currentMap);
 		loadMap();
-		timerBat = 0.0f;
+		timer = 0.0f;
 	}
-	else if ((sfKeyboard_isScancodePressed(sfScanLeft)) && (timerBat >= 0.2f))
+	else if ((sfKeyboard_isScancodePressed(sfScanLeft)) && (timer >= 0.2f))
 	{
 		saveMap();
 		if (currentMap == MAP)
@@ -197,26 +200,24 @@ void updateMap(sfRenderWindow* _window)
 			currentMap--;
 		printf(" Current Map : %d \n", currentMap);
 		loadMap();
-		timerBat = 0.0f;
+		timer = 0.0f;
 	}
 
 	//gestion des bouton pour save and load
-	if ((sfKeyboard_isScancodePressed(sfScanS)) && (timerBat >= 0.2f))
+	if ((sfKeyboard_isScancodePressed(sfScanS)) && (timer >= 0.2f))
 	{
 		saveMap();
-		timerBat = 0.0f;
+		timer = 0.0f;
 	}
-	else if ((sfKeyboard_isScancodePressed(sfScanL)) && (timerBat >= 0.2f))
+	else if ((sfKeyboard_isScancodePressed(sfScanL)) && (timer >= 0.2f))
 	{
 		loadMap();
-		timerBat = 0.0f;
+		timer = 0.0f;
 	}
 }
 
 void displayMap(sfRenderWindow* _window)
 {
-	//view map dezoome
-	sfRenderWindow_setView(_window, viewEditor.viewEditor);
 
 	//valeurs
 	int posGroundX = 0;
@@ -226,14 +227,10 @@ void displayMap(sfRenderWindow* _window)
 	int posWall3X = 0;
 	int posy = 0;
 	tilemap.origin = (sfVector2f){ 0.0f, 0.0f };
-	
-	//timer
-	timerBat += GetDeltaTime();
 
 	int posEditorx = mapSizeX * tileSize;
 	int posEditory = 0;
-	tileEditor.originEditorGround = (sfVector2f){ (mapSizeX)*tileSize, tileSize };
-	tileEditor.originEditorWall = (sfVector2f) { (mapSizeX)*tileSize, -1 * tileSize };
+
 
 	//dessiner la map
 	for (int y = 0; y < mapSizeY; y++)
@@ -282,6 +279,34 @@ void displayMap(sfRenderWindow* _window)
 			}
 		}
 	}
+}
+
+void displayEditor(sfRenderWindow* _window)
+{
+	//valeurs
+	int posGroundX = 0;
+	int posWallX = 0;
+	int posWall1X = 0;
+	int posWall2X = 0;
+	int posWall3X = 0;
+	int posy = 0;
+	tilemap.origin = (sfVector2f){ 0.0f, 0.0f };
+
+	int posEditorx = mapSizeX * tileSize;
+	int posEditory = 0;
+	tileEditor.originEditorGround = (sfVector2f){ (mapSizeX)*tileSize, tileSize };
+	tileEditor.originEditorWall = (sfVector2f){ (mapSizeX)*tileSize, -1 * tileSize };
+
+	//view map dezoome
+	sfRenderWindow_setView(_window, viewEditor.viewEditor);
+	//dessiner rectangle noir
+	sfRectangleShape_setPosition(rectBlack.rectangle, rectBlack.position);
+	sfRenderWindow_drawRectangleShape(_window, rectBlack.rectangle, NULL);
+	//dessiner tile choix
+	sfSprite_setPosition(tileEditor.tileEditorGround, tileEditor.originEditorGround);
+	sfRenderWindow_drawSprite(_window, tileEditor.tileEditorGround, NULL);
+	sfSprite_setPosition(tileEditor.tileEditorWall, tileEditor.originEditorWall);
+	sfRenderWindow_drawSprite(_window, tileEditor.tileEditorWall, NULL);
 
 	//dessiner le rectangle noir pour les tiles
 	sfRenderWindow_drawRectangleShape(_window, rectBlack.rectangle, NULL);
@@ -397,8 +422,6 @@ void displayMap(sfRenderWindow* _window)
 
 	}
 }
-
-
 
 //save and load
 void saveMap()
