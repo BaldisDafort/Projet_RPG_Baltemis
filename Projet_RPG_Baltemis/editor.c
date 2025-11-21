@@ -164,55 +164,57 @@ void updateMap(sfRenderWindow* _window)
 	}
 
 	//gestion des bouton (fleche)
-	if ((sfKeyboard_isScancodePressed(sfScanUp)) && (timer >= 0.2f))
+	if (state == EDITOR)
 	{
-		if (currentTileset == GROUND)
-			currentTileset = WALL3;
-		else
-			currentTileset--;
-		timer = 0.0f;
-	}
-	else if ((sfKeyboard_isScancodePressed(sfScanDown)) && (timer >= 0.2f))
-	{
-		if (currentTileset == WALL3)
-			currentTileset = GROUND;
-		else
-			currentTileset++;
-		timer = 0.0f;
-	}
-	if ((sfKeyboard_isScancodePressed(sfScanRight)) && (timer >= 0.2f))
-	{
-		saveMap();
-		if (currentMap == MAP3)
-			currentMap = MAP;
-		else
-			currentMap++;
-		printf(" Current Map : %d \n", currentMap);
-		loadMap();
-		timer = 0.0f;
-	}
-	else if ((sfKeyboard_isScancodePressed(sfScanLeft)) && (timer >= 0.2f))
-	{
-		saveMap();
-		if (currentMap == MAP)
-			currentMap = MAP3;
-		else
-			currentMap--;
-		printf(" Current Map : %d \n", currentMap);
-		loadMap();
-		timer = 0.0f;
-	}
-
-	//gestion des bouton pour save and load
-	if ((sfKeyboard_isScancodePressed(sfScanS)) && (timer >= 0.2f))
-	{
-		saveMap();
-		timer = 0.0f;
-	}
-	else if ((sfKeyboard_isScancodePressed(sfScanL)) && (timer >= 0.2f))
-	{
-		loadMap();
-		timer = 0.0f;
+		if ((sfKeyboard_isScancodePressed(sfScanUp)) && (timer >= 0.2f))
+		{
+			if (currentTileset == GROUND)
+				currentTileset = WALL3;
+			else
+				currentTileset--;
+			timer = 0.0f;
+		}
+		else if ((sfKeyboard_isScancodePressed(sfScanDown)) && (timer >= 0.2f))
+		{
+			if (currentTileset == WALL3)
+				currentTileset = GROUND;
+			else
+				currentTileset++;
+			timer = 0.0f;
+		}
+		if ((sfKeyboard_isScancodePressed(sfScanRight)) && (timer >= 0.2f))
+		{
+			saveMap();
+			if (currentMap == MAP3)
+				currentMap = MAP;
+			else
+				currentMap++;
+			printf(" Current Map : %d \n", currentMap);
+			loadMap();
+			timer = 0.0f;
+		}
+		else if ((sfKeyboard_isScancodePressed(sfScanLeft)) && (timer >= 0.2f))
+		{
+			saveMap();
+			if (currentMap == MAP)
+				currentMap = MAP3;
+			else
+				currentMap--;
+			printf(" Current Map : %d \n", currentMap);
+			loadMap();
+			timer = 0.0f;
+		}
+		//gestion des bouton pour save and load
+		if ((sfKeyboard_isScancodePressed(sfScanS)) && (timer >= 0.2f))
+		{
+			saveMap();
+			timer = 0.0f;
+		}
+		else if ((sfKeyboard_isScancodePressed(sfScanL)) && (timer >= 0.2f))
+		{
+			loadMap();
+			timer = 0.0f;
+		}
 	}
 }
 

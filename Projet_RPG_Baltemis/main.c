@@ -89,7 +89,7 @@ int main()
 		//updates
 		if (state == GAME)
 		{
-			currentMap = MAP3;
+			currentMap = MAP;
 			loadMap();
 		}
 		keytimer += GetDeltaTime();
