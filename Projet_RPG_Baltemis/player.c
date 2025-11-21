@@ -7,7 +7,7 @@ void initPlayer()
 	//init bat player
 	bat.batIsMoving = sfFalse;
 	bat.irectBat = (sfIntRect){ 0, 0, 16, 16 };
-	bat.SpritePositionBat = (sfVector2f){ 0.0f, 0.0f };
+	bat.SpritePositionBat = (sfVector2f){ 100.0f, 100.0f };
 	bat.vitesse = (sfVector2f){ 100.0f, 100.0f };
 	bat.animBatTime = 0.0f;
 	bat.timerBat = 0.0f;
@@ -57,25 +57,37 @@ void updatePlayer()
 		{
 			bat.batIsMoving = sfTrue;
 			bat.frameBatY = B_HAUT;
-			bat.SpritePositionBat.y -= bat.vitesse.y * GetDeltaTime();
+			if (!batCollisions(bat.playerRect, bat.frameBatY, &bat.vitesse, &bat.animBatTime))
+			{
+				bat.SpritePositionBat.y -= bat.vitesse.y * GetDeltaTime();
+			}
 		}
 		if (sfKeyboard_isScancodePressed(sfScanDown))
 		{
 			bat.batIsMoving = sfTrue;
 			bat.frameBatY = B_BAS;
-			bat.SpritePositionBat.y += bat.vitesse.y * GetDeltaTime();
+			if (!batCollisions(bat.playerRect, bat.frameBatY, &bat.vitesse, &bat.animBatTime))
+			{
+				bat.SpritePositionBat.y += bat.vitesse.y * GetDeltaTime();
+			}
 		}
 		if (sfKeyboard_isScancodePressed(sfScanLeft))
 		{
 			bat.batIsMoving = sfTrue;
 			bat.frameBatY = B_GAUCHE;
-			bat.SpritePositionBat.x -= bat.vitesse.x * GetDeltaTime();
+			if (!batCollisions(bat.playerRect, bat.frameBatY, &bat.vitesse, &bat.animBatTime))
+			{
+				bat.SpritePositionBat.x -= bat.vitesse.x * GetDeltaTime();
+			}
 		}
 		if (sfKeyboard_isScancodePressed(sfScanRight))
 		{
 			bat.batIsMoving = sfTrue;
 			bat.frameBatY = B_DROITE;
-			bat.SpritePositionBat.x += bat.vitesse.x * GetDeltaTime();
+			if (!batCollisions(bat.playerRect, bat.frameBatY, &bat.vitesse, &bat.animBatTime))
+			{
+				bat.SpritePositionBat.x += bat.vitesse.x * GetDeltaTime();
+			}
 		}
 
 		bat.animBatTime += GetDeltaTime();
@@ -103,28 +115,40 @@ void updatePlayer()
 			skeleton.skeletonIsMoving = sfTrue;
 			skeleton.skeletonIsIdle = sfFalse;
 			skeleton.frameSkeletonY = SK_HAUT;
-			skeleton.SpritePositionSkeleton.y -= skeleton.vitesse.y * GetDeltaTime();
+			if (!skeletonCollisions(skeleton.playerRect, skeleton.frameSkeletonY, &skeleton.vitesse, &skeleton.animSkeletonTime))
+			{
+				skeleton.SpritePositionSkeleton.y -= skeleton.vitesse.y * GetDeltaTime();
+			}
 		}
 		else if (sfKeyboard_isScancodePressed(sfScanS))
 		{
 			skeleton.skeletonIsMoving = sfTrue;
 			skeleton.skeletonIsIdle = sfFalse;
 			skeleton.frameSkeletonY = SK_BAS;
-			skeleton.SpritePositionSkeleton.y += skeleton.vitesse.y * GetDeltaTime();
+			if (!skeletonCollisions(skeleton.playerRect, skeleton.frameSkeletonY, &skeleton.vitesse, &skeleton.animSkeletonTime))
+			{
+				skeleton.SpritePositionSkeleton.y += skeleton.vitesse.y * GetDeltaTime();
+			}
 		}
 		else if (sfKeyboard_isScancodePressed(sfScanA))
 		{
 			skeleton.skeletonIsMoving = sfTrue;
 			skeleton.skeletonIsIdle = sfFalse;
 			skeleton.frameSkeletonY = SK_GAUCHE;
-			skeleton.SpritePositionSkeleton.x -= skeleton.vitesse.x * GetDeltaTime();
+			if (!skeletonCollisions(skeleton.playerRect, skeleton.frameSkeletonY, &skeleton.vitesse, &skeleton.animSkeletonTime))
+			{
+				skeleton.SpritePositionSkeleton.x -= skeleton.vitesse.x * GetDeltaTime();
+			}
 		}
 		else if (sfKeyboard_isScancodePressed(sfScanD))
 		{
 			skeleton.skeletonIsMoving = sfTrue;
 			skeleton.skeletonIsIdle = sfFalse;
 			skeleton.frameSkeletonY = SK_DROITE;
-			skeleton.SpritePositionSkeleton.x += skeleton.vitesse.x * GetDeltaTime();
+			if (!skeletonCollisions(skeleton.playerRect, skeleton.frameSkeletonY, &skeleton.vitesse, &skeleton.animSkeletonTime))
+			{
+				skeleton.SpritePositionSkeleton.x += skeleton.vitesse.x * GetDeltaTime();
+			}
 		}
 
 		if (skeleton.skeletonIsIdle == sfFalse && skeleton.skeletonIsMoving == sfFalse)
