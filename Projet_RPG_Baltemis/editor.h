@@ -11,6 +11,7 @@ typedef enum Tileset Tileset;
 typedef enum Tileset
 { 
 	GROUND,
+	OBJ,
 	WALL,
 	WALL1, 
 	WALL2, 

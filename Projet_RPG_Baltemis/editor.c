@@ -117,18 +117,20 @@ void updateMap(sfRenderWindow* _window)
 	if (sfMouse_isButtonPressed(sfMouseLeft) && posTimer >= 0.002f)
 	{
 		//recuperer les tuiles
-		if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y < 13 * tileSize && worldGet.y > tileSize && currentTileset == GROUND)
+		if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y < 13 * tileSize && worldGet.y > tileSize && (currentTileset == GROUND || currentTileset == OBJ))
 		{
 			//recuperer les tuiles du ground
+			currentTileset = GROUND;
 			worldGet.x -= (mapSizeX)*tileSize;
 			worldGet.y -= tileSize;
 
 			blockGround = arr.tileGround[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
 
 		}
-		else if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y > 13 * tileSize && worldGet.y <= 24 * tileSize)
+		else if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y > 13 * tileSize && worldGet.y <= 25 * tileSize && (currentTileset == GROUND || currentTileset == OBJ))
 		{
 			//recuperer les tuiles des objets
+			currentTileset = OBJ;
 			worldGet.x -= (mapSizeX)*tileSize;
 			worldGet.y -= 14 * tileSize;
 			blockObjX = tileObj[((int)worldGet.x / tileSize) + ((int)worldGet.y / tileSize*2)];
@@ -170,6 +172,8 @@ void updateMap(sfRenderWindow* _window)
 			{
 			case GROUND:
 				arr.mapGround[nexPosInTab.y][nexPosInTab.x] = blockGround;
+				break;
+			case OBJ:
 				arr.mapObj[nexPosInTab.y][nexPosInTab.x] = (sfVector2i){ blockObjX, blockObjY };
 				break;
 			case WALL:
@@ -195,7 +199,7 @@ void updateMap(sfRenderWindow* _window)
 	{
 		if ((sfKeyboard_isScancodePressed(sfScanUp)) && (timer >= 0.2f))
 		{
-			if (currentTileset == GROUND)
+			if (currentTileset == GROUND || currentTileset == OBJ)
 				currentTileset = WALL3;
 			else
 				currentTileset--;
@@ -205,6 +209,8 @@ void updateMap(sfRenderWindow* _window)
 		{
 			if (currentTileset == WALL3)
 				currentTileset = GROUND;
+			else if (currentTileset == GROUND)
+				currentTileset = WALL;
 			else
 				currentTileset++;
 			timer = 0.0f;
@@ -287,10 +293,6 @@ void displayMap(sfRenderWindow* _window)
 			sfSprite_setPosition(tilemap.tilesetGround, tilemap.pos);
 			sfSprite_setTextureRect(tilemap.tilesetGround, rectileGround);
 			sfRenderWindow_drawSprite(_window, tilemap.tilesetGround, NULL);
-			//dessiner object
-			sfSprite_setPosition(tilemap.tilesetObj, tilemap.pos);
-			sfSprite_setTextureRect(tilemap.tilesetObj, rectileObj);
-			sfRenderWindow_drawSprite(_window, tilemap.tilesetObj, NULL);
 			//dessiner wall
 			sfSprite_setPosition(tilemap.tilesetWall, tilemap.pos);
 			sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall);
@@ -307,6 +309,10 @@ void displayMap(sfRenderWindow* _window)
 			sfSprite_setPosition(tilemap.tilesetWall, tilemap.pos);
 			sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall3);
 			sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
+			//dessiner object
+			sfSprite_setPosition(tilemap.tilesetObj, tilemap.pos);
+			sfSprite_setTextureRect(tilemap.tilesetObj, rectileObj);
+			sfRenderWindow_drawSprite(_window, tilemap.tilesetObj, NULL);
 
 			tilemap.origin.x += tileSize;
 
@@ -373,8 +379,51 @@ void displayEditor(sfRenderWindow* _window)
 		}
 
 		// Positionner le panneau des objets juste en dessous des grounds
-		tileEditor.originEditorObj.x = (mapSizeX) * tileSize;
-		tileEditor.originEditorObj.y = tileEditor.originEditorGround.y + tileSize;
+		tileEditor.originEditorObj.x = (mapSizeX)*tileSize;
+		tileEditor.originEditorObj.y = 13 * tileSize + tileSize;
+
+		for (int x = 0; x < 22; x++)
+		{
+			posEditorx = tileObj[x] * tileSize;
+			sfIntRect rectile = { posEditorx, tileObjY[x] * tileSize, tileSize, tileSize };
+			sfVector2f pos = { tileEditor.originEditorObj.x, tileEditor.originEditorObj.y };
+			sfSprite_setTextureRect(tileEditor.tileEditorObj, rectile);
+			sfSprite_setPosition(tileEditor.tileEditorObj, pos);
+			sfRenderWindow_drawSprite(_window, tileEditor.tileEditorObj, NULL);
+			tileEditor.originEditorObj.x += tileSize;
+
+			if (tileEditor.originEditorObj.x >= 2 * tileSize + (mapSizeX)*tileSize)
+			{
+				tileEditor.originEditorObj.x = (mapSizeX)*tileSize;
+				tileEditor.originEditorObj.y += tileSize;
+			}
+		}
+		break;
+	case OBJ://le meme parce que il accepte pas que je fasse 'case GROUND || OBJ:' ( c'est injuste !)
+
+		for (int y = 0; y < 12; y++)
+		{
+			for (int x = 0; x < 2; x++)
+			{
+				posEditorx = arr.tileGround[x][y] * tileSize;
+				sfIntRect rectile = { posEditorx, posEditory, tileSize, tileSize };
+				sfVector2f pos = { tileEditor.originEditorGround.x, tileEditor.originEditorGround.y };
+				sfSprite_setTextureRect(tileEditor.tileEditorGround, rectile);
+				sfSprite_setPosition(tileEditor.tileEditorGround, pos);
+				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorGround, NULL);
+				tileEditor.originEditorGround.x += tileSize;
+
+				if (tileEditor.originEditorGround.x >= 2 * tileSize + (mapSizeX)*tileSize)
+				{
+					tileEditor.originEditorGround.x = (mapSizeX)*tileSize;
+					tileEditor.originEditorGround.y += tileSize;
+				}
+			}
+		}
+
+		// Positionner le panneau des objets juste en dessous des grounds
+		tileEditor.originEditorObj.x = (mapSizeX)*tileSize;
+		tileEditor.originEditorObj.y = 13 * tileSize + tileSize;
 
 		for (int x = 0; x < 22; x++)
 		{
@@ -477,7 +526,6 @@ void displayEditor(sfRenderWindow* _window)
 			}
 		}
 		break;
-
 	}
 }
 
@@ -512,6 +560,10 @@ void saveMap()
 		FILE* fileWallLavaMap = fopen("lavaMap.bin", "wb");
 		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap);
 		fclose(fileWallLavaMap);
+		//save map obj
+		FILE * fileObjMap = fopen("objMap.bin", "wb");
+		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap);
+		fclose(fileObjMap);
 		break;
 
 	case MAP1:
@@ -535,6 +587,10 @@ void saveMap()
 		FILE* fileWallLavaMap1 = fopen("lavaMap1.bin", "wb");
 		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap1);
 		fclose(fileWallLavaMap1);
+		//save map obj
+		FILE* fileObjMap1 = fopen("objMap1.bin", "wb");
+		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap1);
+		fclose(fileObjMap1);
 		break;
 
 	case MAP2:
@@ -558,6 +614,9 @@ void saveMap()
 		FILE* fileWallLavaMap2 = fopen("lavaMap2.bin", "wb");
 		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap2);
 		fclose(fileWallLavaMap2);
+		FILE* fileObjMap2 = fopen("objMap2.bin", "wb");
+		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap2);
+		fclose(fileObjMap2);
 		break;
 
 	case MAP3:
@@ -581,6 +640,9 @@ void saveMap()
 		FILE* fileWallLavaMap3 = fopen("lavaMap3.bin", "wb");
 		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap3);
 		fclose(fileWallLavaMap3);
+		FILE* fileObjMap3 = fopen("objMap3.bin", "wb");
+		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap3);
+		fclose(fileObjMap3);
 		break;
 	}
 }
@@ -615,6 +677,10 @@ void loadMap()
 		FILE* fileWallLavaMap = fopen("lavaMap.bin", "rb");
 		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap);
 		fclose(fileWallLavaMap);
+		//save map obj
+		FILE* fileObjMap = fopen("objMap.bin", "rb");
+		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap);
+		fclose(fileObjMap);
 		break;
 
 	case MAP1:
@@ -638,6 +704,10 @@ void loadMap()
 		FILE* fileWallLavaMap1 = fopen("lavaMap1.bin", "rb");
 		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap1);
 		fclose(fileWallLavaMap1);
+		//save map obj
+		FILE* fileObjMap1 = fopen("objMap1.bin", "rb");
+		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap1);
+		fclose(fileObjMap1);
 		break;
 
 	case MAP2:
@@ -661,6 +731,10 @@ void loadMap()
 		FILE* fileWallLavaMap2 = fopen("lavaMap2.bin", "rb");
 		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap2);
 		fclose(fileWallLavaMap2);
+		//save map obj
+		FILE* fileObjMap2 = fopen("objMap2.bin", "rb");
+		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap2);
+		fclose(fileObjMap2);
 		break;
 
 	case MAP3:
@@ -684,6 +758,10 @@ void loadMap()
 		FILE* fileWallLavaMap3 = fopen("lavaMap3.bin", "rb");
 		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap3);
 		fclose(fileWallLavaMap3);
+		//save map obj
+		FILE* fileObjMap3 = fopen("objMap3.bin", "rb");
+		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap3);
+		fclose(fileObjMap3);
 		break;
 	}
 }
