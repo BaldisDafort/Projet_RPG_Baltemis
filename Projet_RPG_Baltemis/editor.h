@@ -11,10 +11,11 @@ typedef enum Tileset Tileset;
 typedef enum Tileset
 { 
 	GROUND,
+	OBJ,
 	WALL,
 	WALL1, 
 	WALL2, 
-	WALL3
+	WALL3,
 };
 Tileset currentTileset;
 
@@ -47,6 +48,8 @@ typedef struct Tilemap
 	sfTexture* textmapGround;
 	sfSprite* tilesetWall;
 	sfTexture* textmapWall;
+	sfSprite* tilesetObj;
+	sfTexture* textmapObj;
 	sfIntRect rectile;
 	sfVector2f pos;
 	sfVector2f origin;
@@ -59,9 +62,12 @@ typedef struct TileEditor
 	//tile choix
 	sfSprite* tileEditorGround;
 	sfSprite* tileEditorWall;
+	sfSprite* tileEditorObj;
 	sfVector2f posEditor;
+	sfVector2f posEditorObj;
 	sfVector2f originEditorGround;
 	sfVector2f originEditorWall;
+	sfVector2f originEditorObj;
 
 }TileEditor;
 TileEditor tileEditor;
@@ -79,6 +85,7 @@ typedef struct Array
 {
 	//tableau
 	int mapGround[mapSizeY][mapSizeX];
+	sfVector2i mapObj[mapSizeY][mapSizeX];
 	int mapWall[mapSizeY][mapSizeX];
 	int mapWall1[mapSizeY][mapSizeX];
 	int mapWall2[mapSizeY][mapSizeX];
@@ -88,6 +95,7 @@ typedef struct Array
 	int tileWall1[2][28];
 	int tileWall2[2][28];
 	int tileWall3[2][28];
+	//int tileObj[2][11];
 }Array;
 Array arr;
 
