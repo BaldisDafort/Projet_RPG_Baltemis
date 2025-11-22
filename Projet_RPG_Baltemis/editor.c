@@ -7,6 +7,12 @@ float timer;
 //block selectionne
 int blockGround = 0.0f;
 int blockWall = 0.0f;
+int blockObjX = 0.0f;
+int blockObjY = 0.0f;
+
+//initialiser le tableau des tiles a selectionner pour les objets (que je gere un peut differemmen car je ne souhaite pas afficher toutes les tiles
+int tileObj[22] = {  0, 2, 0, 6, 4, 6, 0, 2, 4, 6, 7,  1, 1, 1, 3, 3, 1, 1, 1, 1, 1 };
+int tileObjY[22] = { 0, 1, 1, 0, 1, 1, 2, 2, 2, 2, 2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14, 15};
 
 void initMap()
 {
@@ -30,26 +36,35 @@ void initMap()
 	tilemap.textmapWall = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetwall.png", NULL);
 	sfSprite_setTexture(tilemap.tilesetWall, tilemap.textmapWall, sfTrue);
 	sfSprite_setPosition(tilemap.tilesetWall, tilemap.origin);
-
+	//tilesetObj
+	tilemap.tilesetObj = sfSprite_create();
+	tilemap.textmapObj = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetobj.png", NULL);
+	sfSprite_setTexture(tilemap.tilesetObj, tilemap.textmapObj, sfTrue);
+	sfSprite_setPosition(tilemap.tilesetObj, tilemap.origin);
 
 	//rectangle noir pour les tiles
 	rectBlack.rectangle = sfRectangleShape_create();
 	rectBlack.position = (sfVector2f){ (mapSizeX)*tileSize, -2*tileSize };
 	rectBlack.size = (sfVector2f){ 3 * tileSize, mapSizeY * tileSize + 4*tileSize };
-	sfRectangleShape_setFillColor(rectBlack.rectangle, sfBlack);
+	sfRectangleShape_setFillColor(rectBlack.rectangle, sfWhite); //mais finalement il est blanc
 	sfRectangleShape_setPosition(rectBlack.rectangle, rectBlack.position);
 	sfRectangleShape_setSize(rectBlack.rectangle, rectBlack.size);
 
 	//tile choix
 	tileEditor.tileEditorGround = sfSprite_create();
 	tileEditor.tileEditorWall = sfSprite_create();
+	tileEditor.tileEditorObj = sfSprite_create();
 	tileEditor.posEditor = (sfVector2f){ 0.0f, 0.0f };
+	tileEditor.posEditorObj = (sfVector2f){ 0.0f, 0.0f };
 	tileEditor.originEditorGround = (sfVector2f){ (mapSizeX)*tileSize, tileSize };
 	tileEditor.originEditorWall = (sfVector2f){ (mapSizeX)*tileSize, -1 * tileSize };
+	
 	sfSprite_setTexture(tileEditor.tileEditorGround, tilemap.textmapGround, sfTrue);
 	sfSprite_setPosition(tileEditor.tileEditorGround, tileEditor.originEditorGround);
 	sfSprite_setTexture(tileEditor.tileEditorWall, tilemap.textmapWall, sfTrue);
 	sfSprite_setPosition(tileEditor.tileEditorWall, tileEditor.originEditorWall);
+	sfSprite_setTexture(tileEditor.tileEditorObj, tilemap.textmapObj, sfTrue);
+	sfSprite_setPosition(tileEditor.tileEditorObj, tileEditor.originEditorObj);
 
 	//timer
 	posTimer = 0.0f;
@@ -95,22 +110,35 @@ void updateMap(sfRenderWindow* _window)
 
 	sfSprite_setPosition(tileEditor.tileEditorGround, originEditor);
 	sfSprite_setPosition(tileEditor.tileEditorWall, originEditor);
+	sfSprite_setPosition(tileEditor.tileEditorObj, originEditor);
 
 	posTimer += GetDeltaTime();
 
 	if (sfMouse_isButtonPressed(sfMouseLeft) && posTimer >= 0.002f)
 	{
-		//recuperer les tuiles du ground
-		if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y < 13 * tileSize && worldGet.y > tileSize && currentTileset == GROUND)
+		//recuperer les tuiles
+		if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y < 13 * tileSize && worldGet.y > tileSize && (currentTileset == GROUND || currentTileset == OBJ))
 		{
+			//recuperer les tuiles du ground
+			currentTileset = GROUND;
 			worldGet.x -= (mapSizeX)*tileSize;
 			worldGet.y -= tileSize;
 
 			blockGround = arr.tileGround[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
 
 		}
-		else if (worldGet.x > mapSizeX * tileSize) //recuperer les tuiles du wall
+		else if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y > 13 * tileSize && worldGet.y <= 25 * tileSize && (currentTileset == GROUND || currentTileset == OBJ))
 		{
+			//recuperer les tuiles des objets
+			currentTileset = OBJ;
+			worldGet.x -= (mapSizeX)*tileSize;
+			worldGet.y -= 14 * tileSize;
+			blockObjX = tileObj[((int)worldGet.x / tileSize) + ((int)worldGet.y / tileSize*2)];
+			blockObjY = tileObjY[((int)worldGet.x / tileSize) + ((int)worldGet.y / tileSize*2)];
+		}
+		else if (worldGet.x > mapSizeX * tileSize)
+		{
+			//recuperer les tuiles du wall
 			worldGet.x -= (mapSizeX)*tileSize;
 			worldGet.y -= -1 * tileSize;
 			blockWall = arr.tileWall[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
@@ -145,6 +173,9 @@ void updateMap(sfRenderWindow* _window)
 			case GROUND:
 				arr.mapGround[nexPosInTab.y][nexPosInTab.x] = blockGround;
 				break;
+			case OBJ:
+				arr.mapObj[nexPosInTab.y][nexPosInTab.x] = (sfVector2i){ blockObjX, blockObjY };
+				break;
 			case WALL:
 				arr.mapWall[nexPosInTab.y][nexPosInTab.x] = blockWall;
 				break;
@@ -168,7 +199,7 @@ void updateMap(sfRenderWindow* _window)
 	{
 		if ((sfKeyboard_isScancodePressed(sfScanUp)) && (timer >= 0.2f))
 		{
-			if (currentTileset == GROUND)
+			if (currentTileset == GROUND || currentTileset == OBJ)
 				currentTileset = WALL3;
 			else
 				currentTileset--;
@@ -178,6 +209,8 @@ void updateMap(sfRenderWindow* _window)
 		{
 			if (currentTileset == WALL3)
 				currentTileset = GROUND;
+			else if (currentTileset == GROUND)
+				currentTileset = WALL;
 			else
 				currentTileset++;
 			timer = 0.0f;
@@ -227,6 +260,8 @@ void displayMap(sfRenderWindow* _window)
 	int posWall1X = 0;
 	int posWall2X = 0;
 	int posWall3X = 0;
+	int posObjX = 0;
+	int posObjY = 0;
 	int posy = 0;
 	tilemap.origin = (sfVector2f){ 0.0f, 0.0f };
 
@@ -240,12 +275,15 @@ void displayMap(sfRenderWindow* _window)
 		for (int x = 0; x < mapSizeX; x++)
 		{
 			posGroundX = arr.mapGround[y][x] * tileSize;
+			posObjX = arr.mapObj[y][x].x * tileSize;
+			posObjY = arr.mapObj[y][x].y * tileSize;
 			posWallX = arr.mapWall[y][x] * tileSize;
 			posWall1X = arr.mapWall1[y][x] * tileSize;
 			posWall2X = arr.mapWall2[y][x] * tileSize;
 			posWall3X = arr.mapWall3[y][x] * tileSize;
 
 			sfIntRect rectileGround = { posGroundX, posy, tileSize, tileSize };
+			sfIntRect rectileObj = { posObjX, posObjY, tileSize, tileSize };
 			sfIntRect rectileWall = { posWallX, posy, tileSize, tileSize };
 			sfIntRect rectileWall1 = { posWall1X, 1*  tileSize, tileSize, tileSize };
 			sfIntRect rectileWall2 = { posWall2X, 2 * tileSize, tileSize, tileSize };
@@ -271,6 +309,10 @@ void displayMap(sfRenderWindow* _window)
 			sfSprite_setPosition(tilemap.tilesetWall, tilemap.pos);
 			sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall3);
 			sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
+			//dessiner object
+			sfSprite_setPosition(tilemap.tilesetObj, tilemap.pos);
+			sfSprite_setTextureRect(tilemap.tilesetObj, rectileObj);
+			sfRenderWindow_drawSprite(_window, tilemap.tilesetObj, NULL);
 
 			tilemap.origin.x += tileSize;
 
@@ -286,18 +328,15 @@ void displayMap(sfRenderWindow* _window)
 void displayEditor(sfRenderWindow* _window)
 {
 	//valeurs
-	int posGroundX = 0;
-	int posWallX = 0;
-	int posWall1X = 0;
-	int posWall2X = 0;
-	int posWall3X = 0;
 	int posy = 0;
+	int posObjY = 9 * tileSize;
 	tilemap.origin = (sfVector2f){ 0.0f, 0.0f };
 
 	int posEditorx = mapSizeX * tileSize;
 	int posEditory = 0;
 	tileEditor.originEditorGround = (sfVector2f){ (mapSizeX)*tileSize, tileSize };
 	tileEditor.originEditorWall = (sfVector2f){ (mapSizeX)*tileSize, -1 * tileSize };
+	tileEditor.originEditorObj = (sfVector2f){ (mapSizeX)*tileSize, -8 * tileSize };
 
 	//view map dezoome
 	sfRenderWindow_setView(_window, viewEditor.viewEditor);
@@ -309,6 +348,8 @@ void displayEditor(sfRenderWindow* _window)
 	sfRenderWindow_drawSprite(_window, tileEditor.tileEditorGround, NULL);
 	sfSprite_setPosition(tileEditor.tileEditorWall, tileEditor.originEditorWall);
 	sfRenderWindow_drawSprite(_window, tileEditor.tileEditorWall, NULL);
+	sfSprite_setPosition(tileEditor.tileEditorObj, tileEditor.originEditorObj);
+	sfRenderWindow_drawSprite(_window, tileEditor.tileEditorObj, NULL);
 
 	//dessiner le rectangle noir pour les tiles
 	sfRenderWindow_drawRectangleShape(_window, rectBlack.rectangle, NULL);
@@ -334,6 +375,70 @@ void displayEditor(sfRenderWindow* _window)
 					tileEditor.originEditorGround.x = (mapSizeX)*tileSize;
 					tileEditor.originEditorGround.y += tileSize;
 				}
+			}
+		}
+
+		// Positionner le panneau des objets juste en dessous des grounds
+		tileEditor.originEditorObj.x = (mapSizeX)*tileSize;
+		tileEditor.originEditorObj.y = 13 * tileSize + tileSize;
+
+		for (int x = 0; x < 22; x++)
+		{
+			posEditorx = tileObj[x] * tileSize;
+			sfIntRect rectile = { posEditorx, tileObjY[x] * tileSize, tileSize, tileSize };
+			sfVector2f pos = { tileEditor.originEditorObj.x, tileEditor.originEditorObj.y };
+			sfSprite_setTextureRect(tileEditor.tileEditorObj, rectile);
+			sfSprite_setPosition(tileEditor.tileEditorObj, pos);
+			sfRenderWindow_drawSprite(_window, tileEditor.tileEditorObj, NULL);
+			tileEditor.originEditorObj.x += tileSize;
+
+			if (tileEditor.originEditorObj.x >= 2 * tileSize + (mapSizeX)*tileSize)
+			{
+				tileEditor.originEditorObj.x = (mapSizeX)*tileSize;
+				tileEditor.originEditorObj.y += tileSize;
+			}
+		}
+		break;
+	case OBJ://le meme parce que il accepte pas que je fasse 'case GROUND || OBJ:' ( c'est injuste !)
+
+		for (int y = 0; y < 12; y++)
+		{
+			for (int x = 0; x < 2; x++)
+			{
+				posEditorx = arr.tileGround[x][y] * tileSize;
+				sfIntRect rectile = { posEditorx, posEditory, tileSize, tileSize };
+				sfVector2f pos = { tileEditor.originEditorGround.x, tileEditor.originEditorGround.y };
+				sfSprite_setTextureRect(tileEditor.tileEditorGround, rectile);
+				sfSprite_setPosition(tileEditor.tileEditorGround, pos);
+				sfRenderWindow_drawSprite(_window, tileEditor.tileEditorGround, NULL);
+				tileEditor.originEditorGround.x += tileSize;
+
+				if (tileEditor.originEditorGround.x >= 2 * tileSize + (mapSizeX)*tileSize)
+				{
+					tileEditor.originEditorGround.x = (mapSizeX)*tileSize;
+					tileEditor.originEditorGround.y += tileSize;
+				}
+			}
+		}
+
+		// Positionner le panneau des objets juste en dessous des grounds
+		tileEditor.originEditorObj.x = (mapSizeX)*tileSize;
+		tileEditor.originEditorObj.y = 13 * tileSize + tileSize;
+
+		for (int x = 0; x < 22; x++)
+		{
+			posEditorx = tileObj[x] * tileSize;
+			sfIntRect rectile = { posEditorx, tileObjY[x] * tileSize, tileSize, tileSize };
+			sfVector2f pos = { tileEditor.originEditorObj.x, tileEditor.originEditorObj.y };
+			sfSprite_setTextureRect(tileEditor.tileEditorObj, rectile);
+			sfSprite_setPosition(tileEditor.tileEditorObj, pos);
+			sfRenderWindow_drawSprite(_window, tileEditor.tileEditorObj, NULL);
+			tileEditor.originEditorObj.x += tileSize;
+
+			if (tileEditor.originEditorObj.x >= 2 * tileSize + (mapSizeX)*tileSize)
+			{
+				tileEditor.originEditorObj.x = (mapSizeX)*tileSize;
+				tileEditor.originEditorObj.y += tileSize;
 			}
 		}
 		break;
@@ -421,7 +526,6 @@ void displayEditor(sfRenderWindow* _window)
 			}
 		}
 		break;
-
 	}
 }
 
@@ -456,6 +560,10 @@ void saveMap()
 		FILE* fileWallLavaMap = fopen("lavaMap.bin", "wb");
 		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap);
 		fclose(fileWallLavaMap);
+		//save map obj
+		FILE * fileObjMap = fopen("objMap.bin", "wb");
+		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap);
+		fclose(fileObjMap);
 		break;
 
 	case MAP1:
@@ -479,6 +587,10 @@ void saveMap()
 		FILE* fileWallLavaMap1 = fopen("lavaMap1.bin", "wb");
 		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap1);
 		fclose(fileWallLavaMap1);
+		//save map obj
+		FILE* fileObjMap1 = fopen("objMap1.bin", "wb");
+		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap1);
+		fclose(fileObjMap1);
 		break;
 
 	case MAP2:
@@ -502,6 +614,9 @@ void saveMap()
 		FILE* fileWallLavaMap2 = fopen("lavaMap2.bin", "wb");
 		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap2);
 		fclose(fileWallLavaMap2);
+		FILE* fileObjMap2 = fopen("objMap2.bin", "wb");
+		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap2);
+		fclose(fileObjMap2);
 		break;
 
 	case MAP3:
@@ -525,6 +640,9 @@ void saveMap()
 		FILE* fileWallLavaMap3 = fopen("lavaMap3.bin", "wb");
 		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap3);
 		fclose(fileWallLavaMap3);
+		FILE* fileObjMap3 = fopen("objMap3.bin", "wb");
+		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap3);
+		fclose(fileObjMap3);
 		break;
 	}
 }
@@ -559,6 +677,10 @@ void loadMap()
 		FILE* fileWallLavaMap = fopen("lavaMap.bin", "rb");
 		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap);
 		fclose(fileWallLavaMap);
+		//save map obj
+		FILE* fileObjMap = fopen("objMap.bin", "rb");
+		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap);
+		fclose(fileObjMap);
 		break;
 
 	case MAP1:
@@ -582,6 +704,10 @@ void loadMap()
 		FILE* fileWallLavaMap1 = fopen("lavaMap1.bin", "rb");
 		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap1);
 		fclose(fileWallLavaMap1);
+		//save map obj
+		FILE* fileObjMap1 = fopen("objMap1.bin", "rb");
+		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap1);
+		fclose(fileObjMap1);
 		break;
 
 	case MAP2:
@@ -605,6 +731,10 @@ void loadMap()
 		FILE* fileWallLavaMap2 = fopen("lavaMap2.bin", "rb");
 		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap2);
 		fclose(fileWallLavaMap2);
+		//save map obj
+		FILE* fileObjMap2 = fopen("objMap2.bin", "rb");
+		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap2);
+		fclose(fileObjMap2);
 		break;
 
 	case MAP3:
@@ -628,6 +758,10 @@ void loadMap()
 		FILE* fileWallLavaMap3 = fopen("lavaMap3.bin", "rb");
 		fread(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap3);
 		fclose(fileWallLavaMap3);
+		//save map obj
+		FILE* fileObjMap3 = fopen("objMap3.bin", "rb");
+		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap3);
+		fclose(fileObjMap3);
 		break;
 	}
 }
