@@ -14,8 +14,7 @@ typedef enum Tileset
 	WALL,
 	WALL1, 
 	WALL2, 
-	WALL3, 
-	OBJ
+	WALL3,
 };
 Tileset currentTileset;
 
@@ -85,6 +84,7 @@ typedef struct Array
 {
 	//tableau
 	int mapGround[mapSizeY][mapSizeX];
+	sfVector2i mapObj[mapSizeY][mapSizeX];
 	int mapWall[mapSizeY][mapSizeX];
 	int mapWall1[mapSizeY][mapSizeX];
 	int mapWall2[mapSizeY][mapSizeX];
