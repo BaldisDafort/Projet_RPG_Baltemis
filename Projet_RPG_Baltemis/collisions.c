@@ -41,7 +41,7 @@ sfBool batCollisions(sfFloatRect _spriteRect, batDir _direction, sfVector2f* _ve
 		nexPosInTab2.y = (_spriteRect.top + 15) / 16;
 	}
 
-	//si case avec collision == 3, 4, 5 et 6
+	//si case avec collision
 	if (arr.mapWall[nexPosInTab.y][nexPosInTab.x] != 0 || arr.mapWall[nexPosInTab2.y][nexPosInTab2.x] != 0 ||
 		arr.mapWall1[nexPosInTab.y][nexPosInTab.x] != 0 || arr.mapWall1[nexPosInTab2.y][nexPosInTab2.x] != 0 ||
 		arr.mapWall2[nexPosInTab.y][nexPosInTab.x] != 0 || arr.mapWall2[nexPosInTab2.y][nexPosInTab2.x] != 0 ||
@@ -58,7 +58,7 @@ sfBool batCollisions(sfFloatRect _spriteRect, batDir _direction, sfVector2f* _ve
 }
 
 
-//la collision du squelette est de 1 pixel de hauteur, et 14 pixel de largeur (sans collision =  13 en haut et 2 en bas et 2 a droite)
+//la collision du squelette est de 1 pixel de hauteur, et 13 pixel de largeur (sans collision =  13 en haut et 2 en bas et 2 a droite et 1 a gauche)
 sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVector2f* _velocite, float* _anim)
 {
 	if (_direction == SK_HAUT)
@@ -83,7 +83,7 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 		//calcul la position dans le tableau au prochian mouvement vers la droite
 		nexPosInTab.x = (_spriteRect.left + _spriteRect.width - 2 + _velocite->x * GetDeltaTime()) / 16;
 		nexPosInTab.y = (_spriteRect.top + 13) / 16;
-		nexPosInTab2.x = (_spriteRect.left + _spriteRect.width + _velocite->x * GetDeltaTime()) / 16;
+		nexPosInTab2.x = (_spriteRect.left + _spriteRect.width - 2 + _velocite->x * GetDeltaTime()) / 16;
 		nexPosInTab2.y = (_spriteRect.top + 14) / 16;
 	}
 
@@ -96,11 +96,17 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 		nexPosInTab2.y = (_spriteRect.top + 14) / 16;
 	}
 
-	//si case avec collision == 3, 4, 5 et 6
-	if (arr.mapWall[nexPosInTab.y][nexPosInTab.x] != 0 || arr.mapWall[nexPosInTab2.y][nexPosInTab2.x] != 0 ||
+	//si case avec collision
+	if (//les murs
+		arr.mapWall[nexPosInTab.y][nexPosInTab.x] != 0 || arr.mapWall[nexPosInTab2.y][nexPosInTab2.x] != 0 ||
 		arr.mapWall1[nexPosInTab.y][nexPosInTab.x] != 0 || arr.mapWall1[nexPosInTab2.y][nexPosInTab2.x] != 0 ||
 		arr.mapWall2[nexPosInTab.y][nexPosInTab.x] != 0 || arr.mapWall2[nexPosInTab2.y][nexPosInTab2.x] != 0 ||
-		arr.mapWall3[nexPosInTab.y][nexPosInTab.x] != 0 || arr.mapWall3[nexPosInTab2.y][nexPosInTab2.x] != 0)
+		arr.mapWall3[nexPosInTab.y][nexPosInTab.x] != 0 || arr.mapWall3[nexPosInTab2.y][nexPosInTab2.x] != 0 ||
+		//les objets
+		//le crane
+		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x == 6 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 2) ||
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x == 6 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 2)
+		)
 	{
 		return sfTrue; //retourn sfTrue si collision
 	}
