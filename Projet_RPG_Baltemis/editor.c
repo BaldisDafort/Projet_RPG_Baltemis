@@ -1,6 +1,7 @@
 #include "editor.h"
 
 //timer
+float firstPosTimer = 0.0f;
 float posTimer;
 float timer;
 
@@ -96,74 +97,77 @@ void initMap()
 
 void updateMap(sfRenderWindow* _window)
 {
-	//view map dezoome
-	sfView_setCenter(viewEditor.viewEditor, viewEditor.posViewEditor);
-	sfView_setSize(viewEditor.viewEditor, (sfVector2f) { mapSizeX* tileSize + 3 * tileSize, mapSizeY* tileSize + 3 * tileSize });
 
-	//timer
-	timer += GetDeltaTime();
-
-	sfVector2f originEditor = { (mapSizeX)*tileSize, tileSize };
-	sfVector2i nexPosInTab = { 0, 0 };
-	sfVector2i posMouse = sfMouse_getPositionRenderWindow(_window);
-	sfVector2f worldGet = sfRenderWindow_mapPixelToCoords(_window, posMouse, viewEditor.viewEditor);
-
-	sfSprite_setPosition(tileEditor.tileEditorGround, originEditor);
-	sfSprite_setPosition(tileEditor.tileEditorWall, originEditor);
-	sfSprite_setPosition(tileEditor.tileEditorObj, originEditor);
-
-	posTimer += GetDeltaTime();
-
-	if (sfMouse_isButtonPressed(sfMouseLeft) && posTimer >= 0.002f)
+	if (state == EDITOR)
 	{
-		//recuperer les tuiles
-		if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y < 13 * tileSize && worldGet.y > tileSize && (currentTileset == GROUND || currentTileset == OBJ))
-		{
-			//recuperer les tuiles du ground
-			currentTileset = GROUND;
-			worldGet.x -= (mapSizeX)*tileSize;
-			worldGet.y -= tileSize;
+		//view map dezoome
+		sfView_setCenter(viewEditor.viewEditor, viewEditor.posViewEditor);
+		sfView_setSize(viewEditor.viewEditor, (sfVector2f) { mapSizeX* tileSize + 3 * tileSize, mapSizeY* tileSize + 3 * tileSize });
 
-			blockGround = arr.tileGround[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+		//timer
+		timer += GetDeltaTime();
 
-		}
-		else if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y > 13 * tileSize && worldGet.y <= 25 * tileSize && (currentTileset == GROUND || currentTileset == OBJ))
+		sfVector2f originEditor = { (mapSizeX)*tileSize, tileSize };
+		sfVector2i nexPosInTab = { 0, 0 };
+		sfVector2i posMouse = sfMouse_getPositionRenderWindow(_window);
+		sfVector2f worldGet = sfRenderWindow_mapPixelToCoords(_window, posMouse, viewEditor.viewEditor);
+
+		sfSprite_setPosition(tileEditor.tileEditorGround, originEditor);
+		sfSprite_setPosition(tileEditor.tileEditorWall, originEditor);
+		sfSprite_setPosition(tileEditor.tileEditorObj, originEditor);
+
+		posTimer += GetDeltaTime();
+
+		if (sfMouse_isButtonPressed(sfMouseLeft) && posTimer >= 0.002f)
 		{
-			//recuperer les tuiles des objets
-			currentTileset = OBJ;
-			worldGet.x -= (mapSizeX)*tileSize;
-			worldGet.y -= 14 * tileSize;
-			blockObjX = tileObj[((int)worldGet.x / tileSize) + ((int)worldGet.y / tileSize*2)];
-			blockObjY = tileObjY[((int)worldGet.x / tileSize) + ((int)worldGet.y / tileSize*2)];
-		}
-		else if (worldGet.x > mapSizeX * tileSize)
-		{
-			//recuperer les tuiles du wall
-			worldGet.x -= (mapSizeX)*tileSize;
-			worldGet.y -= -1 * tileSize;
-			blockWall = arr.tileWall[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
-			blockWall = arr.tileWall1[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
-			blockWall = arr.tileWall2[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
-			blockWall = arr.tileWall3[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
-			switch (currentTileset)
+			//recuperer les tuiles
+			if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y < 13 * tileSize && worldGet.y > tileSize && (currentTileset == GROUND || currentTileset == OBJ))
 			{
-			case WALL:
-				blockWall = arr.tileWall[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
-				break;
-			case WALL1:
-				blockWall = arr.tileWall1[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
-				break;
-			case WALL2:
-				blockWall = arr.tileWall2[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
-				break;
-			case WALL3:
-				blockWall = arr.tileWall3[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
-				break;
+				//recuperer les tuiles du ground
+				currentTileset = GROUND;
+				worldGet.x -= (mapSizeX)*tileSize;
+				worldGet.y -= tileSize;
+
+				blockGround = arr.tileGround[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+
 			}
-		}
+			else if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y > 13 * tileSize && worldGet.y <= 25 * tileSize && (currentTileset == GROUND || currentTileset == OBJ))
+			{
+				//recuperer les tuiles des objets
+				currentTileset = OBJ;
+				worldGet.x -= (mapSizeX)*tileSize;
+				worldGet.y -= 14 * tileSize;
+				blockObjX = tileObj[((int)worldGet.x / tileSize) + ((int)worldGet.y / tileSize*2)];
+				blockObjY = tileObjY[((int)worldGet.x / tileSize) + ((int)worldGet.y / tileSize*2)];
+			}
+			else if (worldGet.x > mapSizeX * tileSize)
+			{
+				//recuperer les tuiles du wall
+				worldGet.x -= (mapSizeX)*tileSize;
+				worldGet.y -= -1 * tileSize;
+				blockWall = arr.tileWall[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+				blockWall = arr.tileWall1[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+				blockWall = arr.tileWall2[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+				blockWall = arr.tileWall3[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+				switch (currentTileset)
+				{
+				case WALL:
+					blockWall = arr.tileWall[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+					break;
+				case WALL1:
+					blockWall = arr.tileWall1[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+					break;
+				case WALL2:
+					blockWall = arr.tileWall2[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+					break;
+				case WALL3:
+					blockWall = arr.tileWall3[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+					break;
+				}
+			}
 
 		//poser les tuiles
-		else if (worldGet.x < mapSizeX * tileSize && worldGet.x > 0 && worldGet.y > 0 && worldGet.y < mapSizeY * tileSize)
+		else if (worldGet.x < mapSizeX * tileSize && worldGet.x > 0 && worldGet.y > 0 && worldGet.y < mapSizeY * tileSize && firstPosTimer > 0.2f)
 		{
 			nexPosInTab.x = worldGet.x / tileSize;
 			nexPosInTab.y = worldGet.y / tileSize;
@@ -194,9 +198,7 @@ void updateMap(sfRenderWindow* _window)
 		posTimer = 0.0f;
 	}
 
-	//gestion des bouton (fleche)
-	if (state == EDITOR)
-	{
+	//gestion des boutons pour changer de tileset ou de map
 		if ((sfKeyboard_isScancodePressed(sfScanUp)) && (timer >= 0.2f))
 		{
 			if (currentTileset == GROUND || currentTileset == OBJ)
