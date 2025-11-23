@@ -1,6 +1,7 @@
 #pragma once
 
 #include "tools.h"
+#include "view.h"
 
 extern sfRectangleShape* g_DisplayOptions;
 extern sfRectangleShape* g_GeneralSoundButton_IsMuted;
@@ -22,4 +23,5 @@ extern sfRectangleShape* g_SFXSoundButtonVolumePlus;
 extern sfRectangleShape* g_SFXSoundButtonVolumeMinus;
 
 void initOptions();
+void updateOptions(sfRenderWindow* _window);
 void displayOptions(sfRenderWindow* _window);

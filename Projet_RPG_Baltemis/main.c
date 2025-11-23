@@ -96,6 +96,7 @@ int main()
 		updateView(window);
 		updateTitleScreen(window);
 		updateMap(window);
+		updateOptions(window);
 		updateSound();
 		updatePlayer();
 
