@@ -99,6 +99,10 @@ typedef struct Array
 }Array;
 Array arr;
 
+
+//extern
+extern float firstPosTimer;
+
 //map creation
 void initMap();
 void updateMap(sfRenderWindow* _window);

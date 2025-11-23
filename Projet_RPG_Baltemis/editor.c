@@ -1,7 +1,7 @@
 #include "editor.h"
 
 //timer
-float firstPosTimer = 0.0f;
+firstPosTimer = 0.0f;
 float posTimer;
 float timer;
 
@@ -97,6 +97,7 @@ void initMap()
 
 void updateMap(sfRenderWindow* _window)
 {
+	firstPosTimer += GetDeltaTime();
 
 	if (state == EDITOR)
 	{
