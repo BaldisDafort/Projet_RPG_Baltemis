@@ -51,6 +51,7 @@ int main()
 						rectButton = sfRectangleShape_getGlobalBounds(EditorButton);
 						if (sfFloatRect_contains(&rectButton, events.mouseButton.x, events.mouseButton.y))
 						{
+							firstPosTimer = 0.0f;
 							state = EDITOR;
 							printf(" Current Map : %d \n", currentMap);
 							loadMap();
