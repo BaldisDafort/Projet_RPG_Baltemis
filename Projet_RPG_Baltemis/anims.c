@@ -1,5 +1,11 @@
 #include "anims.h"
 
+sfBool buttonCollision()
+{
+
+}
+
+
 void initAnims()
 {
 	

@@ -129,22 +129,11 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 	{
 		return sfTrue; //retourn sfTrue si collision
 	}
-	//pour baisser le boutton
-	else if (arr.mapObj[nexPosInTab.y][nexPosInTab.x].x == 0 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 5)
-	{
-		arr.mapObj[nexPosInTab.y][nexPosInTab.x].x += 1;
-		//return sfFalse;
-	}
-	else if (arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x == 0 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 5)
-	{
-		arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x += 1;
-		//return sfFalse;
-	}
 	else
 	{
 		_velocite->x = 80.0f;
 		_velocite->y = 80.0f;
 		return sfFalse; //retourne sfFalse si pas collision
 	}
-	return sfFalse; //retourne sfFalse si pas collision
+	//return sfFalse; 
 }
