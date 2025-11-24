@@ -53,12 +53,12 @@ sfBool batCollisions(sfFloatRect _spriteRect, batDir _direction, sfVector2f* _ve
 	{
 		_velocite->x = 100.0f;
 		_velocite->y = 100.0f;
-		return sfFalse; //retourne sfFalse si pas collision
+		return sfFalse; //retourne sfFalse si pas collision 
 	}
 }
 
 
-//la collision du squelette est de 1 pixel de hauteur, et 13 pixel de largeur (sans collision =  13 en haut et 2 en bas et 2 a droite et 1 a gauche)
+//la collision du squelette est de 3 pixel de hauteur, et 13 pixel de largeur (sans collision =  13 en haut et 2 a droite et 1 a gauche)
 sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVector2f* _velocite, float* _anim)
 {
 	if (_direction == SK_HAUT)
@@ -74,9 +74,9 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 	{
 		//calcul la position dans le tableau au prochian mouvement vers le bas
 		nexPosInTab.x = _spriteRect.left / 16;
-		nexPosInTab.y = (_spriteRect.top + 14 + _velocite->y * GetDeltaTime()) / 16;
+		nexPosInTab.y = (_spriteRect.top + 16 + _velocite->y * GetDeltaTime()) / 16;
 		nexPosInTab2.x = (_spriteRect.left + _spriteRect.width - 2) / 16;
-		nexPosInTab2.y = (_spriteRect.top + 14 + _velocite->y * GetDeltaTime()) / 16;
+		nexPosInTab2.y = (_spriteRect.top + 16 + _velocite->y * GetDeltaTime()) / 16;
 	}
 	if (_direction == SK_DROITE)
 	{
@@ -84,7 +84,7 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 		nexPosInTab.x = (_spriteRect.left + _spriteRect.width - 2 + _velocite->x * GetDeltaTime()) / 16;
 		nexPosInTab.y = (_spriteRect.top + 13) / 16;
 		nexPosInTab2.x = (_spriteRect.left + _spriteRect.width - 2 + _velocite->x * GetDeltaTime()) / 16;
-		nexPosInTab2.y = (_spriteRect.top + 14) / 16;
+		nexPosInTab2.y = (_spriteRect.top + 16) / 16;
 	}
 
 	if (_direction == SK_GAUCHE)
@@ -93,7 +93,7 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 		nexPosInTab.x = (_spriteRect.left - _velocite->x * GetDeltaTime()) / 16;
 		nexPosInTab.y = (_spriteRect.top + 13) / 16;
 		nexPosInTab2.x = (_spriteRect.left - _velocite->x * GetDeltaTime()) / 16;
-		nexPosInTab2.y = (_spriteRect.top + 14) / 16;
+		nexPosInTab2.y = (_spriteRect.top + 16) / 16;
 	}
 
 	//si case avec collision
@@ -103,9 +103,28 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 		arr.mapWall2[nexPosInTab.y][nexPosInTab.x] != 0 || arr.mapWall2[nexPosInTab2.y][nexPosInTab2.x] != 0 ||
 		arr.mapWall3[nexPosInTab.y][nexPosInTab.x] != 0 || arr.mapWall3[nexPosInTab2.y][nexPosInTab2.x] != 0 ||
 		//les objets
-		//le crane
-		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x == 6 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 2) ||
-		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x == 6 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 2)
+		//les coffres
+		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 1 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].x <= 6 ) || 
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 1 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x <= 6) ||
+		//le crane et le trou piquant
+		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x >= 6 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 2) ||
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x >= 6 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 2) ||
+		//trou toxic
+		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x != 0 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 3) ||
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x != 0 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 3) ||
+		//trou de feu
+		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x != 0 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 4) ||
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x != 0 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 4) ||
+		//le piege piquant
+		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x <= 6 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 6) ||
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x <= 6 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 6) ||
+		//le piege toxique
+		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x <= 6 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 8) ||
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x <= 6 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 8) ||
+		//le piege de feu
+		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x <= 6 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 10) ||
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x <= 6 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 10)
+
 		)
 	{
 		return sfTrue; //retourn sfTrue si collision
