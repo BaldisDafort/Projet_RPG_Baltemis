@@ -90,16 +90,16 @@ void initTitleScreen()
 
 void updateTitleScreen(sfRenderWindow* _window)
 {
-	sfVector2i mousePixelPos = sfMouse_getPositionRenderWindow(_window);
 	sfFloatRect rectStartButton = sfRectangleShape_getGlobalBounds(StartButton);
 	sfFloatRect rectEditorButton = sfRectangleShape_getGlobalBounds(EditorButton);
 	sfFloatRect rectOptionsButton = sfRectangleShape_getGlobalBounds(OptionsButton);
 	sfFloatRect rectQuitButton = sfRectangleShape_getGlobalBounds(QuitButton);
-
-	sfVector2f mouseWorldPos = sfRenderWindow_mapPixelToCoords(_window, mousePixelPos, g_viewGame);
+	sfVector2i g_mousePixelPos = sfMouse_getPositionRenderWindow(_window);
+	sfVector2f g_mouseWorldPos = sfRenderWindow_mapPixelToCoords(_window, g_mousePixelPos, g_viewGame);
+	
 
 	// Start Hover Animation
-	if (sfFloatRect_contains(&rectStartButton, mouseWorldPos.x, mouseWorldPos.y))
+	if (sfFloatRect_contains(&rectStartButton, g_mousePixelPos.x, g_mousePixelPos.y))
 	{
 		startButtonAnimationRect.left = startButtonAnimationRect.width;
 		sfSprite_setTextureRect(spriteStartButton, startButtonAnimationRect);
@@ -110,7 +110,7 @@ void updateTitleScreen(sfRenderWindow* _window)
 		sfSprite_setTextureRect(spriteStartButton, startButtonAnimationRect);
 	}
 	// Editor Hover Animation
-	if (sfFloatRect_contains(&rectEditorButton, mouseWorldPos.x, mouseWorldPos.y))
+	if (sfFloatRect_contains(&rectEditorButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 	{
 		editorButtonAnimationRect.left = editorButtonAnimationRect.width;
 		sfSprite_setTextureRect(spriteEditorButton, editorButtonAnimationRect);
@@ -121,7 +121,7 @@ void updateTitleScreen(sfRenderWindow* _window)
 		sfSprite_setTextureRect(spriteEditorButton, editorButtonAnimationRect);
 	}
 	// Option Hover Animation
-	if (sfFloatRect_contains(&rectOptionsButton, mouseWorldPos.x, mouseWorldPos.y))
+	if (sfFloatRect_contains(&rectOptionsButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 	{
 		optionsButtonAnimationRect.left = optionsButtonAnimationRect.width;
 		sfSprite_setTextureRect(spriteOptionsButton, optionsButtonAnimationRect);
@@ -132,7 +132,7 @@ void updateTitleScreen(sfRenderWindow* _window)
 		sfSprite_setTextureRect(spriteOptionsButton, optionsButtonAnimationRect);
 	}
 	// Exit Hover Animation
-	if (sfFloatRect_contains(&rectQuitButton, mouseWorldPos.x, mouseWorldPos.y))
+	if (sfFloatRect_contains(&rectQuitButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 	{
 		quitButtonAnimationRect.left = quitButtonAnimationRect.width;
 		sfSprite_setTextureRect(spriteQuitButton, quitButtonAnimationRect);

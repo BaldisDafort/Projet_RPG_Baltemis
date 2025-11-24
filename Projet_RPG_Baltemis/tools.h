@@ -10,6 +10,9 @@
 #include "title_screen.h"
 #include "sound.h"
 
+extern sfVector2i g_mousePixelPos;
+extern sfVector2f g_mouseWorldPos;
+
 typedef enum { MENU, GAME, EDITOR, OPTION, QUIT }State;
 State state;
 
