@@ -4,6 +4,9 @@
 #include "options.h"
 #include "player.h"
 
+sfVector2i g_mousePixelPos;
+sfVector2f g_mouseWorldPos;
+
 int main()
 {
 	initTools();
@@ -42,14 +45,16 @@ int main()
 				{
 					if (state == MENU)
 					{
+						sfVector2i g_mousePixelPos = sfMouse_getPositionRenderWindow(window);
+						sfVector2f g_mouseWorldPos = sfRenderWindow_mapPixelToCoords(window, g_mousePixelPos, g_viewGame);
 						sfFloatRect rectButton = sfRectangleShape_getGlobalBounds(StartButton);
-						if (sfFloatRect_contains(&rectButton, events.mouseButton.x, events.mouseButton.y))
+						if (sfFloatRect_contains(&rectButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 						{
 							state = GAME;
 						}
 
 						rectButton = sfRectangleShape_getGlobalBounds(EditorButton);
-						if (sfFloatRect_contains(&rectButton, events.mouseButton.x, events.mouseButton.y))
+						if (sfFloatRect_contains(&rectButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 						{
 							firstPosTimer = 0.0f;
 							state = EDITOR;
@@ -58,13 +63,13 @@ int main()
 						}
 
 						rectButton = sfRectangleShape_getGlobalBounds(OptionsButton);
-						if (sfFloatRect_contains(&rectButton, events.mouseButton.x, events.mouseButton.y))
+						if (sfFloatRect_contains(&rectButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 						{
 							state = OPTION;
 						}
 
 						rectButton = sfRectangleShape_getGlobalBounds(QuitButton);
-						if (sfFloatRect_contains(&rectButton, events.mouseButton.x, events.mouseButton.y))
+						if (sfFloatRect_contains(&rectButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 						{
 							state = QUIT;
 						}

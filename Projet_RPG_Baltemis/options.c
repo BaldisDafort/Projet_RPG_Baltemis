@@ -55,7 +55,7 @@ void initOptions()
 	g_DisplayOptions = sfRectangleShape_create();
 	sfVector2f sizeDisplayOptions = { 640.f, 480.f };
 	sfVector2f positionDisplayOptions = { 80.f, 60.f };
-	sfColor displayOptionsColor = sfColor_fromRGBA(34, 66, 124, 100);
+	sfColor displayOptionsColor = sfColor_fromRGBA(34, 66, 124, 220);
 	sfRectangleShape_setSize(g_DisplayOptions, sizeDisplayOptions);
 	sfRectangleShape_setFillColor(g_DisplayOptions, displayOptionsColor);
 	sfRectangleShape_setPosition(g_DisplayOptions, positionDisplayOptions);
