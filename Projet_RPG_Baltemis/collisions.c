@@ -110,11 +110,11 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x >= 6 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 2) ||
 		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x >= 6 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 2) ||
 		//trou toxic
-		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x != 0 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 3) ||
-		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x != 0 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 3) ||
+		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x <= 7 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 3) ||
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x <= 7 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 3) ||
 		//trou de feu
-		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x != 0 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 4) ||
-		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x != 0 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 4) ||
+		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x <= 7 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 4) ||
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x <= 7 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 4) ||
 		//le piege piquant
 		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x <= 6 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 6) ||
 		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x <= 6 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 6) ||
@@ -129,10 +129,22 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 	{
 		return sfTrue; //retourn sfTrue si collision
 	}
+	//pour baisser le boutton
+	else if (arr.mapObj[nexPosInTab.y][nexPosInTab.x].x == 0 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 5)
+	{
+		arr.mapObj[nexPosInTab.y][nexPosInTab.x].x += 1;
+		//return sfFalse;
+	}
+	else if (arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x == 0 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 5)
+	{
+		arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x += 1;
+		//return sfFalse;
+	}
 	else
 	{
 		_velocite->x = 80.0f;
 		_velocite->y = 80.0f;
 		return sfFalse; //retourne sfFalse si pas collision
 	}
+	return sfFalse; //retourne sfFalse si pas collision
 }

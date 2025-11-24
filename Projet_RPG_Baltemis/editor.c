@@ -12,7 +12,7 @@ int blockObjX = 0.0f;
 int blockObjY = 0.0f;
 
 //initialiser le tableau des tiles a selectionner pour les objets (que je gere un peut differemmen car je ne souhaite pas afficher toutes les tiles
-int tileObj[22] = {  0, 2, 0, 6, 4, 6, 0, 2, 4, 6, 7,  1, 1, 1, 3, 3, 1, 1, 1, 1, 1 };
+int tileObj[22] = {  0, 2, 0, 6, 4, 6, 0, 2, 4, 6, 7,  1, 1, 0, 3, 3, 1, 1, 1, 1, 1 };
 int tileObjY[22] = { 0, 1, 1, 0, 1, 1, 2, 2, 2, 2, 2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14, 15};
 
 void initMap()
@@ -278,7 +278,7 @@ void displayMap(sfRenderWindow* _window)
 		for (int x = 0; x < mapSizeX; x++)
 		{
 			posGroundX = arr.mapGround[y][x] * tileSize;
-			posObjX = arr.mapObj[y][x].x * tileSize;
+			posObjX = arr.mapObj[y][x].x * tileSize; 
 			posObjY = arr.mapObj[y][x].y * tileSize;
 			posWallX = arr.mapWall[y][x] * tileSize;
 			posWall1X = arr.mapWall1[y][x] * tileSize;

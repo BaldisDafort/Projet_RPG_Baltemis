@@ -1,6 +1,7 @@
 #pragma once
 #include "tools.h"
 #include "player.h"
+#include "anims.h"
 #include "editor.h"
 
 sfBool batCollisions(sfFloatRect _spriteRect, batDir _direction, sfVector2f* _velocite, float* _anim);

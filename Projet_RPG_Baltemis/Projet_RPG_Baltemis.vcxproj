@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="anims.c" />
     <ClCompile Include="collisions.c" />
     <ClCompile Include="editor.c" />
     <ClCompile Include="main.c" />
@@ -146,6 +147,7 @@
     <ClCompile Include="view.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="anims.h" />
     <ClInclude Include="collisions.h" />
     <ClInclude Include="editor.h" />
     <ClInclude Include="options.h" />
