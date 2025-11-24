@@ -91,12 +91,13 @@ void initTitleScreen()
 void updateTitleScreen(sfRenderWindow* _window)
 {
 	sfVector2i mousePixelPos = sfMouse_getPositionRenderWindow(_window);
+	sfVector2f mouseWorldPos = sfRenderWindow_mapPixelToCoords(_window, mousePixelPos, g_viewGame);
 	sfFloatRect rectStartButton = sfRectangleShape_getGlobalBounds(StartButton);
 	sfFloatRect rectEditorButton = sfRectangleShape_getGlobalBounds(EditorButton);
 	sfFloatRect rectOptionsButton = sfRectangleShape_getGlobalBounds(OptionsButton);
 	sfFloatRect rectQuitButton = sfRectangleShape_getGlobalBounds(QuitButton);
 
-	sfVector2f mouseWorldPos = sfRenderWindow_mapPixelToCoords(_window, mousePixelPos, g_viewGame);
+
 
 	// Start Hover Animation
 	if (sfFloatRect_contains(&rectStartButton, mouseWorldPos.x, mouseWorldPos.y))
