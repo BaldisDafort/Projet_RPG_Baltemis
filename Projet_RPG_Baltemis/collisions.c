@@ -2,6 +2,7 @@
 
 sfVector2i nexPosInTab = { 0, 0 };
 sfVector2i nexPosInTab2 = { 0, 0 };
+sfBool buttonCollision(sfVector2f _playerPos);
 
 //la collision de la chauve-souris est de 1 pixel de hauteur, et 16 pixel de largeur (sans collision = 14 en haut et 1 en bas)
 sfBool batCollisions(sfFloatRect _spriteRect, batDir _direction, sfVector2f* _velocite, float* _anim)
