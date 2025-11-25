@@ -1,11 +1,5 @@
 #include "anims.h"
 
-sfBool buttonCollision()
-{
-
-}
-
-
 void initAnims()
 {
 	
@@ -13,6 +7,12 @@ void initAnims()
 
 void updateAnims()
 {
+	//anim button
+	buttonCollision(skeleton.SpritePositionSkeleton);
+	if (sfKeyboard_isScancodePressed(sfScanW))
+	{
+		buttonCollision(bat.SpritePositionBat);
+	}
 
 }
 
