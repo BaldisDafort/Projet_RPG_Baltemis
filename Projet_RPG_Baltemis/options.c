@@ -1,4 +1,5 @@
 #include "options.h"
+#include "tools.h"
 #include "SFML/Graphics.h"
 
 sfRectangleShape* g_DisplayOptions;
@@ -87,7 +88,24 @@ void initOptions()
 	sfRectangleShape_setSize(g_GeneralSoundButtonVolumePlus, sizeGeneralVolumePlus);
 	sfRectangleShape_setPosition(g_GeneralSoundButtonVolumePlus, positionGeneralVolumePlus);
 
-	
+	g_SpriteGeneralSound = sfSprite_create();
+	sfTexture* tGeneralSound = sfTexture_createFromFile("..\\Resources\\Textures\\general-sound-button.png", NULL);
+	sfSprite_setTexture(g_SpriteGeneralSound, tGeneralSound, sfTrue);
+	sfSprite_setTextureRect(g_SpriteGeneralSound, g_GeneralSoundRect);
+	sfSprite_setPosition(g_SpriteGeneralSound, positionGeneralSound);
+
+	g_SpriteGeneralTurnUpVolume = sfSprite_create();
+	sfTexture* tTurnUpVolume = sfTexture_createFromFile("..\\Resources\\Textures\\volumeUp.png", NULL);
+	sfSprite_setTexture(g_SpriteGeneralTurnUpVolume, tTurnUpVolume, sfTrue);
+	sfSprite_setPosition(g_SpriteGeneralTurnUpVolume, positionGeneralVolumePlus);
+	sfSprite_setTextureRect(g_SpriteGeneralTurnUpVolume, g_GeneralTurnUpVolumeRect);
+
+	g_SpriteGeneralTurnDownVolume = sfSprite_create();
+	sfTexture* tGeneralTurnDownVolume = sfTexture_createFromFile("..\\Resources\\Textures\\volumeDown.png", NULL);
+	sfSprite_setTexture(g_SpriteGeneralTurnDownVolume, tGeneralTurnDownVolume, sfTrue);
+	sfSprite_setTextureRect(g_SpriteGeneralTurnDownVolume, g_GeneralTurnDownVolumeRect);
+	sfSprite_setPosition(g_SpriteGeneralTurnDownVolume, positionGeneralVolumeMinus);
+
 	// MUSIC
 	g_MusicSoundButton_IsMuted = sfRectangleShape_create();
 	sfVector2f sizeMusicSound = { 575.f, 50.f };
@@ -113,6 +131,23 @@ void initOptions()
 	sfRectangleShape_setSize(g_MusicSoundButtonVolumePlus, sizeMusicVolumePlus);
 	sfRectangleShape_setPosition(g_MusicSoundButtonVolumePlus, positionMusicVolumePlus);
 
+	g_SpriteMusicSound = sfSprite_create();
+	sfTexture* tMusicSound = sfTexture_createFromFile("..\\Resources\\Textures\\music-sound-button.png", NULL);
+	sfSprite_setTexture(g_SpriteMusicSound, tMusicSound, sfTrue);
+	sfSprite_setTextureRect(g_SpriteMusicSound, g_MusicSoundRect);
+	sfSprite_setPosition(g_SpriteMusicSound, positionMusicSound);
+
+	g_SpriteMusicTurnUpVolume = sfSprite_create();
+	sfTexture* tMusicTurnUpVolume = sfTexture_createFromFile("..\\Resources\\Textures\\volumeUp.png", NULL);
+	sfSprite_setTexture(g_SpriteMusicTurnUpVolume, tMusicTurnUpVolume, sfTrue);
+	sfSprite_setTextureRect(g_SpriteMusicTurnUpVolume, g_MusicTurnUpVolumeRect);
+	sfSprite_setPosition(g_SpriteMusicTurnUpVolume, positionMusicVolumePlus);
+
+	g_SpriteMusicTurnDownVolume = sfSprite_create();
+	sfTexture* tMusicTurnDownVolume = sfTexture_createFromFile("..\\Resources\\Textures\\volumeDown.png", NULL);
+	sfSprite_setTexture(g_SpriteMusicTurnDownVolume, tMusicTurnDownVolume, sfTrue);
+	sfSprite_setTextureRect(g_SpriteMusicTurnDownVolume, g_MusicTurnDownVolumeRect);
+	sfSprite_setPosition(g_SpriteMusicTurnDownVolume, positionMusicVolumeMinus);
 
 	// SOUND
 	g_SFXSoundButton_IsMuted = sfRectangleShape_create();
@@ -139,53 +174,17 @@ void initOptions()
 	sfRectangleShape_setSize(g_SFXSoundButtonVolumePlus, sizeSFXVolumePlus);
 	sfRectangleShape_setPosition(g_SFXSoundButtonVolumePlus, positionSFXVolumePlus);
 
-	g_SpriteGeneralSound = sfSprite_create();
-	sfTexture* tGeneralSound = sfTexture_createFromFile("..\\Resources\\Textures\\general-sound-button.png", NULL);
-	sfSprite_setTexture(g_SpriteGeneralSound, tGeneralSound, sfTrue);
-	sfSprite_setTextureRect(g_SpriteGeneralSound, g_GeneralSoundRect);
-	sfSprite_setPosition(g_SpriteGeneralSound, positionGeneralSound);
-
-	g_SpriteMusicSound = sfSprite_create();
-	sfTexture* tMusicSound = sfTexture_createFromFile("..\\Resources\\Textures\\music-sound-button.png", NULL);
-	sfSprite_setTexture(g_SpriteMusicSound, tMusicSound, sfTrue);
-	sfSprite_setTextureRect(g_SpriteMusicSound, g_MusicSoundRect);
-	sfSprite_setPosition(g_SpriteMusicSound, positionMusicSound);
-
 	g_SpriteSFXSound = sfSprite_create();
 	sfTexture* tSFXSound = sfTexture_createFromFile("..\\Resources\\Textures\\sfx-sound-button.png", NULL);
 	sfSprite_setTexture(g_SpriteSFXSound, tSFXSound, sfTrue);
 	sfSprite_setTextureRect(g_SpriteSFXSound, g_SFXSoundRect);
 	sfSprite_setPosition(g_SpriteSFXSound, positionSFXSound);
 
-	g_SpriteGeneralTurnUpVolume = sfSprite_create();
-	sfTexture* tTurnUpVolume = sfTexture_createFromFile("..\\Resources\\Textures\\volumeUp.png", NULL);
-	sfSprite_setTexture(g_SpriteGeneralTurnUpVolume, tTurnUpVolume, sfTrue);
-	sfSprite_setTextureRect(g_SpriteGeneralTurnUpVolume, g_GeneralTurnUpVolumeRect);
-	sfSprite_setPosition(g_SpriteGeneralTurnUpVolume, positionGeneralVolumePlus);
-
-	g_SpriteMusicTurnUpVolume = sfSprite_create();
-	sfTexture* tMusicTurnUpVolume = sfTexture_createFromFile("..\\Resources\\Textures\\volumeUp.png", NULL);
-	sfSprite_setTexture(g_SpriteMusicTurnUpVolume, tMusicTurnUpVolume, sfTrue);
-	sfSprite_setTextureRect(g_SpriteMusicTurnUpVolume, g_MusicTurnUpVolumeRect);
-	sfSprite_setPosition(g_SpriteMusicTurnUpVolume, positionMusicVolumePlus);
-
 	g_SpriteSFXTurnUpVolume = sfSprite_create();
 	sfTexture* tSFXTurnUpVolume = sfTexture_createFromFile("..\\Resources\\Textures\\volumeUp.png", NULL);
 	sfSprite_setTexture(g_SpriteSFXTurnUpVolume, tSFXTurnUpVolume, sfTrue);
 	sfSprite_setTextureRect(g_SpriteSFXTurnUpVolume, g_SFXTurnUpVolumeRect);
 	sfSprite_setPosition(g_SpriteSFXTurnUpVolume, positionSFXVolumePlus);
-
-	g_SpriteGeneralTurnDownVolume = sfSprite_create();
-	sfTexture* tGeneralTurnDownVolume = sfTexture_createFromFile("..\\Resources\\Textures\\volumeDown.png", NULL);
-	sfSprite_setTexture(g_SpriteGeneralTurnDownVolume, tGeneralTurnDownVolume, sfTrue);
-	sfSprite_setTextureRect(g_SpriteGeneralTurnDownVolume, g_GeneralTurnDownVolumeRect);
-	sfSprite_setPosition(g_SpriteGeneralTurnDownVolume, positionGeneralVolumeMinus);
-
-	g_SpriteMusicTurnDownVolume = sfSprite_create();
-	sfTexture* tMusicTurnDownVolume = sfTexture_createFromFile("..\\Resources\\Textures\\volumeDown.png", NULL);
-	sfSprite_setTexture(g_SpriteMusicTurnDownVolume, tMusicTurnDownVolume, sfTrue);
-	sfSprite_setTextureRect(g_SpriteMusicTurnDownVolume, g_MusicTurnDownVolumeRect);
-	sfSprite_setPosition(g_SpriteMusicTurnDownVolume, positionMusicVolumeMinus);
 
 	g_SpriteSFXTurnDownVolume = sfSprite_create();
 	sfTexture* tSFXTurnDownVolume = sfTexture_createFromFile("..\\Resources\\Textures\\volumeDown.png", NULL);
@@ -197,60 +196,7 @@ void initOptions()
 
 void updateOptions(sfRenderWindow* _window)
 {
-	sfVector2i mousePixelPos = sfMouse_getPositionRenderWindow(_window);
-	sfFloatRect rectGeneralSoundTurnUpVolumeButton = sfRectangleShape_getGlobalBounds(g_GeneralSoundButtonVolumePlus);
-	sfFloatRect rectMusicSoundTurnUpVolumeButton = sfRectangleShape_getGlobalBounds(g_MusicSoundButtonVolumePlus);
-	sfFloatRect rectSFXSoundTurnUpVolumeButton = sfRectangleShape_getGlobalBounds(g_SFXSoundButtonVolumePlus);
 
-	sfVector2f mouseWorldPos = sfRenderWindow_mapPixelToCoords(_window, mousePixelPos, g_viewGame);
-
-	// General Turn Up Volume Hover Animation
-	if (sfFloatRect_contains(&rectGeneralSoundTurnUpVolumeButton, mouseWorldPos.x, mouseWorldPos.y))
-	{
-		g_GeneralTurnUpVolumeRect.left = g_GeneralTurnUpVolumeRect.width;
-		sfSprite_setTextureRect(g_SpriteGeneralTurnUpVolume, g_GeneralTurnUpVolumeRect);
-	}
-	else
-	{
-		g_GeneralTurnUpVolumeRect.left = 0;
-		sfSprite_setTextureRect(g_SpriteGeneralTurnUpVolume, g_GeneralTurnUpVolumeRect);
-	}
-
-	// Music Turn Up Volume Hover Animation
-	if (sfFloatRect_contains(&rectMusicSoundTurnUpVolumeButton, mouseWorldPos.x, mouseWorldPos.y))
-	{
-		g_MusicTurnUpVolumeRect.left = g_MusicTurnUpVolumeRect.width;
-		sfSprite_setTextureRect(g_SpriteMusicTurnUpVolume, g_MusicTurnUpVolumeRect);
-	}
-	else
-	{
-		g_MusicTurnUpVolumeRect.left = 0;
-		sfSprite_setTextureRect(g_SpriteMusicTurnUpVolume, g_MusicTurnUpVolumeRect);
-	}
-
-	// SFX Turn Up Volume Hover Animation
-	if (sfFloatRect_contains(&rectSFXSoundTurnUpVolumeButton, mouseWorldPos.x, mouseWorldPos.y))
-	{
-		g_SFXTurnUpVolumeRect.left = g_SFXTurnUpVolumeRect.width;
-		sfSprite_setTextureRect(g_SpriteSFXTurnUpVolume, g_SFXTurnUpVolumeRect);
-	}
-	else
-	{
-		g_SFXTurnUpVolumeRect.left = 0;
-		sfSprite_setTextureRect(g_SpriteSFXTurnUpVolume, g_SFXTurnUpVolumeRect);
-	}
-
-	// General Turn Down Volume Hover Animation
-	if (sfFloatRect_contains(&rectSFXSoundTurnUpVolumeButton, mouseWorldPos.x, mouseWorldPos.y))
-	{
-		g_SFXTurnUpVolumeRect.left = g_SFXTurnUpVolumeRect.width;
-		sfSprite_setTextureRect(g_SpriteSFXTurnUpVolume, g_SFXTurnUpVolumeRect);
-	}
-	else
-	{
-		g_SFXTurnUpVolumeRect.left = 0;
-		sfSprite_setTextureRect(g_SpriteSFXTurnUpVolume, g_SFXTurnUpVolumeRect);
-	}
 }
 
 void displayOptions(sfRenderWindow* _window)
@@ -280,3 +226,4 @@ void displayOptions(sfRenderWindow* _window)
 	sfRenderWindow_drawSprite(_window, g_SpriteSFXTurnUpVolume, NULL);
 	sfRenderWindow_drawSprite(_window, g_SpriteSFXTurnDownVolume, NULL);
 }
+

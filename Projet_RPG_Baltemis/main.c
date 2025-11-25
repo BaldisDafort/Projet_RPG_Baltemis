@@ -31,6 +31,9 @@ int main()
 	while (sfRenderWindow_isOpen(window))
 	{
 		restartClock();
+		sfVector2i g_mousePixelPos = sfMouse_getPositionRenderWindow(window);
+		sfVector2f g_mouseWorldPos = sfRenderWindow_mapPixelToCoords(window, g_mousePixelPos, g_viewGame);
+
 		//boucle d'events
 		while (sfRenderWindow_pollEvent(window, &events))
 		{
@@ -45,8 +48,6 @@ int main()
 				{
 					if (state == MENU)
 					{
-						sfVector2i g_mousePixelPos = sfMouse_getPositionRenderWindow(window);
-						sfVector2f g_mouseWorldPos = sfRenderWindow_mapPixelToCoords(window, g_mousePixelPos, g_viewGame);
 						sfFloatRect rectButton = sfRectangleShape_getGlobalBounds(StartButton);
 						if (sfFloatRect_contains(&rectButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 						{
@@ -77,16 +78,117 @@ int main()
 					else if (state == OPTION)
 					{
 						sfFloatRect rectGeneralButton = sfRectangleShape_getGlobalBounds(g_GeneralSoundButton_IsMuted);
-						if (sfFloatRect_contains(&rectGeneralButton, events.mouseButton.x, events.mouseButton.y))
-						{
+						sfFloatRect rectGeneralSoundTurnUpVolumeButton = sfRectangleShape_getGlobalBounds(g_GeneralSoundButtonVolumePlus);
+						sfFloatRect rectGeneralSoundTurnDownVolumeButton = sfRectangleShape_getGlobalBounds(g_GeneralSoundButtonVolumeMinus);
+						sfFloatRect rectMusicSoundTurnUpVolumeButton = sfRectangleShape_getGlobalBounds(g_MusicSoundButtonVolumePlus);
+						sfFloatRect rectMusicSoundTurnDownVolumeButton = sfRectangleShape_getGlobalBounds(g_MusicSoundButtonVolumeMinus);
+						sfFloatRect rectSFXSoundTurnUpVolumeButton = sfRectangleShape_getGlobalBounds(g_SFXSoundButtonVolumePlus);
+						sfFloatRect rectSFXSoundTurnDownVolumeButton = sfRectangleShape_getGlobalBounds(g_SFXSoundButtonVolumeMinus);
 
-							printf("Ici");
-							SetGeneralMuted(!GetGeneralMuted());
-							ChangeVolume(g_musicTitleScreen, 100.0f);
+
+
+						if (events.type == sfEvtMouseButtonPressed)
+						{
+							if (sfFloatRect_contains(&rectGeneralButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
+							{
+								SetGeneralMuted(!GetGeneralMuted());
+								ChangeVolume(g_musicTitleScreen, 100.0f);
+								g_GeneralSoundRect.left = g_GeneralSoundRect.width * GetGeneralMuted();
+								sfSprite_setTextureRect(g_SpriteGeneralSound, g_GeneralSoundRect);
+							}
+
+							if (sfFloatRect_contains(&rectGeneralSoundTurnUpVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
+							{
+								g_GeneralTurnUpVolumeRect.left = g_GeneralTurnUpVolumeRect.width;
+								sfSprite_setTextureRect(g_SpriteGeneralTurnUpVolume, g_GeneralTurnUpVolumeRect);
+							}
+
+							if (sfFloatRect_contains(&rectGeneralSoundTurnDownVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
+							{
+								g_GeneralTurnDownVolumeRect.left = g_GeneralTurnDownVolumeRect.width;
+								sfSprite_setTextureRect(g_SpriteGeneralTurnDownVolume, g_GeneralTurnDownVolumeRect);
+							}
+
+							if (sfFloatRect_contains(&rectMusicSoundTurnUpVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
+							{
+								g_MusicTurnUpVolumeRect.left = g_MusicTurnUpVolumeRect.width;
+								sfSprite_setTextureRect(g_SpriteMusicTurnUpVolume, g_MusicTurnUpVolumeRect);
+							}
+
+							if (sfFloatRect_contains(&rectMusicSoundTurnDownVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
+							{
+								g_MusicTurnDownVolumeRect.left = g_MusicTurnDownVolumeRect.width;
+								sfSprite_setTextureRect(g_SpriteMusicTurnDownVolume, g_MusicTurnDownVolumeRect);
+							}
+
+							if (sfFloatRect_contains(&rectSFXSoundTurnUpVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
+							{
+
+								g_SFXTurnUpVolumeRect.left = g_SFXTurnUpVolumeRect.width;
+								sfSprite_setTextureRect(g_SpriteSFXTurnUpVolume, g_SFXTurnUpVolumeRect);
+							}
+
+							if (sfFloatRect_contains(&rectSFXSoundTurnDownVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
+							{
+								g_SFXTurnDownVolumeRect.left = g_SFXTurnDownVolumeRect.width;
+								sfSprite_setTextureRect(g_SpriteSFXTurnDownVolume, g_SFXTurnDownVolumeRect);
+							}
+
+
+
+
+
+						}
+
+
+						sfFloatRect rectMusicButton = sfRectangleShape_getGlobalBounds(g_MusicSoundButton_IsMuted);
+						if (sfFloatRect_contains(&rectMusicButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
+						{
+							if (events.type == sfEvtMouseButtonPressed)
+							{
+								SetMusicMuted(!GetMusicMuted());
+								//ChangeVolume(g_musicTitleScreen, 100.0f);
+								g_MusicSoundRect.left = g_MusicSoundRect.width * GetMusicMuted();
+								sfSprite_setTextureRect(g_SpriteMusicSound, g_MusicSoundRect);
+							}
+
+						}
+
+						sfFloatRect rectSFXButton = sfRectangleShape_getGlobalBounds(g_SFXSoundButton_IsMuted);
+						if (sfFloatRect_contains(&rectSFXButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
+						{
+							if (events.type == sfEvtMouseButtonPressed)
+							{
+								SetSFXMuted(!GetSFXMuted());
+								//ChangeVolume(g_musicTitleScreen, 100.0f);
+								g_SFXSoundRect.left = g_SFXSoundRect.width * GetSFXMuted();
+								sfSprite_setTextureRect(g_SpriteSFXSound, g_SFXSoundRect);
+							}
+
 						}
 					}
 
 				}
+			}
+			if (events.type == sfEvtMouseButtonReleased)
+			{
+				g_GeneralTurnUpVolumeRect.left = 0;
+				sfSprite_setTextureRect(g_SpriteGeneralTurnUpVolume, g_GeneralTurnUpVolumeRect);
+
+				g_GeneralTurnDownVolumeRect.left = 0;
+				sfSprite_setTextureRect(g_SpriteGeneralTurnDownVolume, g_GeneralTurnDownVolumeRect);
+
+				g_MusicTurnUpVolumeRect.left = 0;
+				sfSprite_setTextureRect(g_SpriteMusicTurnUpVolume, g_GeneralTurnUpVolumeRect);
+
+				g_MusicTurnDownVolumeRect.left = 0;
+				sfSprite_setTextureRect(g_SpriteMusicTurnDownVolume, g_MusicTurnDownVolumeRect);
+
+				g_SFXTurnUpVolumeRect.left = 0;
+				sfSprite_setTextureRect(g_SpriteSFXTurnUpVolume, g_SFXTurnUpVolumeRect);
+
+				g_SFXTurnDownVolumeRect.left = 0;
+				sfSprite_setTextureRect(g_SpriteSFXTurnDownVolume, g_SFXTurnDownVolumeRect);
 			}
 
 		}
@@ -102,7 +204,7 @@ int main()
 		updateView(window);
 		updateTitleScreen(window);
 		updateMap(window);
-		updateOptions(window);
+		//updateOptions(window);
 		updateSound();
 		updatePlayer();
 
