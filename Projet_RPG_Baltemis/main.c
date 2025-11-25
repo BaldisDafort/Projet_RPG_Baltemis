@@ -271,6 +271,10 @@ int main()
 		{
 		case GAME:
 				displayView(window);
+				displaySkeletonView(window);
+				displayMap(window);
+				displayPlayer(window);
+				displayBatView(window);
 				displayMap(window);
 				displayPlayer(window);
 				break;
