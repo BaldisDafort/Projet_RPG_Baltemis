@@ -4,6 +4,7 @@
 #include "options.h"
 #include "player.h"
 #include "anims.h"
+#include "collisions.h"
 
 sfVector2i g_mousePixelPos;
 sfVector2f g_mouseWorldPos;
@@ -81,19 +82,21 @@ int main()
 						sfFloatRect rectGeneralButton = sfRectangleShape_getGlobalBounds(g_GeneralSoundButton_IsMuted);
 						sfFloatRect rectGeneralSoundTurnUpVolumeButton = sfRectangleShape_getGlobalBounds(g_GeneralSoundButtonVolumePlus);
 						sfFloatRect rectGeneralSoundTurnDownVolumeButton = sfRectangleShape_getGlobalBounds(g_GeneralSoundButtonVolumeMinus);
+						sfFloatRect rectMusicButton = sfRectangleShape_getGlobalBounds(g_MusicSoundButton_IsMuted);
 						sfFloatRect rectMusicSoundTurnUpVolumeButton = sfRectangleShape_getGlobalBounds(g_MusicSoundButtonVolumePlus);
 						sfFloatRect rectMusicSoundTurnDownVolumeButton = sfRectangleShape_getGlobalBounds(g_MusicSoundButtonVolumeMinus);
+						sfFloatRect rectSFXButton = sfRectangleShape_getGlobalBounds(g_SFXSoundButton_IsMuted);
 						sfFloatRect rectSFXSoundTurnUpVolumeButton = sfRectangleShape_getGlobalBounds(g_SFXSoundButtonVolumePlus);
 						sfFloatRect rectSFXSoundTurnDownVolumeButton = sfRectangleShape_getGlobalBounds(g_SFXSoundButtonVolumeMinus);
 
 
 
-						if (events.type == sfEvtMouseButtonPressed)
+						if (events.type == sfEvtMouseButtonPressed && keytimer > 0.2)
 						{
 							if (sfFloatRect_contains(&rectGeneralButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 							{
 								SetGeneralMuted(!GetGeneralMuted());
-								ChangeVolume(g_musicTitleScreen, 100.0f);
+								ChangeVolume(g_musicTitleScreen, g_VolumeMusic);
 								g_GeneralSoundRect.left = g_GeneralSoundRect.width * GetGeneralMuted();
 								sfSprite_setTextureRect(g_SpriteGeneralSound, g_GeneralSoundRect);
 							}
@@ -102,12 +105,51 @@ int main()
 							{
 								g_GeneralTurnUpVolumeRect.left = g_GeneralTurnUpVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteGeneralTurnUpVolume, g_GeneralTurnUpVolumeRect);
+								if (!GetGeneralMuted())
+								{
+									printf("%f\n", g_VolumeMusic);
+									g_VolumeMusic += 10.0f;
+									if (g_VolumeMusic > 100.f)
+									{
+										g_VolumeMusic = 100.f;
+									}
+									sfMusic_setVolume(g_musicTitleScreen, (g_VolumeMusic));
+									keytimer = 0.0f;
+								}
+								else
+								{
+									keytimer = 0.0f;
+								}
 							}
 
 							if (sfFloatRect_contains(&rectGeneralSoundTurnDownVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 							{
+								printf("%f\n", g_VolumeMusic);
 								g_GeneralTurnDownVolumeRect.left = g_GeneralTurnDownVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteGeneralTurnDownVolume, g_GeneralTurnDownVolumeRect);
+								if (!GetGeneralMuted())
+								{
+									g_VolumeMusic -= 10.f;
+									if (g_VolumeMusic < 0.f)
+									{
+										g_VolumeMusic = 0.0f;
+									}
+									sfMusic_setVolume(g_musicTitleScreen, (g_VolumeMusic));
+									keytimer = 0.0f;
+								}
+								else
+								{
+									keytimer = 0.0f;
+								}
+
+							}
+
+							if (sfFloatRect_contains(&rectMusicButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
+							{
+								SetMusicMuted(!GetMusicMuted());
+								ChangeVolume(g_musicTitleScreen, g_VolumeMusic);
+								g_MusicSoundRect.left = g_MusicSoundRect.width * GetMusicMuted();
+								sfSprite_setTextureRect(g_SpriteMusicSound, g_MusicSoundRect);
 							}
 
 							if (sfFloatRect_contains(&rectMusicSoundTurnUpVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
@@ -142,20 +184,6 @@ int main()
 						}
 
 
-						sfFloatRect rectMusicButton = sfRectangleShape_getGlobalBounds(g_MusicSoundButton_IsMuted);
-						if (sfFloatRect_contains(&rectMusicButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
-						{
-							if (events.type == sfEvtMouseButtonPressed)
-							{
-								SetMusicMuted(!GetMusicMuted());
-								//ChangeVolume(g_musicTitleScreen, 100.0f);
-								g_MusicSoundRect.left = g_MusicSoundRect.width * GetMusicMuted();
-								sfSprite_setTextureRect(g_SpriteMusicSound, g_MusicSoundRect);
-							}
-
-						}
-
-						sfFloatRect rectSFXButton = sfRectangleShape_getGlobalBounds(g_SFXSoundButton_IsMuted);
 						if (sfFloatRect_contains(&rectSFXButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 						{
 							if (events.type == sfEvtMouseButtonPressed)
@@ -196,12 +224,6 @@ int main()
 
 
 		//updates
-		if (buttonCollision)
-		if (state == GAME)
-		{
-			currentMap = MAP;
-			loadMap();
-		}
 		keytimer += GetDeltaTime();
 		updateView(window);
 		updateTitleScreen(window);
@@ -210,6 +232,21 @@ int main()
 		updateSound();
 		updatePlayer();
 		updateAnims();
+
+		if (state == GAME)
+		{
+			currentMap = MAP;
+			loadMap();
+			if (buttonCollision(skeleton.SpritePositionSkeleton) && keytimer > 1)
+			{
+				if (g_SoundStatusButton == sfStopped)
+				{
+					sfSound_play(g_SoundButton);
+					keytimer = 0.0f;
+				}
+			}
+		}
+
 
 		if (sfKeyboard_isKeyPressed(sfKeyEscape) && keytimer > 0.5f)
 		{
