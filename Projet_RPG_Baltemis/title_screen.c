@@ -99,7 +99,7 @@ void updateTitleScreen(sfRenderWindow* _window)
 	
 
 	// Start Hover Animation
-	if (sfFloatRect_contains(&rectStartButton, g_mousePixelPos.x, g_mousePixelPos.y))
+	if (sfFloatRect_contains(&rectStartButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 	{
 		startButtonAnimationRect.left = startButtonAnimationRect.width;
 		sfSprite_setTextureRect(spriteStartButton, startButtonAnimationRect);
