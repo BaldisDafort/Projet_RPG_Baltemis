@@ -11,3 +11,5 @@ void initAnims();
 void updateAnims();
 void displayAnims(sfRenderWindow* window);
 
+void trap_boucle();
+

@@ -1,39 +1,35 @@
 #include "anims.h"
 
-void pike_isActived()
+void trap_boucle()
 {
-    float animPikeTimer = 0.0f;
-    if (animPikeTimer > 0.1f)
-    {
         for (int i = 0; i < mapSizeY; i++)
         {
             for (int j = 0; j < mapSizeX; j++)
             {
-                if (arr.mapObj[i][j].y == 6)
+                if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
                 {
                     arr.mapObj[i][j].x++;
                     if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
                 }
             }
         }
-
-        animPikeTimer = 0.0f;
-    }
-
 }
 
-
+//timer
+float animPikeTimer;
 float animTimerCont;
 float animTimerCont_l;
-sfBool animLentePlaying;
 float cooldownLente;
+sfBool animLentePlaying;
 
 void initAnims()
 {
+    //timer
 	animTimerCont = 0.0f;
 	animTimerCont_l = 0.0f;
+    cooldownLente = 0.0f;
+    animPikeTimer = 0.0f;
     sfBool animLentePlaying = sfFalse;
-    float cooldownLente = 0.0f;
 
 }
 
@@ -41,6 +37,7 @@ void updateAnims()
 {
 	animTimerCont += GetDeltaTime();
 	animTimerCont_l += GetDeltaTime();
+    animPikeTimer += GetDeltaTime();
    
 
 	//anim button
@@ -99,6 +96,13 @@ void updateAnims()
 
 
     //anime des piege piquant
+
+    if (animPikeTimer > 0.1f)
+    {
+        trap_boucle();
+        animPikeTimer = 0;
+    }
+    
 }
 
 void displayAnims(sfRenderWindow* window)

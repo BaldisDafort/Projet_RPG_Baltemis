@@ -228,19 +228,6 @@ int main()
 
 
 		//updates
-<<<<<<< HEAD
-		if (state == GAME)
-		{
-			currentMap = MAP;
-			if (map == 0)
-			{
-				loadMap();
-				map = 1;
-			}
-			updateAnims();
-		}
-=======
->>>>>>> main
 		keytimer += GetDeltaTime();
 		updateView(window);
 		updateTitleScreen(window);
@@ -252,7 +239,11 @@ int main()
 		if (state == GAME)
 		{
 			currentMap = MAP;
-			loadMap();
+			if (map == 0)
+			{
+				loadMap();
+				map = 1;
+			}
 			if (buttonCollision(skeleton.SpritePositionSkeleton) && keytimer > 1)
 			{
 				if (g_SoundStatusButton == sfStopped)
@@ -261,6 +252,7 @@ int main()
 					keytimer = 0.0f;
 				}
 			}
+			updateAnims();
 		}
 
 
