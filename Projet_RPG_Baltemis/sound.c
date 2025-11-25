@@ -1,8 +1,20 @@
 #include "sound.h"
 
 sfMusic* g_musicTitleScreen;
-float sTimer = 0.0f;
+sfMusic* g_MusicDeadlyLevel;
+sfSoundStatus g_MusicStatusMusicDeadlyLevel;
+
+sfSound* g_SoundButton;
+sfSoundBuffer* g_SoundBufferButton;
+sfSoundStatus g_SoundStatusButton;
+
+
 int musicTitleScreenIsPlaying = 0;
+int musicDeadlyLevelIsPlaying = 0;
+
+float sTimer = 0.0f;
+float g_VolumeMusic = 25.f;
+
 char g_audioSettingsFlags = 0;
 
 void ChangeVolume(sfMusic* _music, float _volume)
@@ -79,9 +91,21 @@ char GetSFXMuted()
 void initSound()
 {
 	g_musicTitleScreen = sfMusic_createFromFile("..\\Resources\\Musics\\musicIntro.ogg");
-	sfMusic_play(g_musicTitleScreen);
+	g_MusicDeadlyLevel = sfMusic_createFromFile("..\\Resources\\Musics\\musicDeadlyLevel.ogg");
+	g_MusicStatusMusicDeadlyLevel = sfMusic_getStatus(g_MusicDeadlyLevel);
+	
+	g_SoundButton = sfSound_create();
+	g_SoundBufferButton = sfSoundBuffer_createFromFile("..\\Resources\\SoundsFX\\soundButton.ogg");
+	sfSound_setBuffer(g_SoundButton, g_SoundBufferButton);
 	sfMusic_setLoop(g_musicTitleScreen, sfTrue);
 	musicTitleScreenIsPlaying = 1;
+
+	sfMusic_setVolume(g_musicTitleScreen, g_VolumeMusic);
+
+	if (state == MENU || state == OPTION)
+	{
+		sfMusic_play(g_musicTitleScreen);
+	}
 }
 
 void updateSound()
@@ -100,8 +124,21 @@ void updateSound()
 		{
 			sfMusic_play(g_musicTitleScreen);
 			musicTitleScreenIsPlaying = 1;
+			musicDeadlyLevelIsPlaying = 0;
 			sTimer = 0.0f;
 		}
 
+	}
+	else if (state == GAME && sTimer > 0.1f)
+	{
+		if (musicDeadlyLevelIsPlaying == 0)
+		{
+			if (g_MusicStatusMusicDeadlyLevel == sfStopped)
+			{
+				sfMusic_play(g_MusicDeadlyLevel);
+				musicDeadlyLevelIsPlaying = 1;
+				sTimer = 0.0f;
+			}
+		}
 	}
 }

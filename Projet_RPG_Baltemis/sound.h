@@ -6,12 +6,17 @@
 #define SFX_OFFSET 2
 
 extern sfMusic* g_musicTitleScreen;
+extern sfSound* g_SoundButton;
+extern sfSoundBuffer* g_SoundBufferButton;
+extern sfSoundStatus g_SoundStatusButton;
+extern float g_VolumeMusic;
 
 enum AudioSettingsFlags
 {
 	GENERAL_MUTED = 1 << GENERAL_OFFSET,
-	SFX_MUTED = 1 << SFX_OFFSET,
-	MUSIC_MUTED = 1 << MUSIC_OFFSET
+	MUSIC_MUTED = 1 << MUSIC_OFFSET,
+	SFX_MUTED = 1 << SFX_OFFSET
+
 };
 
 
