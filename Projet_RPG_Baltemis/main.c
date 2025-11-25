@@ -8,6 +8,7 @@
 
 sfVector2i g_mousePixelPos;
 sfVector2f g_mouseWorldPos;
+int map;
 
 int main()
 {
@@ -26,8 +27,11 @@ int main()
 	initSound();
 	initOptions();
 	initPlayer();
+	initAnims();
 
 	float keytimer = 0.0f;
+	map = 0;
+
 
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
@@ -231,12 +235,15 @@ int main()
 		//updateOptions(window);
 		updateSound();
 		updatePlayer();
-		updateAnims();
 
 		if (state == GAME)
 		{
 			currentMap = MAP;
-			loadMap();
+			if (map == 0)
+			{
+				loadMap();
+				map = 1;
+			}
 			if (buttonCollision(skeleton.SpritePositionSkeleton) && keytimer > 1)
 			{
 				if (g_SoundStatusButton == sfStopped)
@@ -245,6 +252,7 @@ int main()
 					keytimer = 0.0f;
 				}
 			}
+			updateAnims();
 		}
 
 
