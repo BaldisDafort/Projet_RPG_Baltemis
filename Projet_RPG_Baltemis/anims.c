@@ -15,6 +15,49 @@ void trap_boucle()
         }
 }
 
+void acvtived_trap()
+{
+    for (int i = 0; i < mapSizeY; i++)
+    {
+        for (int j = 0; j < mapSizeX; j++)
+        {
+            if (arr.mapObj[i][j].y == 6)
+            {
+                if (arr.mapObj[i][j].x == 2)
+                {
+                    continue;
+                }
+                else
+                {
+                    arr.mapObj[i][j].x++;
+                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+                }
+            }
+            else if (arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
+            {
+
+            }
+        }
+    }
+
+}
+
+void not_acvtived_trap()
+{
+    for (int i = 0; i < mapSizeY; i++)
+    {
+        for (int j = 0; j < mapSizeX; j++)
+        {
+            if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
+            {
+                arr.mapObj[i][j].x++;
+                if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+            }
+        }
+    }
+
+}
+
 //timer
 float animPikeTimer;
 float animTimerCont;
