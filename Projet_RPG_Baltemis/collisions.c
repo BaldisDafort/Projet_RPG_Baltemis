@@ -129,22 +129,32 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 	{
 		return sfTrue; //retourn sfTrue si collision
 	}
-	//pour baisser le boutton
-	else if (arr.mapObj[nexPosInTab.y][nexPosInTab.x].x == 0 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 5)
-	{
-		arr.mapObj[nexPosInTab.y][nexPosInTab.x].x += 1;
-		//return sfFalse;
-	}
-	else if (arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x == 0 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 5)
-	{
-		arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x += 1;
-		//return sfFalse;
-	}
 	else
 	{
 		_velocite->x = 80.0f;
 		_velocite->y = 80.0f;
 		return sfFalse; //retourne sfFalse si pas collision
 	}
-	return sfFalse; //retourne sfFalse si pas collision
+	//return sfFalse; 
+}
+
+
+//collision avec le boutton
+sfBool buttonCollision(sfVector2f _playerPos)
+{
+	sfVector2i _playerTilePos1 = { (_playerPos.x + 1) / tileSize, (_playerPos.y + tileSize) / tileSize };
+	sfVector2i _playerTilePos2 = { (_playerPos.x + 15) / tileSize, (_playerPos.y + tileSize) / tileSize };
+
+	if (arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x == 0 && arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].y == 5)
+	{
+		arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x = 1;
+		return sfTrue;
+	}
+	if (arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x == 0 && arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].y == 5)
+	{
+		arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x = 1;
+		return sfTrue;
+
+	}
+	return sfFalse;
 }

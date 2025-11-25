@@ -3,6 +3,7 @@
 #include "view.h"
 #include "options.h"
 #include "player.h"
+#include "anims.h"
 
 sfVector2i g_mousePixelPos;
 sfVector2f g_mouseWorldPos;
@@ -195,6 +196,7 @@ int main()
 
 
 		//updates
+		if (buttonCollision)
 		if (state == GAME)
 		{
 			currentMap = MAP;
@@ -207,6 +209,7 @@ int main()
 		//updateOptions(window);
 		updateSound();
 		updatePlayer();
+		updateAnims();
 
 		if (sfKeyboard_isKeyPressed(sfKeyEscape) && keytimer > 0.5f)
 		{
