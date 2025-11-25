@@ -7,6 +7,7 @@
 
 sfVector2i g_mousePixelPos;
 sfVector2f g_mouseWorldPos;
+int map;
 
 int main()
 {
@@ -25,8 +26,11 @@ int main()
 	initSound();
 	initOptions();
 	initPlayer();
+	initAnims();
 
 	float keytimer = 0.0f;
+	map = 0;
+
 
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
@@ -196,11 +200,15 @@ int main()
 
 
 		//updates
-		if (buttonCollision)
 		if (state == GAME)
 		{
 			currentMap = MAP;
-			loadMap();
+			if (map == 0)
+			{
+				loadMap();
+				map = 1;
+			}
+			updateAnims();
 		}
 		keytimer += GetDeltaTime();
 		updateView(window);
@@ -209,7 +217,6 @@ int main()
 		//updateOptions(window);
 		updateSound();
 		updatePlayer();
-		updateAnims();
 
 		if (sfKeyboard_isKeyPressed(sfKeyEscape) && keytimer > 0.5f)
 		{

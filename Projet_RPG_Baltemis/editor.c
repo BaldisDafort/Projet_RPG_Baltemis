@@ -565,7 +565,7 @@ void saveMap()
 		fclose(fileWallLavaMap);
 		//save map obj
 		FILE * fileObjMap = fopen("objMap.bin", "wb");
-		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap);
+		fwrite(arr.mapObj, sizeof (arr.mapObj[0][0]), mapSizeX * mapSizeY, fileObjMap);
 		fclose(fileObjMap);
 		break;
 
@@ -592,7 +592,7 @@ void saveMap()
 		fclose(fileWallLavaMap1);
 		//save map obj
 		FILE* fileObjMap1 = fopen("objMap1.bin", "wb");
-		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap1);
+		fwrite(arr.mapObj, sizeof (arr.mapObj[0][0]), mapSizeX * mapSizeY, fileObjMap1);
 		fclose(fileObjMap1);
 		break;
 
@@ -618,7 +618,7 @@ void saveMap()
 		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap2);
 		fclose(fileWallLavaMap2);
 		FILE* fileObjMap2 = fopen("objMap2.bin", "wb");
-		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap2);
+		fwrite(arr.mapObj, sizeof (arr.mapObj[0][0]), mapSizeX * mapSizeY, fileObjMap2);
 		fclose(fileObjMap2);
 		break;
 
@@ -644,7 +644,7 @@ void saveMap()
 		fwrite(arr.mapWall3, sizeof(int), mapSizeX * mapSizeY, fileWallLavaMap3);
 		fclose(fileWallLavaMap3);
 		FILE* fileObjMap3 = fopen("objMap3.bin", "wb");
-		fwrite(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap3);
+		fwrite(arr.mapObj, sizeof (arr.mapObj[0][0]), mapSizeX * mapSizeY, fileObjMap3);
 		fclose(fileObjMap3);
 		break;
 	}
@@ -682,7 +682,7 @@ void loadMap()
 		fclose(fileWallLavaMap);
 		//save map obj
 		FILE* fileObjMap = fopen("objMap.bin", "rb");
-		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap);
+		fread(arr.mapObj, sizeof (arr.mapObj[0][0]), mapSizeX * mapSizeY, fileObjMap);
 		fclose(fileObjMap);
 		break;
 
@@ -709,7 +709,7 @@ void loadMap()
 		fclose(fileWallLavaMap1);
 		//save map obj
 		FILE* fileObjMap1 = fopen("objMap1.bin", "rb");
-		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap1);
+		fread(arr.mapObj, sizeof (arr.mapObj[0][0]), mapSizeX * mapSizeY, fileObjMap1);
 		fclose(fileObjMap1);
 		break;
 
@@ -736,7 +736,7 @@ void loadMap()
 		fclose(fileWallLavaMap2);
 		//save map obj
 		FILE* fileObjMap2 = fopen("objMap2.bin", "rb");
-		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap2);
+		fread(arr.mapObj, sizeof (arr.mapObj[0][0]), mapSizeX * mapSizeY, fileObjMap2);
 		fclose(fileObjMap2);
 		break;
 
@@ -763,7 +763,7 @@ void loadMap()
 		fclose(fileWallLavaMap3);
 		//save map obj
 		FILE* fileObjMap3 = fopen("objMap3.bin", "rb");
-		fread(arr.mapObj, sizeof arr.mapObj[0][0], mapSizeX * mapSizeY, fileObjMap3);
+		fread(arr.mapObj, sizeof (arr.mapObj[0][0]), mapSizeX * mapSizeY, fileObjMap3);
 		fclose(fileObjMap3);
 		break;
 	}
