@@ -25,75 +25,56 @@ void trap_anims(sfIntRect _irect)
     }
 }
 
-void activated_trap()
+void activated_trap(int i, int j)
 {
-    for (int i = 0; i < mapSizeY; i++)
+    if (arr.mapObj[i][j].y == 6)
     {
-        for (int j = 0; j < mapSizeX; j++)
+        if (arr.mapObj[i][j].x != 2)
         {
-            if (arr.mapObj[i][j].y == 6)
-            {
-                if (arr.mapObj[i][j].x == 2)
-                {
-                    continue;
-                }
-                else
-                {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
-                }
-            }
-            else if (arr.mapObj[i][j].y == 8)
-            {
-                if (arr.mapObj[i][j].x < 7)
-                {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x == 6) arr.mapObj[i][j].x = 0;
-                }
-                else
-                {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
-                }
-            }
-            else if (arr.mapObj[i][j].y == 10)
-            {
-                if (arr.mapObj[i][j].x == 2 || arr.mapObj[i][j].x == 3 || arr.mapObj[i][j].x == 4)
-                {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x > 4) arr.mapObj[i][j].x = 2;
-                }
-                else
-                {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
-                }
-            }
+            arr.mapObj[i][j].x++;
+            if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
         }
     }
-
+    else if (arr.mapObj[i][j].y == 8)
+    {
+        if (arr.mapObj[i][j].x < 7)
+        {
+            arr.mapObj[i][j].x++;
+            if (arr.mapObj[i][j].x == 6) arr.mapObj[i][j].x = 0;
+        }
+        else
+        {
+            arr.mapObj[i][j].x++;
+            if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+        }
+    }
+    else if (arr.mapObj[i][j].y == 10)
+    {
+        if (arr.mapObj[i][j].x == 2 || arr.mapObj[i][j].x == 3 || arr.mapObj[i][j].x == 4)
+        {
+            arr.mapObj[i][j].x++;
+            if (arr.mapObj[i][j].x > 4) arr.mapObj[i][j].x = 2;
+        }
+        else
+        {
+            arr.mapObj[i][j].x++;
+            if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+        }
+    }
 }
 
-void not_activated_trap()
+void not_activated_trap(int i, int j)
 {
-    for (int i = 0; i < mapSizeY; i++)
+ 
+    if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
     {
-        for (int j = 0; j < mapSizeX; j++)
+        if (arr.mapObj[i][j].x != 7)
         {
-            if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
-            {
-                if (arr.mapObj[i][j].x == 7)
-                {
-                    continue;
-                }
-                else
-                {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
-                }
-            }
+            arr.mapObj[i][j].x++;
+            if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
         }
     }
+  
 }
 
 //timer
@@ -123,7 +104,7 @@ void initAnims()
     sfSprite_setTextureRect(obj.spObj, obj.irectObj);
 
     //recuperer la position d un bouton
-    sfVector2i buttonPos = buttonAnimation(skeleton.SpritePositionSkeleton);
+    obj.buttonPos = buttonAnimation(skeleton.SpritePositionSkeleton);
 }
 
 void updateAnims()
@@ -131,11 +112,24 @@ void updateAnims()
 	animTimerCont += GetDeltaTime();
 	animTimerCont_l += GetDeltaTime();
     animPikeTimer += GetDeltaTime();
-   
 
 	//anim button
-    buttonCollision(skeleton.SpritePositionSkeleton);
-    buttonAnimation(skeleton.SpritePositionSkeleton);
+    
+    for (int i = 0; i < mapSizeY; i++)
+    {
+        for (int j = 0; j < mapSizeX; j++)
+        {
+            if (buttonCollision(skeleton.SpritePositionSkeleton) || buttonCollision(bat.SpritePositionBat))
+            {
+                printf("lalala");
+                not_activated_trap(i, j);
+            }
+            else
+            {
+                activated_trap(i, j);
+            }
+        }
+    }
 
     // Anim continue (rapide)
     if (animTimerCont > 0.1f)
@@ -184,16 +178,7 @@ void updateAnims()
     }
     cooldownLente += GetDeltaTime();
 
-
-
-    //anime des piege piquant
-
-    if (animPikeTimer > 0.2f)
-    {
-        activated_trap();
-        animPikeTimer = 0;
-    }
-    trap_anims(obj.irectObj);
+    //trap_anims(obj.irectObj);
 }
 
 void displayAnims(sfRenderWindow* _window)

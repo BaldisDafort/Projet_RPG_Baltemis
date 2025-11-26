@@ -663,6 +663,7 @@ void loadMap()
 	{
 		for (int j = 0; j < mapSizeX; j++)
 		{
+			arr.mapGround[i][j] = 0;
 			arr.mapWall[i][j] = 0;
 			arr.mapWall1[i][j] = 0;
 			arr.mapWall2[i][j] = 0;

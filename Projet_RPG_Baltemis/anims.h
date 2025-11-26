@@ -13,6 +13,7 @@ typedef struct Objects
 	sfIntRect irectObj;
 	sfVector2f posObj;
 	sfVector2f animObj[mapSizeY][mapSizeX];
+	sfVector2i buttonPos;
 	int frameObjX;
 	int frameObjY;
 
