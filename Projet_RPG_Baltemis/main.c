@@ -245,7 +245,7 @@ int main()
 
 		if (state == GAME)
 		{
-			currentMap = MAP;
+			//currentMap = MAP;
 			if (map == 0)
 			{
 				loadMap();
