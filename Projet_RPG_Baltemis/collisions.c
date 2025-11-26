@@ -125,7 +125,6 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 		//le piege de feu
 		(arr.mapObj[nexPosInTab.y][nexPosInTab.x].x <= 6 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 10) ||
 		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x <= 6 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 10)
-
 		)
 	{
 		return sfTrue; //retourn sfTrue si collision
@@ -177,4 +176,16 @@ sfVector2i buttonAnimation(sfVector2f _playerPos)
             buttonPos.y = _playerTilePos2.y;
         }
 		return buttonPos;
+}
+
+sfBool levelChangement()
+{
+	sfVector2i _playerTilePos1 = { (skeleton.SpritePositionSkeleton.x + 1) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize) / tileSize };
+	sfVector2i _playerTilePos2 = { (skeleton.SpritePositionSkeleton.x + 15) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize) / tileSize };
+
+	if ((arr.mapGround[_playerTilePos1.y][_playerTilePos1.x] >= 11 && arr.mapGround[_playerTilePos1.y][_playerTilePos1.x] <= 14) || (arr.mapGround[_playerTilePos2.y][_playerTilePos2.x] >= 11 && arr.mapGround[_playerTilePos2.y][_playerTilePos2.x] <= 14))
+	{
+		return sfTrue;
+	}
+	return sfFalse;
 }
