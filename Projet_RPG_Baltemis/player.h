@@ -27,6 +27,8 @@ typedef struct BatPlayer
 	sfBool batIsMoving;
 	sfSprite* spBat;
 	sfTexture* texBat;
+	sfSprite* spShadow;
+	sfTexture* texShadow;
 	sfFloatRect playerRect;
 	sfIntRect irectBat;
 	sfVector2f SpritePositionBat;
@@ -47,6 +49,8 @@ typedef struct SkeletonPlayer
 	sfBool skeletonIsIdle;
 	sfSprite* spSkeleton;
 	sfTexture* texSkeleton;
+	sfSprite* spShadow;
+	sfTexture* texShadow;
 	sfFloatRect playerRect;
 	sfIntRect irectSkeleton;
 	sfVector2f SpritePositionSkeleton;
@@ -56,6 +60,7 @@ typedef struct SkeletonPlayer
 	float animSkeletonSpeed;
 	int frameSkeletonX;
 	int frameSkeletonY;
+
 
 }SkeletonPlayer;
 SkeletonPlayer skeleton;

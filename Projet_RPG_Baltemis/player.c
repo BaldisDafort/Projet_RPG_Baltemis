@@ -41,6 +41,18 @@ void initPlayer()
 	sfSprite_setTexture(skeleton.spSkeleton, skeleton.texSkeleton, sfTrue);
 	sfSprite_setTextureRect(skeleton.spSkeleton, skeleton.irectSkeleton);
 	sfSprite_setPosition(skeleton.spSkeleton, skeleton.SpritePositionSkeleton);
+
+	//create shadow sprite
+	//skeleton
+	skeleton.spShadow = sfSprite_create();
+	skeleton.texShadow = sfTexture_createFromFile("..\\Resources\\Textures\\shadow.png", NULL);
+	sfSprite_setTexture(skeleton.spShadow, skeleton.texShadow, sfTrue);
+	sfSprite_setPosition(skeleton.spShadow, skeleton.SpritePositionSkeleton);
+	//bat
+	bat.spShadow = sfSprite_create();
+	bat.texShadow = sfTexture_createFromFile("..\\Resources\\Textures\\shadow.png", NULL);
+	sfSprite_setTexture(bat.spShadow, bat.texShadow, sfTrue);
+	sfSprite_setPosition(bat.spShadow, bat.SpritePositionBat);
 }
 
 void updatePlayer()
@@ -108,7 +120,8 @@ void updatePlayer()
 		}
 
 		sfSprite_setPosition(bat.spBat, bat.SpritePositionBat);
-
+		//ajout de l ombre sous la bat
+		sfSprite_setPosition(bat.spShadow, bat.SpritePositionBat);
 
 
 
@@ -182,12 +195,17 @@ void updatePlayer()
 		}
 
 		sfSprite_setPosition(skeleton.spSkeleton, skeleton.SpritePositionSkeleton);
+		//ajout de lombre sous le skeleton
+		sfSprite_setPosition(skeleton.spShadow, skeleton.SpritePositionSkeleton);
 	}
+
 }
 
 void displayPlayer(sfRenderWindow* _window)
 {
-	//le skeleton doit etre dessiner avant le bat pour etre en dessous
+	//le skeleton doit etre dessiner avant le bat pour etre en dessous (et la shadow avant le skeleton)
+	sfRenderWindow_drawSprite(_window, skeleton.spShadow, NULL);
+	sfRenderWindow_drawSprite(_window, bat.spShadow, NULL);
 	sfRenderWindow_drawSprite(_window, skeleton.spSkeleton, NULL);
 	sfRenderWindow_drawSprite(_window, bat.spBat, NULL);
 }
