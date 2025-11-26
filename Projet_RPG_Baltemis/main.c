@@ -282,9 +282,11 @@ int main()
 				displaySkeletonView(window);
 				displayMap(window);
 				displayPlayer(window);
+				displayAnims(window);
 				displayBatView(window);
 				displayMap(window);
 				displayPlayer(window);
+				displayAnims(window);
 				break;
 		case MENU:
 				displayView(window);

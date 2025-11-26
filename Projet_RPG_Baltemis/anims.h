@@ -5,11 +5,24 @@
 #include "collisions.h"
 #include "player.h"
 
+//tileset des objets a animer
+typedef struct Objects
+{
+	sfSprite* spObj;
+	sfTexture* texObj;
+	sfIntRect irectObj;
+	sfVector2f posObj;
+	sfVector2f animObj[mapSizeY][mapSizeX];
+	int frameObjX;
+	int frameObjY;
+
+}Objects;
+Objects obj;
 
 //fonctions
 void initAnims();
 void updateAnims();
 void displayAnims(sfRenderWindow* window);
 
-void trap_boucle();
+void trap_boucle(sfIntRect _irect);
 
