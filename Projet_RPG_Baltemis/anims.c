@@ -1,21 +1,33 @@
 #include "anims.h"
 
-void trap_boucle()
+void trap_boucle(sfIntRect _irect)
 {
-        for (int i = 0; i < mapSizeY; i++)
+    for (int i = 1; i < mapSizeY; i++)
+    {
+        for (int j = 0; j < mapSizeX; j++)
         {
-            for (int j = 0; j < mapSizeX; j++)
+            if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
             {
-                if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
+                arr.mapObj[i][j].x++;
+                if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+                if (arr.mapObj[i][j].x == 2 || arr.mapObj[i][j].x == 3 || arr.mapObj[i][j].x == 4)
                 {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+                    _irect.top = arr.mapObj[i][j].y - 1;
+                    _irect.left = arr.mapObj[i][j].x;
                 }
+                else
+                {
+                    _irect.top = 0;
+                    _irect.left = 0;
+                }
+                obj.animObj[i - 1][j].y = _irect.top;
+                obj.animObj[i - 1][j].x = _irect.left;
             }
         }
+    }
 }
 
-void acvtived_trap()
+void activated_trap()
 {
     for (int i = 0; i < mapSizeY; i++)
     {
@@ -68,12 +80,21 @@ sfBool animLentePlaying;
 void initAnims()
 {
     //timer
-	animTimerCont = 0.0f;
-	animTimerCont_l = 0.0f;
+    animTimerCont = 0.0f;
+    animTimerCont_l = 0.0f;
     cooldownLente = 0.0f;
     animPikeTimer = 0.0f;
-    sfBool animLentePlaying = sfFalse;
+    animLentePlaying = sfFalse;
 
+    //init objet a animer
+    obj.irectObj = (sfIntRect){ 0, 0, tileSize, tileSize };
+    obj.posObj = (sfVector2f){ 0.0f, 0.0f };
+    obj.frameObjX = 0;
+    obj.frameObjY = 0;
+    obj.spObj = sfSprite_create();
+    obj.texObj = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetobj.png", NULL);
+    sfSprite_setTexture(obj.spObj, obj.texObj, sfTrue);
+    sfSprite_setTextureRect(obj.spObj, obj.irectObj);
 }
 
 void updateAnims()
@@ -142,13 +163,32 @@ void updateAnims()
 
     if (animPikeTimer > 0.1f)
     {
-        trap_boucle();
+        trap_boucle(obj.irectObj);
         animPikeTimer = 0;
     }
     
 }
 
-void displayAnims(sfRenderWindow* window)
+void displayAnims(sfRenderWindow* _window)
 {
+    // Parcourt la grille et dessine uniquement si la cellule d'animation satisfait la condition
+    for (int i = 0; i < mapSizeY; ++i)
+    {
+        for (int j = 0; j < mapSizeX; ++j)
+        {
+            int ax = obj.animObj[i][j].x; // indice de frame
+            int ay = obj.animObj[i][j].y; // ligne du tileset
+            // condition : dessiner uniquement quand ax est entre 2 et 4 (ou adaptez selon besoin)
+            if (ax >= 2 && ax <= 4)
+            {
+                sfIntRect rect = { ax * tileSize, ay * tileSize, tileSize, tileSize };
+                sfSprite_setTextureRect(obj.spObj, rect);
 
+                sfVector2f pos = { j * (float)tileSize, i * (float)tileSize };
+                sfSprite_setPosition(obj.spObj, pos);
+
+                sfRenderWindow_drawSprite(_window, obj.spObj, NULL);
+            }
+        }
+    }
 }

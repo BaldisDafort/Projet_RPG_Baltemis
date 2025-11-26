@@ -39,6 +39,7 @@ typedef struct BatPlayer
 
 }BatPlayer;
 BatPlayer bat;
+
 //skeleton
 typedef struct SkeletonPlayer
 {

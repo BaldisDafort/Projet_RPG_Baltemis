@@ -304,9 +304,11 @@ int main()
 				displaySkeletonView(window);
 				displayMap(window);
 				displayPlayer(window);
+				displayAnims(window);
 				displayBatView(window);
 				displayMap(window);
 				displayPlayer(window);
+				displayAnims(window);
 				displayView(window);
 				break;
 		case MENU:
