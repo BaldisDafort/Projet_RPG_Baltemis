@@ -101,6 +101,7 @@ void initSound()
 	musicTitleScreenIsPlaying = 1;
 
 	sfMusic_setVolume(g_musicTitleScreen, g_VolumeMusic);
+	sfMusic_setVolume(g_MusicDeadlyLevel, g_VolumeMusic);
 
 	if (state == MENU || state == OPTION)
 	{
@@ -120,13 +121,17 @@ void updateSound()
 	}
 	else if ((state == MENU || state == OPTION) && sTimer > 0.2f)
 	{
-		if (musicTitleScreenIsPlaying == 0)
+		if (g_PreviewState != 1)
 		{
-			sfMusic_play(g_musicTitleScreen);
-			musicTitleScreenIsPlaying = 1;
-			musicDeadlyLevelIsPlaying = 0;
-			sTimer = 0.0f;
+			if (musicTitleScreenIsPlaying == 0)
+			{
+				sfMusic_play(g_musicTitleScreen);
+				musicTitleScreenIsPlaying = 1;
+				musicDeadlyLevelIsPlaying = 0;
+				sTimer = 0.0f;
+			}
 		}
+
 
 	}
 	else if (state == GAME && sTimer > 0.1f)

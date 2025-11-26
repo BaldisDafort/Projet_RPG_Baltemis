@@ -146,7 +146,11 @@ void updateTitleScreen(sfRenderWindow* _window)
 
 void displayTitleScreen(sfRenderWindow* _window)
 {
-	sfRenderWindow_drawSprite(_window, sTitleScreen, NULL);
+	if (g_PreviewState != 1)
+	{
+		sfRenderWindow_drawSprite(_window, sTitleScreen, NULL);
+	}
+
 	
 	sfRenderWindow_drawRectangleShape(_window, StartButton, NULL);
 	sfRenderWindow_drawSprite(_window, spriteStartButton, NULL);
