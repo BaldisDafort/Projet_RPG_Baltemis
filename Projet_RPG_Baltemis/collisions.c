@@ -10,35 +10,35 @@ sfBool batCollisions(sfFloatRect _spriteRect, batDir _direction, sfVector2f* _ve
 	if (_direction == B_HAUT)
 	{
 		//calcul la position dans le tableau au prochian mouvement vers le haut
-		nexPosInTab.x = (_spriteRect.left) / 16;
+		nexPosInTab.x = (_spriteRect.left + 1) / 16;
 		nexPosInTab.y = ((_spriteRect.top + 14) - _velocite->y * GetDeltaTime()) / 16;
-		nexPosInTab2.x = (_spriteRect.left + _spriteRect.width) / 16;
+		nexPosInTab2.x = (_spriteRect.left + _spriteRect.width - 1) / 16;
 		nexPosInTab2.y = ((_spriteRect.top + 14) - _velocite->y * GetDeltaTime()) / 16;
 	}
 
 	if (_direction == B_BAS)
 	{
 		//calcul la position dans le tableau au prochian mouvement vers le bas
-		nexPosInTab.x = _spriteRect.left / 16;
+		nexPosInTab.x = (_spriteRect.left + 1) / 16;
 		nexPosInTab.y = (_spriteRect.top + 15 + _velocite->y * GetDeltaTime()) / 16;
-		nexPosInTab2.x = (_spriteRect.left + _spriteRect.width) / 16;
+		nexPosInTab2.x = (_spriteRect.left + _spriteRect.width - 1) / 16;
 		nexPosInTab2.y = (_spriteRect.top + 15 + _velocite->y * GetDeltaTime()) / 16;
 	}
 	if (_direction == B_DROITE)
 	{
 		//calcul la position dans le tableau au prochian mouvement vers la droite
-		nexPosInTab.x = (_spriteRect.left + _spriteRect.width + _velocite->x * GetDeltaTime()) / 16;
+		nexPosInTab.x = (_spriteRect.left + _spriteRect.width -1 + _velocite->x * GetDeltaTime()) / 16;
 		nexPosInTab.y = (_spriteRect.top + 14) / 16;
-		nexPosInTab2.x = (_spriteRect.left + _spriteRect.width + _velocite->x * GetDeltaTime()) / 16;
+		nexPosInTab2.x = (_spriteRect.left + _spriteRect.width -1 + _velocite->x * GetDeltaTime()) / 16;
 		nexPosInTab2.y = (_spriteRect.top + 15) / 16;
 	}
 
 	if (_direction == B_GAUCHE)
 	{
 		//calcul la position dans le tableau au prochian mouvement vers la gauche
-		nexPosInTab.x = (_spriteRect.left - _velocite->x * GetDeltaTime()) / 16;
+		nexPosInTab.x = (_spriteRect.left + 1 - _velocite->x * GetDeltaTime()) / 16;
 		nexPosInTab.y = (_spriteRect.top + 14) / 16;
-		nexPosInTab2.x = (_spriteRect.left - _velocite->x * GetDeltaTime()) / 16;
+		nexPosInTab2.x = (_spriteRect.left + 1 - _velocite->x * GetDeltaTime()) / 16;
 		nexPosInTab2.y = (_spriteRect.top + 15) / 16;
 	}
 
@@ -140,22 +140,36 @@ sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVec
 }
 
 
-//collision avec le boutton
+//collision et animation du boutton 
 sfBool buttonCollision(sfVector2f _playerPos)
 {
 	sfVector2i _playerTilePos1 = { (_playerPos.x + 1) / tileSize, (_playerPos.y + tileSize) / tileSize };
 	sfVector2i _playerTilePos2 = { (_playerPos.x + 15) / tileSize, (_playerPos.y + tileSize) / tileSize };
 
-	if (arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x == 0 && arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].y == 5)
+	if ((arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x == 0 && arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].y == 5) ||
+		(arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x == 0 && arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].y == 5))
 	{
-		arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x = 1;
 		return sfTrue;
-	}
-	if (arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x == 0 && arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].y == 5)
-	{
-		arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x = 1;
-		return sfTrue;
-
 	}
 	return sfFalse;
+}
+sfVector2i buttonAnimation(sfVector2f _playerPos)
+{
+	sfVector2i _playerTilePos1 = { (_playerPos.x + 1) / tileSize, (_playerPos.y + tileSize) / tileSize };
+	sfVector2i _playerTilePos2 = { (_playerPos.x + 15) / tileSize, (_playerPos.y + tileSize) / tileSize };
+	sfVector2i buttonPos = { -1, -1 };
+
+        if (arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x == 0 && arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].y == 5)
+        {
+            arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x = 1;
+            buttonPos.x = _playerTilePos1.x;
+            buttonPos.y = _playerTilePos1.y;
+        }
+        if (arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x == 0 && arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].y == 5)
+        {
+            arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x = 1;
+            buttonPos.x = _playerTilePos2.x;
+            buttonPos.y = _playerTilePos2.y;
+        }
+		return buttonPos;
 }
