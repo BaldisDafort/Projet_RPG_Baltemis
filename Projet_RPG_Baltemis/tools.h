@@ -12,6 +12,7 @@
 
 extern sfVector2i g_mousePixelPos;
 extern sfVector2f g_mouseWorldPos;
+extern int g_PreviewState;
 
 typedef enum { MENU, GAME, EDITOR, OPTION, QUIT }State;
 State state;

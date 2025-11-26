@@ -60,16 +60,10 @@ void displayView(sfRenderWindow* _window)
 
 void displaySkeletonView(sfRenderWindow* _window)
 {
-	if (state == GAME)
-	{
-		sfRenderWindow_setView(_window, g_SkeletonView);
-	}
+	sfRenderWindow_setView(_window, g_SkeletonView);
 }
 
 void displayBatView(sfRenderWindow* _window)
 {
-	if (state == GAME)
-	{
-		sfRenderWindow_setView(_window, g_BatView);
-	}
+	sfRenderWindow_setView(_window, g_BatView);
 }
