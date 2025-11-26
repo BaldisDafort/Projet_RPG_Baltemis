@@ -146,9 +146,14 @@ sfBool buttonCollision(sfVector2f _playerPos)
 	sfVector2i _playerTilePos1 = { (_playerPos.x + 1) / tileSize, (_playerPos.y + tileSize) / tileSize };
 	sfVector2i _playerTilePos2 = { (_playerPos.x + 15) / tileSize, (_playerPos.y + tileSize) / tileSize };
 
-	if ((arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x == 0 && arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].y == 5) ||
-		(arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x == 0 && arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].y == 5))
+	if (arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x == 0 && arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].y == 5)
 	{
+		//arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x = 1;
+		return sfTrue;
+	}
+	if (arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x == 0 && arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].y == 5)
+	{
+		//arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x = 1;
 		return sfTrue;
 	}
 	return sfFalse;
@@ -161,13 +166,13 @@ sfVector2i buttonAnimation(sfVector2f _playerPos)
 
         if (arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x == 0 && arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].y == 5)
         {
-            arr.mapObj[_playerTilePos1.y][_playerTilePos1.x].x = 1;
+         
             buttonPos.x = _playerTilePos1.x;
             buttonPos.y = _playerTilePos1.y;
         }
         if (arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x == 0 && arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].y == 5)
         {
-            arr.mapObj[_playerTilePos2.y][_playerTilePos2.x].x = 1;
+		
             buttonPos.x = _playerTilePos2.x;
             buttonPos.y = _playerTilePos2.y;
         }
