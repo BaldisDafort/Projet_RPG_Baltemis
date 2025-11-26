@@ -89,6 +89,11 @@ void updatePlayer()
 				bat.SpritePositionBat.x += bat.vitesse.x * GetDeltaTime();
 			}
 		}
+		//nomalisation des mouvements diagonaux
+		if ((sfKeyboard_isScancodePressed(sfScanRight) || sfKeyboard_isScancodePressed(sfScanDown) || sfKeyboard_isScancodePressed(sfScanLeft) || sfKeyboard_isScancodePressed(sfScanUp)) && (sfKeyboard_isScancodePressed(sfScanRight) || sfKeyboard_isScancodePressed(sfScanDown) || sfKeyboard_isScancodePressed(sfScanLeft) || sfKeyboard_isScancodePressed(sfScanUp)))
+		{
+			bat.vitesse.x* GetDeltaTime() / 2;
+		}
 
 		bat.animBatTime += GetDeltaTime();
 		if (bat.animBatTime > bat.animBatSpeed)
