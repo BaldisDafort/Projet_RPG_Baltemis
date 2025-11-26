@@ -121,6 +121,9 @@ void initAnims()
     obj.texObj = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetobj.png", NULL);
     sfSprite_setTexture(obj.spObj, obj.texObj, sfTrue);
     sfSprite_setTextureRect(obj.spObj, obj.irectObj);
+
+    //recuperer la position d un bouton
+    sfVector2i buttonPos = buttonAnimation(skeleton.SpritePositionSkeleton);
 }
 
 void updateAnims()
@@ -131,11 +134,9 @@ void updateAnims()
    
 
 	//anim button
-	buttonCollision(skeleton.SpritePositionSkeleton);
-	if (sfKeyboard_isScancodePressed(sfScanW))
-	{
-		buttonCollision(bat.SpritePositionBat);
-	}
+    buttonCollision(skeleton.SpritePositionSkeleton);
+    buttonAnimation(skeleton.SpritePositionSkeleton);
+
     // Anim continue (rapide)
     if (animTimerCont > 0.1f)
     {
