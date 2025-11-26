@@ -65,20 +65,22 @@ void activated_trap(int i, int j)
 
 void not_activated_trap(int i, int j)
 {
- 
-    if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
-    {
-        if (arr.mapObj[i][j].x != 7)
+        if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
         {
-            arr.mapObj[i][j].x++;
-            if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+            //if (arr.mapGround[i][j] == arr.mapGround[obj.buttonPos.y][obj.buttonPos.x])
+            //{
+                if (arr.mapObj[i][j].x != 7)
+                {
+                    arr.mapObj[i][j].x++;
+                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+                }
+            //}
         }
-    }
-  
+
 }
 
 //timer
-float animPikeTimer;
+float animTrapTimer;
 float animTimerCont;
 float animTimerCont_l;
 float cooldownLente;
@@ -90,7 +92,7 @@ void initAnims()
     animTimerCont = 0.0f;
     animTimerCont_l = 0.0f;
     cooldownLente = 0.0f;
-    animPikeTimer = 0.0f;
+    animTrapTimer = 0.0f;
     animLentePlaying = sfFalse;
 
     //init objet a animer
@@ -111,22 +113,20 @@ void updateAnims()
 {
 	animTimerCont += GetDeltaTime();
 	animTimerCont_l += GetDeltaTime();
-    animPikeTimer += GetDeltaTime();
+    animTrapTimer += GetDeltaTime();
 
 	//anim button
-    
     for (int i = 0; i < mapSizeY; i++)
     {
         for (int j = 0; j < mapSizeX; j++)
         {
             if (buttonCollision(skeleton.SpritePositionSkeleton) || buttonCollision(bat.SpritePositionBat))
             {
-                //printf("lalala");
-                not_activated_trap(i, j);
+                    not_activated_trap(i, j);
             }
             else
             {
-                activated_trap(i, j);
+                    activated_trap(i, j);
             }
         }
     }

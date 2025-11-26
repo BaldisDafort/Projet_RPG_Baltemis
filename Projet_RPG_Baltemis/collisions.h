@@ -7,7 +7,8 @@ sfBool batCollisions(sfFloatRect _spriteRect, batDir _direction, sfVector2f* _ve
 sfBool skeletonCollisions(sfFloatRect _spriteRect, skeletonDir _direction, sfVector2f* _velocite, float* _anim);
 extern sfBool buttonCollision(sfVector2f _playerPos);
 sfVector2i buttonAnimation(sfVector2f _playerPos);
-sfBool levelChangement();
+sfBool levelChangement_next();
+sfBool levelChangement_before();
 
 
  

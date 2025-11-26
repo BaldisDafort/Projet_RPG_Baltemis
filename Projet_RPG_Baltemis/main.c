@@ -254,12 +254,12 @@ int main()
 					loadMap();
 					loading_map = 1;
 				}
-				if (levelChangement())
+				if (levelChangement_next())
 				{
 					loading_map = 0;
 					currentMap = MAP1;
-					skeleton.SpritePositionSkeleton = (sfVector2f) {2.0f*tileSize, 6.0f*tileSize};
-					bat.SpritePositionBat = (sfVector2f){ 2.0f * tileSize, 8.0f * tileSize };
+					skeleton.SpritePositionSkeleton = (sfVector2f) {1.0f*tileSize, 6.0f*tileSize};
+					bat.SpritePositionBat = (sfVector2f){ 1.0f * tileSize, 8.0f * tileSize };
 				}
 				break;
 			case MAP1:
@@ -268,12 +268,19 @@ int main()
 					loadMap();
 					loading_map = 1;
 				}
-				if (levelChangement())
+				if (levelChangement_next())
 				{
 					loading_map = 0;
 					currentMap = MAP2;
 					skeleton.SpritePositionSkeleton = (sfVector2f){ 24.0f * tileSize, 1.0f * tileSize };
-					bat.SpritePositionBat = (sfVector2f){ 26.0f * tileSize, 1.0f * tileSize };
+					bat.SpritePositionBat = (sfVector2f){ 25.0f * tileSize, 1.0f * tileSize };
+				}
+				else if(levelChangement_before())
+				{
+					loading_map = 0;
+					currentMap = MAP;
+					skeleton.SpritePositionSkeleton = (sfVector2f){ 32.0f * tileSize, 19.0f * tileSize };
+					bat.SpritePositionBat = (sfVector2f){ 32.0f * tileSize, 20.0f * tileSize };
 				}
 				break;
 			case MAP2:
@@ -281,6 +288,13 @@ int main()
 				{
 					loadMap();
 					loading_map = 1;
+				}
+				if (levelChangement_before())
+				{
+					loading_map = 0;
+					currentMap = MAP1;
+					skeleton.SpritePositionSkeleton = (sfVector2f){ 17.0f * tileSize, 23.0f * tileSize };
+					bat.SpritePositionBat = (sfVector2f){ 18.0f * tileSize, 23.0f * tileSize };
 				}
 			case MAP3:
 				break;
