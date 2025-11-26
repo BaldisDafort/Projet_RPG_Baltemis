@@ -121,7 +121,7 @@ void updateAnims()
         {
             if (buttonCollision(skeleton.SpritePositionSkeleton) || buttonCollision(bat.SpritePositionBat))
             {
-                printf("lalala");
+                //printf("lalala");
                 not_activated_trap(i, j);
             }
             else
@@ -178,7 +178,7 @@ void updateAnims()
     }
     cooldownLente += GetDeltaTime();
 
-    //trap_anims(obj.irectObj);
+    trap_anims(obj.irectObj);
 }
 
 void displayAnims(sfRenderWindow* _window)
