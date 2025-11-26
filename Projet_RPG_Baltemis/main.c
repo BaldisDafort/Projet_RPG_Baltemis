@@ -8,6 +8,8 @@
 
 sfVector2i g_mousePixelPos;
 sfVector2f g_mouseWorldPos;
+
+int g_PreviewState;
 int map;
 
 int main()
@@ -19,6 +21,7 @@ int main()
 	sfRenderWindow* window = sfRenderWindow_create(mode, "CSFML", sfResize | sfClose, NULL);
 
 	state = MENU;
+	g_PreviewState = 0;
 
 	//inits
 	initView();
@@ -58,6 +61,7 @@ int main()
 						if (sfFloatRect_contains(&rectButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 						{
 							state = GAME;
+							g_PreviewState = 1;
 						}
 
 						rectButton = sfRectangleShape_getGlobalBounds(EditorButton);
@@ -73,6 +77,8 @@ int main()
 						if (sfFloatRect_contains(&rectButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 						{
 							state = OPTION;
+							g_PreviewState = 3;
+
 						}
 
 						rectButton = sfRectangleShape_getGlobalBounds(QuitButton);
@@ -101,6 +107,7 @@ int main()
 							{
 								SetGeneralMuted(!GetGeneralMuted());
 								ChangeVolume(g_musicTitleScreen, g_VolumeMusic);
+								ChangeVolume(g_MusicDeadlyLevel, g_VolumeMusic);
 								g_GeneralSoundRect.left = g_GeneralSoundRect.width * GetGeneralMuted();
 								sfSprite_setTextureRect(g_SpriteGeneralSound, g_GeneralSoundRect);
 							}
@@ -261,7 +268,23 @@ int main()
 			if (state != MENU)
 			{
 				state = MENU;
+				g_PreviewState = 0;
 				keytimer = 0.0f;
+			}
+		}
+
+		if (sfKeyboard_isKeyPressed(sfKeyO) && keytimer > 0.5f)
+		{
+			if (state != OPTION)
+			{
+				state = OPTION;
+				keytimer = 0.0f;
+			}
+			else
+			{
+				state = g_PreviewState;
+				keytimer = 0.0f;
+
 			}
 		}
 
@@ -278,7 +301,6 @@ int main()
 		switch (state)
 		{
 		case GAME:
-				displayView(window);
 				displaySkeletonView(window);
 				displayMap(window);
 				displayPlayer(window);
@@ -287,6 +309,7 @@ int main()
 				displayMap(window);
 				displayPlayer(window);
 				displayAnims(window);
+				displayView(window);
 				break;
 		case MENU:
 				displayView(window);
@@ -297,8 +320,18 @@ int main()
 				displayMap(window);
 				break;
 		case OPTION:
-				displayOptions(window);
-				break;
+			if (g_PreviewState == 1)
+			{
+				displaySkeletonView(window);
+				displayMap(window);
+				displayPlayer(window);
+				displayBatView(window);
+				displayMap(window);
+				displayPlayer(window);
+			}
+			displayView(window);
+			displayOptions(window);
+			break;
 		}
 
 

@@ -6,6 +6,7 @@
 #define SFX_OFFSET 2
 
 extern sfMusic* g_musicTitleScreen;
+extern sfMusic* g_MusicDeadlyLevel;
 extern sfSound* g_SoundButton;
 extern sfSoundBuffer* g_SoundBufferButton;
 extern sfSoundStatus g_SoundStatusButton;
