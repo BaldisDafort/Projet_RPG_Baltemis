@@ -24,5 +24,6 @@ void initAnims();
 void updateAnims();
 void displayAnims(sfRenderWindow* window);
 
-void trap_boucle(sfIntRect _irect);
-
+void trap_anims(sfIntRect _irect);
+void activated_trap();
+void not_activated_trap();

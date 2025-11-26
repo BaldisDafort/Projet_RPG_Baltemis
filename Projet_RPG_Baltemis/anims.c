@@ -1,6 +1,6 @@
 #include "anims.h"
 
-void trap_boucle(sfIntRect _irect)
+void trap_anims(sfIntRect _irect)
 {
     for (int i = 1; i < mapSizeY; i++)
     {
@@ -8,8 +8,6 @@ void trap_boucle(sfIntRect _irect)
         {
             if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
             {
-                arr.mapObj[i][j].x++;
-                if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
                 if (arr.mapObj[i][j].x == 2 || arr.mapObj[i][j].x == 3 || arr.mapObj[i][j].x == 4)
                 {
                     _irect.top = arr.mapObj[i][j].y - 1;
@@ -45,16 +43,38 @@ void activated_trap()
                     if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
                 }
             }
-            else if (arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
+            else if (arr.mapObj[i][j].y == 8)
             {
-
+                if (arr.mapObj[i][j].x < 7)
+                {
+                    arr.mapObj[i][j].x++;
+                    if (arr.mapObj[i][j].x == 6) arr.mapObj[i][j].x = 0;
+                }
+                else
+                {
+                    arr.mapObj[i][j].x++;
+                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+                }
+            }
+            else if (arr.mapObj[i][j].y == 10)
+            {
+                if (arr.mapObj[i][j].x == 2 || arr.mapObj[i][j].x == 3 || arr.mapObj[i][j].x == 4)
+                {
+                    arr.mapObj[i][j].x++;
+                    if (arr.mapObj[i][j].x > 4) arr.mapObj[i][j].x = 2;
+                }
+                else
+                {
+                    arr.mapObj[i][j].x++;
+                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+                }
             }
         }
     }
 
 }
 
-void not_acvtived_trap()
+void not_activated_trap()
 {
     for (int i = 0; i < mapSizeY; i++)
     {
@@ -62,12 +82,18 @@ void not_acvtived_trap()
         {
             if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
             {
-                arr.mapObj[i][j].x++;
-                if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+                if (arr.mapObj[i][j].x == 7)
+                {
+                    continue;
+                }
+                else
+                {
+                    arr.mapObj[i][j].x++;
+                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+                }
             }
         }
     }
-
 }
 
 //timer
@@ -161,12 +187,12 @@ void updateAnims()
 
     //anime des piege piquant
 
-    if (animPikeTimer > 0.1f)
+    if (animPikeTimer > 0.2f)
     {
-        trap_boucle(obj.irectObj);
+        activated_trap();
         animPikeTimer = 0;
     }
-    
+    trap_anims(obj.irectObj);
 }
 
 void displayAnims(sfRenderWindow* _window)
