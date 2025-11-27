@@ -1,5 +1,6 @@
 #pragma once
 #include "tools.h"
+#include "editor.h"
 
 //directions
 typedef enum BatDirection batDir;
