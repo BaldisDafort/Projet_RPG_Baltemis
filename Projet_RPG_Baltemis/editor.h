@@ -12,6 +12,7 @@ typedef enum Tileset
 { 
 	GROUND,
 	OBJ,
+	SPAWN,
 	WALL,
 	WALL1, 
 	WALL2, 
@@ -48,6 +49,8 @@ typedef struct Tilemap
 	sfTexture* textmapGround;
 	sfSprite* tilesetWall;
 	sfTexture* textmapWall;
+	sfSprite* tilesetSpawn;
+	sfTexture* textmapSpawn;
 	sfSprite* tilesetObj;
 	sfTexture* textmapObj;
 	sfIntRect rectile;
@@ -63,11 +66,13 @@ typedef struct TileEditor
 	sfSprite* tileEditorGround;
 	sfSprite* tileEditorWall;
 	sfSprite* tileEditorObj;
+	sfSprite* tileEditorSpawn;
 	sfVector2f posEditor;
 	sfVector2f posEditorObj;
 	sfVector2f originEditorGround;
 	sfVector2f originEditorWall;
 	sfVector2f originEditorObj;
+	sfVector2f originEditorSpawn;
 
 }TileEditor;
 TileEditor tileEditor;
@@ -85,12 +90,14 @@ typedef struct Array
 {
 	//tableau
 	int mapGround[mapSizeY][mapSizeX];
+	int mapSpawn[mapSizeY][mapSizeX];
 	sfVector2i mapObj[mapSizeY][mapSizeX];
 	int mapWall[mapSizeY][mapSizeX];
 	int mapWall1[mapSizeY][mapSizeX];
 	int mapWall2[mapSizeY][mapSizeX];
 	int mapWall3[mapSizeY][mapSizeX];
 	int tileGround[2][13];
+	int tileSpawn[2][2];
 	int tileWall[2][28];
 	int tileWall1[2][28];
 	int tileWall2[2][28];
@@ -102,6 +109,8 @@ Array arr;
 
 //extern
 extern float firstPosTimer;
+extern sfVector2f posBaseBat;
+extern sfVector2f posBaseSkeleton;
 
 //map creation
 void initMap();
