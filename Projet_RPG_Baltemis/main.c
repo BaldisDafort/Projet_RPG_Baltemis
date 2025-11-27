@@ -69,6 +69,7 @@ int main()
 						{
 							firstPosTimer = 0.0f;
 							state = EDITOR;
+							g_PreviewState = 2;
 							printf(" Current Map : %d \n", currentMap);
 							loadMap();
 						}
@@ -316,6 +317,10 @@ int main()
 		{
 			if (state != MENU)
 			{
+				if (g_PreviewState == 2)
+				{
+					saveMap();
+				}
 				state = MENU;
 				g_PreviewState = 0;
 				keytimer = 0.0f;
