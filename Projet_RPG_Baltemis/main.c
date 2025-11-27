@@ -272,8 +272,8 @@ int main()
 				{
 					loading_map = 0;
 					currentMap = MAP2;
-					skeleton.SpritePositionSkeleton = (sfVector2f){ 24.0f * tileSize, 1.0f * tileSize };
-					bat.SpritePositionBat = (sfVector2f){ 25.0f * tileSize, 1.0f * tileSize };
+					skeleton.SpritePositionSkeleton = (sfVector2f){ 23.0f * tileSize, 1.0f * tileSize };
+					bat.SpritePositionBat = (sfVector2f){ 24.0f * tileSize, 1.0f * tileSize };
 				}
 				else if(levelChangement_before())
 				{

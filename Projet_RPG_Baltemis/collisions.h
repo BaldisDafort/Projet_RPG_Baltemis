@@ -9,6 +9,6 @@ extern sfBool buttonCollision(sfVector2f _playerPos);
 sfVector2i buttonAnimation(sfVector2f _playerPos);
 sfBool levelChangement_next();
 sfBool levelChangement_before();
-
+sfBool open_chest();
 
  
