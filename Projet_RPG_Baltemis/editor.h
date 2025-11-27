@@ -114,6 +114,7 @@ extern sfVector2f posBaseSkeleton;
 
 //map creation
 void initMap();
+void updatePositionsPlayers();
 void updateMap(sfRenderWindow* _window);
 void displayMap(sfRenderWindow* _window);
 void displayEditor(sfRenderWindow* _window);

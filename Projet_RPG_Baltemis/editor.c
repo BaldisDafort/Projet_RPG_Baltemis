@@ -1,8 +1,8 @@
 #include "editor.h"
 
 //positions des joueurs
-sfVector2f posBaseBat = { 0.0f, 0.0f };
-sfVector2f posBaseSkeleton = { 0.0f, 0.0f };
+sfVector2f posBaseBat = { 1.0f, 1.0f };
+sfVector2f posBaseSkeleton = { 1.0f, 1.0f };
 
 //timer
 firstPosTimer = 0.0f;
@@ -294,6 +294,10 @@ void updateMap(sfRenderWindow* _window)
 		}
 	}
 
+}
+
+void updatePositionsPlayers()
+{
 	//positions de base des joueurs
 	for (int i = 0; i < mapSizeY; i++)
 	{
@@ -309,11 +313,11 @@ void updateMap(sfRenderWindow* _window)
 			}
 		}
 	}
-
 }
 
 void displayMap(sfRenderWindow* _window)
 {
+
 
 	//valeurs
 	int posGroundX = 0;
@@ -353,44 +357,48 @@ void displayMap(sfRenderWindow* _window)
 			sfIntRect rectileWall2 = { posWall2X, 2 * tileSize, tileSize, tileSize };
 			sfIntRect rectileWall3 = { posWall3X, 3 * tileSize, tileSize, tileSize };
 			tilemap.pos = (sfVector2f){ tilemap.origin.x, tilemap.origin.y };
-			//dessiner ground
-			sfSprite_setPosition(tilemap.tilesetGround, tilemap.pos);
-			sfSprite_setTextureRect(tilemap.tilesetGround, rectileGround);
-			sfRenderWindow_drawSprite(_window, tilemap.tilesetGround, NULL);
-			//dessiner spawn (que si on est dans l editeur)
-			if (state == EDITOR)
-			{
-				sfSprite_setPosition(tilemap.tilesetSpawn, tilemap.pos);
-				sfSprite_setTextureRect(tilemap.tilesetSpawn, rectileSpawn);
-				sfRenderWindow_drawSprite(_window, tilemap.tilesetSpawn, NULL);
-			}
-			//dessiner wall
-			sfSprite_setPosition(tilemap.tilesetWall, tilemap.pos);
-			sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall);
-			sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
-			//dessiner wall1
-			sfSprite_setPosition(tilemap.tilesetWall, tilemap.pos);
-			sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall1);
-			sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
-			//dessiner wall2
-			sfSprite_setPosition(tilemap.tilesetWall, tilemap.pos);
-			sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall2);
-			sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
-			//dessiner wall3
-			sfSprite_setPosition(tilemap.tilesetWall, tilemap.pos);
-			sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall3);
-			sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
-			//dessiner object
-			sfSprite_setPosition(tilemap.tilesetObj, tilemap.pos);
-			sfSprite_setTextureRect(tilemap.tilesetObj, rectileObj);
-			sfRenderWindow_drawSprite(_window, tilemap.tilesetObj, NULL);
 
-			tilemap.origin.x += tileSize;
-
-			if (tilemap.origin.x >= mapSizeX * tileSize)
+			if (_window != NULL)
 			{
-				tilemap.origin.x = 0;
-				tilemap.origin.y += tileSize;
+				//dessiner ground
+				sfSprite_setPosition(tilemap.tilesetGround, tilemap.pos);
+				sfSprite_setTextureRect(tilemap.tilesetGround, rectileGround);
+				sfRenderWindow_drawSprite(_window, tilemap.tilesetGround, NULL);
+				//dessiner spawn (que si on est dans l editeur)
+				if (state == EDITOR)
+				{
+					sfSprite_setPosition(tilemap.tilesetSpawn, tilemap.pos);
+					sfSprite_setTextureRect(tilemap.tilesetSpawn, rectileSpawn);
+					sfRenderWindow_drawSprite(_window, tilemap.tilesetSpawn, NULL);
+				}
+				//dessiner wall
+				sfSprite_setPosition(tilemap.tilesetWall, tilemap.pos);
+				sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall);
+				sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
+				//dessiner wall1
+				sfSprite_setPosition(tilemap.tilesetWall, tilemap.pos);
+				sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall1);
+				sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
+				//dessiner wall2
+				sfSprite_setPosition(tilemap.tilesetWall, tilemap.pos);
+				sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall2);
+				sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
+				//dessiner wall3
+				sfSprite_setPosition(tilemap.tilesetWall, tilemap.pos);
+				sfSprite_setTextureRect(tilemap.tilesetWall, rectileWall3);
+				sfRenderWindow_drawSprite(_window, tilemap.tilesetWall, NULL);
+				//dessiner object
+				sfSprite_setPosition(tilemap.tilesetObj, tilemap.pos);
+				sfSprite_setTextureRect(tilemap.tilesetObj, rectileObj);
+				sfRenderWindow_drawSprite(_window, tilemap.tilesetObj, NULL);
+
+				tilemap.origin.x += tileSize;
+
+				if (tilemap.origin.x >= mapSizeX * tileSize)
+				{
+					tilemap.origin.x = 0;
+					tilemap.origin.y += tileSize;
+				}
 			}
 		}
 	}
