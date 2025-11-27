@@ -74,4 +74,5 @@ sfBool skeletonIsMoving;
 void initPlayer();
 void updatePlayer();
 void displayPlayer(sfRenderWindow* window);
+void setPlayerPositions();
 
