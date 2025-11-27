@@ -25,82 +25,66 @@ void trap_anims(sfIntRect _irect)
     }
 }
 
-void activated_trap()
+void activated_trap(int i, int j)
 {
-    for (int i = 0; i < mapSizeY; i++)
+    if (arr.mapObj[i][j].y == 6)
     {
-        for (int j = 0; j < mapSizeX; j++)
+        if (arr.mapObj[i][j].x != 2)
         {
-            if (arr.mapObj[i][j].y == 6)
-            {
-                if (arr.mapObj[i][j].x == 2)
-                {
-                    continue;
-                }
-                else
-                {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
-                }
-            }
-            else if (arr.mapObj[i][j].y == 8)
-            {
-                if (arr.mapObj[i][j].x < 7)
-                {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x == 6) arr.mapObj[i][j].x = 0;
-                }
-                else
-                {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
-                }
-            }
-            else if (arr.mapObj[i][j].y == 10)
-            {
-                if (arr.mapObj[i][j].x == 2 || arr.mapObj[i][j].x == 3 || arr.mapObj[i][j].x == 4)
-                {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x > 4) arr.mapObj[i][j].x = 2;
-                }
-                else
-                {
-                    arr.mapObj[i][j].x++;
-                    if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
-                }
-            }
+            arr.mapObj[i][j].x++;
+            if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
         }
     }
-
+    else if (arr.mapObj[i][j].y == 8)
+    {
+        if (arr.mapObj[i][j].x < 7)
+        {
+            arr.mapObj[i][j].x++;
+            if (arr.mapObj[i][j].x == 6) arr.mapObj[i][j].x = 0;
+        }
+        else
+        {
+            arr.mapObj[i][j].x++;
+            if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+        }
+    }
+    else if (arr.mapObj[i][j].y == 10)
+    {
+        if (arr.mapObj[i][j].x == 2 || arr.mapObj[i][j].x == 3 || arr.mapObj[i][j].x == 4)
+        {
+            arr.mapObj[i][j].x++;
+            if (arr.mapObj[i][j].x > 4) arr.mapObj[i][j].x = 2;
+        }
+        else
+        {
+            arr.mapObj[i][j].x++;
+            if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
+        }
+    }
 }
 
-void not_activated_trap()
+void not_activated_trap(int i, int j)
 {
-    for (int i = 0; i < mapSizeY; i++)
-    {
-        for (int j = 0; j < mapSizeX; j++)
+        if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
         {
-            if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
-            {
-                if (arr.mapObj[i][j].x == 7)
-                {
-                    continue;
-                }
-                else
+            //if (arr.mapGround[i][j] == arr.mapGround[obj.buttonPos.y][obj.buttonPos.x])
+            //{
+                if (arr.mapObj[i][j].x != 7)
                 {
                     arr.mapObj[i][j].x++;
                     if (arr.mapObj[i][j].x > 7) arr.mapObj[i][j].x = 0;
                 }
-            }
+            //}
         }
-    }
+
 }
 
 //timer
-float animPikeTimer;
+float animTrapTimer;
 float animTimerCont;
 float animTimerCont_l;
 float cooldownLente;
+float chestAnimTimer;
 sfBool animLentePlaying;
 
 void initAnims()
@@ -109,7 +93,7 @@ void initAnims()
     animTimerCont = 0.0f;
     animTimerCont_l = 0.0f;
     cooldownLente = 0.0f;
-    animPikeTimer = 0.0f;
+    animTrapTimer = 0.0f;
     animLentePlaying = sfFalse;
 
     //init objet a animer
@@ -121,21 +105,38 @@ void initAnims()
     obj.texObj = sfTexture_createFromFile("..\\Resources\\Textures\\tilesetobj.png", NULL);
     sfSprite_setTexture(obj.spObj, obj.texObj, sfTrue);
     sfSprite_setTextureRect(obj.spObj, obj.irectObj);
+
+    //recuperer la position d un bouton
+    obj.buttonPos = buttonAnimation(skeleton.SpritePositionSkeleton);
 }
 
 void updateAnims()
 {
 	animTimerCont += GetDeltaTime();
 	animTimerCont_l += GetDeltaTime();
-    animPikeTimer += GetDeltaTime();
-   
+    animTrapTimer += GetDeltaTime();
+	chestAnimTimer += GetDeltaTime();
+    //anim coffres
+    
+    open_chest();
+    
 
 	//anim button
-	buttonCollision(skeleton.SpritePositionSkeleton);
-	if (sfKeyboard_isScancodePressed(sfScanW))
-	{
-		buttonCollision(bat.SpritePositionBat);
-	}
+    for (int i = 0; i < mapSizeY; i++)
+    {
+        for (int j = 0; j < mapSizeX; j++)
+        {
+            if (buttonCollision(skeleton.SpritePositionSkeleton) || buttonCollision(bat.SpritePositionBat))
+            {
+                    not_activated_trap(i, j);
+            }
+            else
+            {
+                    activated_trap(i, j);
+            }
+        }
+    }
+
     // Anim continue (rapide)
     if (animTimerCont > 0.1f)
     {
@@ -183,15 +184,6 @@ void updateAnims()
     }
     cooldownLente += GetDeltaTime();
 
-
-
-    //anime des piege piquant
-
-    if (animPikeTimer > 0.2f)
-    {
-        activated_trap();
-        animPikeTimer = 0;
-    }
     trap_anims(obj.irectObj);
 }
 

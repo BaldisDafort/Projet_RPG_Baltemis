@@ -657,6 +657,21 @@ void loadMap()
 	FILE* fileGroundMap1;
 	FILE* fileGroundMap2;
 	FILE* fileGroundMap3;
+
+	//remettre les v aleur du tableau a 0 pour pas charger une map par dessus une autre map
+	for (int i = 0; i < mapSizeY; i++)
+	{
+		for (int j = 0; j < mapSizeX; j++)
+		{
+			arr.mapGround[i][j] = 0;
+			arr.mapWall[i][j] = 0;
+			arr.mapWall1[i][j] = 0;
+			arr.mapWall2[i][j] = 0;
+			arr.mapWall3[i][j] = 0;
+			arr.mapObj[i][j].x = 0;
+			arr.mapObj[i][j].y = 0;
+		}
+	}
 	switch (currentMap)
 	{
 	case MAP:

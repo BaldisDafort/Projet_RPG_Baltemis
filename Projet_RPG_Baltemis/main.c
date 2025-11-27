@@ -10,7 +10,7 @@ sfVector2i g_mousePixelPos;
 sfVector2f g_mouseWorldPos;
 
 int g_PreviewState;
-int map;
+int loading_map;
 
 int main()
 {
@@ -33,7 +33,7 @@ int main()
 	initAnims();
 
 	float keytimer = 0.0f;
-	map = 0;
+	loading_map = 0;
 
 
 	//boucle de jeu
@@ -245,12 +245,61 @@ int main()
 
 		if (state == GAME)
 		{
-			currentMap = MAP;
-			if (map == 0)
+			//currentMap = MAP;
+			switch (currentMap)
 			{
-				loadMap();
-				map = 1;
+			case MAP:
+				if (loading_map == 0)
+				{
+					loadMap();
+					loading_map = 1;
+				}
+				if (levelChangement_next())
+				{
+					loading_map = 0;
+					currentMap = MAP1;
+					skeleton.SpritePositionSkeleton = (sfVector2f) {1.0f*tileSize, 6.0f*tileSize};
+					bat.SpritePositionBat = (sfVector2f){ 1.0f * tileSize, 8.0f * tileSize };
+				}
+				break;
+			case MAP1:
+				if (loading_map == 0)
+				{
+					loadMap();
+					loading_map = 1;
+				}
+				if (levelChangement_next())
+				{
+					loading_map = 0;
+					currentMap = MAP2;
+					skeleton.SpritePositionSkeleton = (sfVector2f){ 23.0f * tileSize, 1.0f * tileSize };
+					bat.SpritePositionBat = (sfVector2f){ 24.0f * tileSize, 1.0f * tileSize };
+				}
+				else if(levelChangement_before())
+				{
+					loading_map = 0;
+					currentMap = MAP;
+					skeleton.SpritePositionSkeleton = (sfVector2f){ 32.0f * tileSize, 19.0f * tileSize };
+					bat.SpritePositionBat = (sfVector2f){ 32.0f * tileSize, 20.0f * tileSize };
+				}
+				break;
+			case MAP2:
+				if (loading_map == 0)
+				{
+					loadMap();
+					loading_map = 1;
+				}
+				if (levelChangement_before())
+				{
+					loading_map = 0;
+					currentMap = MAP1;
+					skeleton.SpritePositionSkeleton = (sfVector2f){ 17.0f * tileSize, 23.0f * tileSize };
+					bat.SpritePositionBat = (sfVector2f){ 18.0f * tileSize, 23.0f * tileSize };
+				}
+			case MAP3:
+				break;
 			}
+		
 			if (buttonCollision(skeleton.SpritePositionSkeleton) && keytimer > 1)
 			{
 				if (g_SoundStatusButton == sfStopped)
