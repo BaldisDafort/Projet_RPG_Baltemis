@@ -10,6 +10,18 @@ sfSound* g_SoundButton;
 sfSoundBuffer* g_SoundBufferButton;
 sfSoundStatus g_SoundStatusButton;
 
+sfSound* g_SoundDeadlyTrap;
+sfSoundBuffer* g_SoundBufferDeadlyTrap;
+sfSoundStatus g_SoundStatusDeadlyTrap;
+
+sfSound* g_SoundToxicTrap;
+sfSoundBuffer* g_SoundBufferToxicTrap;
+sfSoundStatus g_SoundStatusToxicTrap;
+
+sfSound* g_SoundLavaTrap;
+sfSoundBuffer* g_SoundBufferLavaTrap;
+sfSoundStatus g_SoundStatusLavaTrap;
+
 
 int musicTitleScreenIsPlaying = 0;
 int g_musicDeadlyLevelIsPlaying = 0;
@@ -17,7 +29,8 @@ int g_musicToxicLevelIsPlaying = 0;
 int g_musicLavaLevelIsPlaying = 0;
 
 float sTimer = 0.0f;
-float g_VolumeMusic = 25.f;
+float g_VolumeMusic = 50.f;
+float g_VolumeSound = 50.f;
 
 char g_audioSettingsFlags = 0;
 
@@ -99,12 +112,6 @@ void initSound()
 	g_MusicStatusMusicDeadlyLevel = sfMusic_getStatus(g_MusicDeadlyLevel);
 	g_MusicToxicLevel = sfMusic_createFromFile("..\\Resources\\Musics\\musicToxicLevel.ogg");
 	g_MusicLavaLevel = sfMusic_createFromFile("..\\Resources\\Musics\\musicLavaLevel.ogg");
-	
-	g_SoundButton = sfSound_create();
-	g_SoundBufferButton = sfSoundBuffer_createFromFile("..\\Resources\\SoundsFX\\soundButton.ogg");
-	sfSound_setBuffer(g_SoundButton, g_SoundBufferButton);
-
-	musicTitleScreenIsPlaying = 1;
 
 	sfMusic_setVolume(g_musicTitleScreen, g_VolumeMusic);
 	sfMusic_setLoop(g_musicTitleScreen, sfTrue);
@@ -114,6 +121,32 @@ void initSound()
 	sfMusic_setLoop(g_MusicToxicLevel, sfTrue);
 	sfMusic_setVolume(g_MusicLavaLevel, g_VolumeMusic);
 	sfMusic_setLoop(g_MusicLavaLevel, sfTrue);
+
+	// Sound Button
+	g_SoundButton = sfSound_create();
+	g_SoundBufferButton = sfSoundBuffer_createFromFile("..\\Resources\\SoundsFX\\soundButton.ogg");
+	sfSound_setBuffer(g_SoundButton, g_SoundBufferButton);
+	// Sound Deadly Trap
+	g_SoundDeadlyTrap = sfSound_create();
+	g_SoundBufferDeadlyTrap = sfSoundBuffer_createFromFile("..\\Resources\\SoundsFX\\soundDeadlyTrap.ogg");
+	sfSound_setBuffer(g_SoundDeadlyTrap, g_SoundBufferDeadlyTrap);
+	// Sound Toxic Trap
+	g_SoundToxicTrap = sfSound_create();
+	g_SoundBufferToxicTrap = sfSoundBuffer_createFromFile("..\\Resources\\SoundsFX\\soundToxicTrap.ogg");
+	sfSound_setBuffer(g_SoundToxicTrap, g_SoundBufferToxicTrap);
+	// Sound Lava Trap
+	g_SoundLavaTrap = sfSound_create();
+	g_SoundBufferLavaTrap = sfSoundBuffer_createFromFile("..\\Resources\\SoundsFX\\soundLavaTrap.ogg");
+	sfSound_setBuffer(g_SoundLavaTrap, g_SoundBufferLavaTrap);
+
+	sfSound_setVolume(g_SoundButton, g_VolumeSound);
+	sfSound_setVolume(g_SoundDeadlyTrap, g_VolumeSound);
+	sfSound_setVolume(g_SoundToxicTrap, g_VolumeSound);
+	sfSound_setVolume(g_SoundLavaTrap, g_VolumeSound);
+
+	musicTitleScreenIsPlaying = 1;
+
+
 
 	if (state == MENU || state == OPTION)
 	{
@@ -204,7 +237,7 @@ void updateSound()
 
 			}
 		}
-		
+
 	}
 
 
