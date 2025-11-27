@@ -1,13 +1,18 @@
 #include "player.h"
 
 State state = GAME;
+void setPlayerPositions()
+{
+	bat.SpritePositionBat = (sfVector2f){ posBaseBat.x * tileSize, posBaseBat.y * tileSize };
+	skeleton.SpritePositionSkeleton = (sfVector2f){ posBaseSkeleton.x * tileSize, posBaseSkeleton.y * tileSize };
+}
+
 
 void initPlayer()
 {
 	//init bat player
 	bat.batIsMoving = sfFalse;
 	bat.irectBat = (sfIntRect){ 0, 0, 16, 16 };
-	bat.SpritePositionBat = (sfVector2f){ 0.0f, 0.0f };
 	bat.vitesse = (sfVector2f){ 100.0f, 100.0f };
 	bat.animBatTime = 0.0f;
 	bat.timerBat = 0.0f;
@@ -19,7 +24,6 @@ void initPlayer()
 	skeleton.skeletonIsMoving = sfFalse;
 	skeleton.skeletonIsIdle = sfFalse;
 	skeleton.irectSkeleton = (sfIntRect){ 0, 0, 16, 16 };
-	skeleton.SpritePositionSkeleton = (sfVector2f){ 0.0f, 0.0f };
 	skeleton.vitesse = (sfVector2f){ 80.0f, 80.0f };
 	skeleton.animSkeletonTime = 0.0f;
 	skeleton.timerSkeleton = 0.0f;
@@ -57,8 +61,6 @@ void initPlayer()
 
 void updatePlayer()
 {
-	bat.SpritePositionBat = (sfVector2f){ posBaseBat.x * tileSize, posBaseBat.y * tileSize };
-	skeleton.SpritePositionSkeleton = (sfVector2f){ posBaseSkeleton.x * tileSize, posBaseSkeleton.y * tileSize };
 	bat.timerBat += GetDeltaTime();
 	skeleton.animSkeletonTime += GetDeltaTime();
 

@@ -62,6 +62,8 @@ int main()
 						{
 							state = GAME;
 							g_PreviewState = 1;
+							updatePositionsPlayers();
+							setPlayerPositions();
 						}
 
 						rectButton = sfRectangleShape_getGlobalBounds(EditorButton);
