@@ -84,6 +84,7 @@ float animTrapTimer;
 float animTimerCont;
 float animTimerCont_l;
 float cooldownLente;
+float chestAnimTimer;
 sfBool animLentePlaying;
 
 void initAnims()
@@ -114,6 +115,11 @@ void updateAnims()
 	animTimerCont += GetDeltaTime();
 	animTimerCont_l += GetDeltaTime();
     animTrapTimer += GetDeltaTime();
+	chestAnimTimer += GetDeltaTime();
+    //anim coffres
+    
+    open_chest();
+    
 
 	//anim button
     for (int i = 0; i < mapSizeY; i++)
