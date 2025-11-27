@@ -298,6 +298,8 @@ void updateMap(sfRenderWindow* _window)
 
 void updatePositionsPlayers()
 {
+	//charger la map en premier pour pouvoir y reperer les boutons
+	loadMap;
 	//positions de base des joueurs
 	for (int i = 0; i < mapSizeY; i++)
 	{
