@@ -178,14 +178,27 @@ sfVector2i buttonAnimation(sfVector2f _playerPos)
 		return buttonPos;
 }
 
-sfBool levelChangement()
+sfBool levelChangement_next()
 {
 	sfVector2i _playerTilePos1 = { (skeleton.SpritePositionSkeleton.x + 1) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize) / tileSize };
 	sfVector2i _playerTilePos2 = { (skeleton.SpritePositionSkeleton.x + 15) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize) / tileSize };
 
-	if ((arr.mapGround[_playerTilePos1.y][_playerTilePos1.x] >= 11 && arr.mapGround[_playerTilePos1.y][_playerTilePos1.x] <= 14) || (arr.mapGround[_playerTilePos2.y][_playerTilePos2.x] >= 11 && arr.mapGround[_playerTilePos2.y][_playerTilePos2.x] <= 14))
+	if ((arr.mapGround[_playerTilePos1.y][_playerTilePos1.x] == 12 || arr.mapGround[_playerTilePos1.y][_playerTilePos1.x] == 14) || (arr.mapGround[_playerTilePos2.y][_playerTilePos2.x] == 12 || arr.mapGround[_playerTilePos2.y][_playerTilePos2.x] == 14))
 	{
 		return sfTrue;
 	}
 	return sfFalse;
 }
+
+sfBool levelChangement_before()
+{
+	sfVector2i _playerTilePos1 = { (skeleton.SpritePositionSkeleton.x + 1) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize) / tileSize };
+	sfVector2i _playerTilePos2 = { (skeleton.SpritePositionSkeleton.x + 15) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize) / tileSize };
+
+	if ((arr.mapGround[_playerTilePos1.y][_playerTilePos1.x] == 11 || arr.mapGround[_playerTilePos1.y][_playerTilePos1.x] == 13) || (arr.mapGround[_playerTilePos2.y][_playerTilePos2.x] == 11 || arr.mapGround[_playerTilePos2.y][_playerTilePos2.x] == 13))
+	{
+		return sfTrue;
+	}
+	return sfFalse;
+}
+
