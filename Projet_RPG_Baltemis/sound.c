@@ -3,6 +3,8 @@
 sfMusic* g_musicTitleScreen;
 sfMusic* g_MusicDeadlyLevel;
 sfSoundStatus g_MusicStatusMusicDeadlyLevel;
+sfMusic* g_MusicToxicLevel;
+sfMusic* g_MusicLavaLevel;
 
 sfSound* g_SoundButton;
 sfSoundBuffer* g_SoundBufferButton;
@@ -10,7 +12,9 @@ sfSoundStatus g_SoundStatusButton;
 
 
 int musicTitleScreenIsPlaying = 0;
-int musicDeadlyLevelIsPlaying = 0;
+int g_musicDeadlyLevelIsPlaying = 0;
+int g_musicToxicLevelIsPlaying = 0;
+int g_musicLavaLevelIsPlaying = 0;
 
 float sTimer = 0.0f;
 float g_VolumeMusic = 25.f;
@@ -93,15 +97,23 @@ void initSound()
 	g_musicTitleScreen = sfMusic_createFromFile("..\\Resources\\Musics\\musicIntro.ogg");
 	g_MusicDeadlyLevel = sfMusic_createFromFile("..\\Resources\\Musics\\musicDeadlyLevel.ogg");
 	g_MusicStatusMusicDeadlyLevel = sfMusic_getStatus(g_MusicDeadlyLevel);
+	g_MusicToxicLevel = sfMusic_createFromFile("..\\Resources\\Musics\\musicToxicLevel.ogg");
+	g_MusicLavaLevel = sfMusic_createFromFile("..\\Resources\\Musics\\musicLavaLevel.ogg");
 	
 	g_SoundButton = sfSound_create();
 	g_SoundBufferButton = sfSoundBuffer_createFromFile("..\\Resources\\SoundsFX\\soundButton.ogg");
 	sfSound_setBuffer(g_SoundButton, g_SoundBufferButton);
-	sfMusic_setLoop(g_musicTitleScreen, sfTrue);
+
 	musicTitleScreenIsPlaying = 1;
 
 	sfMusic_setVolume(g_musicTitleScreen, g_VolumeMusic);
+	sfMusic_setLoop(g_musicTitleScreen, sfTrue);
 	sfMusic_setVolume(g_MusicDeadlyLevel, g_VolumeMusic);
+	sfMusic_setLoop(g_MusicDeadlyLevel, sfTrue);
+	sfMusic_setVolume(g_MusicToxicLevel, g_VolumeMusic);
+	sfMusic_setLoop(g_MusicToxicLevel, sfTrue);
+	sfMusic_setVolume(g_MusicLavaLevel, g_VolumeMusic);
+	sfMusic_setLoop(g_MusicLavaLevel, sfTrue);
 
 	if (state == MENU || state == OPTION)
 	{
@@ -112,14 +124,14 @@ void initSound()
 void updateSound()
 {
 	sTimer += GetDeltaTime();
-	if ((state != MENU && state != OPTION) && sTimer > 0.2f)
+	if (state != MENU && state != OPTION)
 	{
 
 		sfMusic_pause(g_musicTitleScreen);
 		musicTitleScreenIsPlaying = 0;
-		sTimer = 0.0f;
+
 	}
-	else if ((state == MENU || state == OPTION) && sTimer > 0.2f)
+	else if (state == MENU || state == OPTION)
 	{
 		if (g_PreviewState != 1)
 		{
@@ -127,23 +139,73 @@ void updateSound()
 			{
 				sfMusic_play(g_musicTitleScreen);
 				musicTitleScreenIsPlaying = 1;
-				musicDeadlyLevelIsPlaying = 0;
-				sTimer = 0.0f;
+				g_musicDeadlyLevelIsPlaying = 0;
+				g_musicToxicLevelIsPlaying = 0;
+				g_musicLavaLevelIsPlaying = 0;
+
 			}
 		}
 
 
 	}
-	else if (state == GAME && sTimer > 0.1f)
+	if (state != GAME && state != OPTION)
 	{
-		if (musicDeadlyLevelIsPlaying == 0)
+		sfMusic_pause(g_MusicDeadlyLevel);
+		g_musicDeadlyLevelIsPlaying = 0;
+	}
+	else if (state == GAME || state == OPTION)
+	{
+		if (g_PreviewState == 1)
 		{
-			if (g_MusicStatusMusicDeadlyLevel == sfStopped)
+			if (currentMap == MAP)
 			{
-				sfMusic_play(g_MusicDeadlyLevel);
-				musicDeadlyLevelIsPlaying = 1;
-				sTimer = 0.0f;
+				if (g_musicDeadlyLevelIsPlaying == 0)
+				{
+
+					sfMusic_play(g_MusicDeadlyLevel);
+					sfMusic_stop(g_MusicToxicLevel);
+					sfMusic_stop(g_MusicLavaLevel);
+					g_musicDeadlyLevelIsPlaying = 1;
+					musicTitleScreenIsPlaying = 0;
+					g_musicToxicLevelIsPlaying = 0;
+					g_musicLavaLevelIsPlaying = 0;
+				}
+
+			}
+			if (currentMap == MAP1)
+			{
+				if (g_musicToxicLevelIsPlaying == 0)
+				{
+
+					sfMusic_play(g_MusicToxicLevel);
+					sfMusic_stop(g_MusicDeadlyLevel);
+					sfMusic_stop(g_MusicLavaLevel);
+					g_musicToxicLevelIsPlaying = 1;
+					g_musicDeadlyLevelIsPlaying = 0;
+					g_musicLavaLevelIsPlaying = 0;
+					musicTitleScreenIsPlaying = 0;
+				}
+
+			}
+			if (currentMap == MAP2)
+			{
+				if (g_musicLavaLevelIsPlaying == 0)
+				{
+
+					sfMusic_play(g_MusicLavaLevel);
+					sfMusic_stop(g_MusicToxicLevel);
+					sfMusic_stop(g_MusicDeadlyLevel);
+					sfMusic_stop(g_MusicDeadlyLevel);
+					g_musicLavaLevelIsPlaying = 1;
+					g_musicToxicLevelIsPlaying = 0;
+					g_musicDeadlyLevelIsPlaying = 0;
+					musicTitleScreenIsPlaying = 0;
+				}
+
 			}
 		}
+		
 	}
+
+
 }
