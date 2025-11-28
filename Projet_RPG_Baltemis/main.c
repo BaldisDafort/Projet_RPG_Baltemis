@@ -111,6 +111,8 @@ int main()
 								SetGeneralMuted(!GetGeneralMuted());
 								ChangeVolume(g_musicTitleScreen, g_VolumeMusic);
 								ChangeVolume(g_MusicDeadlyLevel, g_VolumeMusic);
+								ChangeVolume(g_MusicToxicLevel, g_VolumeMusic);
+								ChangeVolume(g_MusicLavaLevel, g_VolumeMusic);
 								g_GeneralSoundRect.left = g_GeneralSoundRect.width * GetGeneralMuted();
 								sfSprite_setTextureRect(g_SpriteGeneralSound, g_GeneralSoundRect);
 							}
@@ -119,7 +121,7 @@ int main()
 							{
 								g_GeneralTurnUpVolumeRect.left = g_GeneralTurnUpVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteGeneralTurnUpVolume, g_GeneralTurnUpVolumeRect);
-								if (!GetGeneralMuted())
+								if (!GetGeneralMuted() || !GetMusicMuted())
 								{
 									printf("%f\n", g_VolumeMusic);
 									g_VolumeMusic += 10.0f;
@@ -127,7 +129,10 @@ int main()
 									{
 										g_VolumeMusic = 100.f;
 									}
-									sfMusic_setVolume(g_musicTitleScreen, (g_VolumeMusic));
+									sfMusic_setVolume(g_musicTitleScreen, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicDeadlyLevel, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicToxicLevel, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicLavaLevel, g_VolumeMusic);
 									keytimer = 0.0f;
 								}
 								else
@@ -141,14 +146,18 @@ int main()
 								printf("%f\n", g_VolumeMusic);
 								g_GeneralTurnDownVolumeRect.left = g_GeneralTurnDownVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteGeneralTurnDownVolume, g_GeneralTurnDownVolumeRect);
-								if (!GetGeneralMuted())
+								if (!GetGeneralMuted() || !GetMusicMuted())
 								{
+									printf("%f\n", g_VolumeMusic);
 									g_VolumeMusic -= 10.f;
 									if (g_VolumeMusic < 0.f)
 									{
 										g_VolumeMusic = 0.0f;
 									}
-									sfMusic_setVolume(g_musicTitleScreen, (g_VolumeMusic));
+									sfMusic_setVolume(g_musicTitleScreen, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicDeadlyLevel, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicToxicLevel, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicLavaLevel, g_VolumeMusic);
 									keytimer = 0.0f;
 								}
 								else
@@ -162,6 +171,9 @@ int main()
 							{
 								SetMusicMuted(!GetMusicMuted());
 								ChangeVolume(g_musicTitleScreen, g_VolumeMusic);
+								ChangeVolume(g_MusicDeadlyLevel, g_VolumeMusic);
+								ChangeVolume(g_MusicToxicLevel, g_VolumeMusic);
+								ChangeVolume(g_MusicLavaLevel, g_VolumeMusic);
 								g_MusicSoundRect.left = g_MusicSoundRect.width * GetMusicMuted();
 								sfSprite_setTextureRect(g_SpriteMusicSound, g_MusicSoundRect);
 							}
@@ -170,12 +182,48 @@ int main()
 							{
 								g_MusicTurnUpVolumeRect.left = g_MusicTurnUpVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteMusicTurnUpVolume, g_MusicTurnUpVolumeRect);
+								if (!GetMusicMuted())
+								{
+									printf("%f\n", g_VolumeMusic);
+									g_VolumeMusic += 10.0f;
+									if (g_VolumeMusic > 100.f)
+									{
+										g_VolumeMusic = 100.f;
+									}
+									sfMusic_setVolume(g_musicTitleScreen, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicDeadlyLevel, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicToxicLevel, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicLavaLevel, g_VolumeMusic);
+									keytimer = 0.0f;
+								}
+								else
+								{
+									keytimer = 0.0f;
+								}
 							}
 
 							if (sfFloatRect_contains(&rectMusicSoundTurnDownVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 							{
 								g_MusicTurnDownVolumeRect.left = g_MusicTurnDownVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteMusicTurnDownVolume, g_MusicTurnDownVolumeRect);
+								if (!GetMusicMuted())
+								{
+									printf("%f\n", g_VolumeMusic);
+									g_VolumeMusic -= 10.f;
+									if (g_VolumeMusic < 0.f)
+									{
+										g_VolumeMusic = 0.0f;
+									}
+									sfMusic_setVolume(g_musicTitleScreen, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicDeadlyLevel, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicToxicLevel, g_VolumeMusic);
+									sfMusic_setVolume(g_MusicLavaLevel, g_VolumeMusic);
+									keytimer = 0.0f;
+								}
+								else
+								{
+									keytimer = 0.0f;
+								}
 							}
 
 							if (sfFloatRect_contains(&rectSFXSoundTurnUpVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
