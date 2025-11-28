@@ -1,3 +1,4 @@
+#include "player.h"
 #include "sound.h"
 
 sfMusic* g_musicTitleScreen;
@@ -21,7 +22,7 @@ sfSoundStatus g_SoundStatusToxicTrap;
 sfSound* g_SoundLavaTrap;
 sfSoundBuffer* g_SoundBufferLavaTrap;
 sfSoundStatus g_SoundStatusLavaTrap;
-
+sfBool g_buttonPressed = sfFalse;
 
 int musicTitleScreenIsPlaying = 0;
 int g_musicDeadlyLevelIsPlaying = 0;
@@ -156,7 +157,24 @@ void initSound()
 
 void updateSound()
 {
-	sTimer += GetDeltaTime();
+	if ((buttonCollision(skeleton.SpritePositionSkeleton) || buttonCollision(bat.SpritePositionBat)))
+	{
+		if (g_buttonPressed == sfFalse && g_SoundStatusButton == sfStopped)
+		{
+			g_buttonPressed = sfTrue;
+			sfSound_play(g_SoundButton);
+
+		}
+		else {
+			g_buttonPressed = sfTrue;
+		}
+	}
+	else
+	{
+		g_buttonPressed = sfFalse;
+	}
+
+
 	if (state != MENU && state != OPTION)
 	{
 

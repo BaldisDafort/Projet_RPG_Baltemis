@@ -20,6 +20,7 @@ int main()
 	sfEvent events;
 	sfRenderWindow* window = sfRenderWindow_create(mode, "CSFML", sfResize | sfClose, NULL);
 
+
 	state = MENU;
 	g_PreviewState = 0;
 
@@ -361,6 +362,7 @@ int main()
 		//updateOptions(window);
 		updateSound();
 		updatePlayer();
+		updateAnims();
 
 		if (state == GAME)
 		{
@@ -418,16 +420,6 @@ int main()
 			case MAP3:
 				break;
 			}
-		
-			if (buttonCollision(skeleton.SpritePositionSkeleton) && keytimer > 1)
-			{
-				if (g_SoundStatusButton == sfStopped)
-				{
-					sfSound_play(g_SoundButton);
-					keytimer = 0.0f;
-				}
-			}
-			updateAnims();
 		}
 
 
