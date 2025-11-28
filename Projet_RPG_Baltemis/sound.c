@@ -184,7 +184,11 @@ void updateSound()
 	if (state != GAME && state != OPTION)
 	{
 		sfMusic_pause(g_MusicDeadlyLevel);
+		sfMusic_pause(g_MusicToxicLevel);
+		sfMusic_pause(g_MusicLavaLevel);
 		g_musicDeadlyLevelIsPlaying = 0;
+		g_musicToxicLevelIsPlaying = 0;
+		g_musicLavaLevelIsPlaying = 0;
 	}
 	else if (state == GAME || state == OPTION)
 	{
