@@ -13,6 +13,7 @@ extern sfSound* g_SoundButton;
 extern sfSoundBuffer* g_SoundBufferButton;
 extern sfSoundStatus g_SoundStatusButton;
 extern float g_VolumeMusic;
+extern float g_VolumeSound;
 
 enum AudioSettingsFlags
 {

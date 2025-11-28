@@ -20,6 +20,7 @@ int main()
 	sfEvent events;
 	sfRenderWindow* window = sfRenderWindow_create(mode, "CSFML", sfResize | sfClose, NULL);
 
+
 	state = MENU;
 	g_PreviewState = 0;
 
@@ -124,6 +125,7 @@ int main()
 							{
 								g_GeneralTurnUpVolumeRect.left = g_GeneralTurnUpVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteGeneralTurnUpVolume, g_GeneralTurnUpVolumeRect);
+								// General & Music
 								if (!GetGeneralMuted() || !GetMusicMuted())
 								{
 									printf("%f\n", g_VolumeMusic);
@@ -142,6 +144,23 @@ int main()
 								{
 									keytimer = 0.0f;
 								}
+
+								// General & Sound
+								if (!GetGeneralMuted() || !GetSFXMuted())
+								{
+									printf("%f\n", g_VolumeSound);
+									g_VolumeSound += 10.0f;
+									if (g_VolumeSound > 100.f)
+									{
+										g_VolumeSound = 100.f;
+									}
+									sfSound_setVolume(g_SoundButton, g_VolumeSound);
+									keytimer = 0.0f;
+								}
+								else
+								{
+									keytimer = 0.0f;
+								}
 							}
 
 							if (sfFloatRect_contains(&rectGeneralSoundTurnDownVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
@@ -149,6 +168,8 @@ int main()
 								printf("%f\n", g_VolumeMusic);
 								g_GeneralTurnDownVolumeRect.left = g_GeneralTurnDownVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteGeneralTurnDownVolume, g_GeneralTurnDownVolumeRect);
+
+								// General & Music
 								if (!GetGeneralMuted() || !GetMusicMuted())
 								{
 									printf("%f\n", g_VolumeMusic);
@@ -161,6 +182,23 @@ int main()
 									sfMusic_setVolume(g_MusicDeadlyLevel, g_VolumeMusic);
 									sfMusic_setVolume(g_MusicToxicLevel, g_VolumeMusic);
 									sfMusic_setVolume(g_MusicLavaLevel, g_VolumeMusic);
+									keytimer = 0.0f;
+								}
+								else
+								{
+									keytimer = 0.0f;
+								}
+
+								// General & Sound
+								if (!GetGeneralMuted() || !GetSFXMuted())
+								{
+									printf("%f\n", g_VolumeSound);
+									g_VolumeSound -= 10.0f;
+									if (g_VolumeSound < 0.f)
+									{
+										g_VolumeSound = 0.f;
+									}
+									sfSound_setVolume(g_SoundButton, g_VolumeSound);
 									keytimer = 0.0f;
 								}
 								else
@@ -234,12 +272,44 @@ int main()
 
 								g_SFXTurnUpVolumeRect.left = g_SFXTurnUpVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteSFXTurnUpVolume, g_SFXTurnUpVolumeRect);
+								// General & Sound
+								if (!GetGeneralMuted() || !GetSFXMuted())
+								{
+									printf("%f\n", g_VolumeSound);
+									g_VolumeSound += 10.0f;
+									if (g_VolumeSound > 100.f)
+									{
+										g_VolumeSound = 100.f;
+									}
+									sfSound_setVolume(g_SoundButton, g_VolumeSound);
+									keytimer = 0.0f;
+								}
+								else
+								{
+									keytimer = 0.0f;
+								}
 							}
 
 							if (sfFloatRect_contains(&rectSFXSoundTurnDownVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 							{
 								g_SFXTurnDownVolumeRect.left = g_SFXTurnDownVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteSFXTurnDownVolume, g_SFXTurnDownVolumeRect);
+								// General & Sound
+								if (!GetGeneralMuted() || !GetSFXMuted())
+								{
+									printf("%f\n", g_VolumeSound);
+									g_VolumeSound -= 10.0f;
+									if (g_VolumeSound < 0.f)
+									{
+										g_VolumeSound = 0.f;
+									}
+									sfSound_setVolume(g_SoundButton, g_VolumeSound);
+									keytimer = 0.0f;
+								}
+								else
+								{
+									keytimer = 0.0f;
+								}
 							}
 
 
@@ -254,7 +324,6 @@ int main()
 							if (events.type == sfEvtMouseButtonPressed)
 							{
 								SetSFXMuted(!GetSFXMuted());
-								//ChangeVolume(g_musicTitleScreen, 100.0f);
 								g_SFXSoundRect.left = g_SFXSoundRect.width * GetSFXMuted();
 								sfSprite_setTextureRect(g_SpriteSFXSound, g_SFXSoundRect);
 							}
@@ -296,6 +365,7 @@ int main()
 		//updateOptions(window);
 		updateSound();
 		updatePlayer();
+		updateAnims();
 
 		if (state == GAME)
 		{
@@ -353,16 +423,6 @@ int main()
 			case MAP3:
 				break;
 			}
-		
-			if (buttonCollision(skeleton.SpritePositionSkeleton) && keytimer > 1)
-			{
-				if (g_SoundStatusButton == sfStopped)
-				{
-					sfSound_play(g_SoundButton);
-					keytimer = 0.0f;
-				}
-			}
-			updateAnims();
 		}
 
 
