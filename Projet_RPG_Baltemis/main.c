@@ -63,6 +63,7 @@ int main()
 						{
 							state = GAME;
 							g_PreviewState = 1;
+							currentMap = mapBase;
 							loadMap();
 							updatePositionsPlayers();
 							printf("lalala");
