@@ -20,6 +20,23 @@ void trap_anims(sfIntRect _irect)
                 }
                 obj.animObj[i - 1][j].y = _irect.top;
                 obj.animObj[i - 1][j].x = _irect.left;
+
+            }
+            //pour le chest
+            else if (arr.mapObj[i][j].y == 1)
+            {
+                if (arr.mapObj[i][j].x == 1 || arr.mapObj[i][j].x == 3 || arr.mapObj[i][j].x == 5)
+                {
+                    _irect.top = arr.mapObj[i][j].y - 1;
+                    _irect.left = arr.mapObj[i][j].x;
+                }
+                else
+                {
+                    _irect.top = 0;
+                    _irect.left = 0;
+                }
+                obj.animObj[i - 1][j].y = _irect.top;
+                obj.animObj[i - 1][j].x = _irect.left;
             }
         }
     }
@@ -118,7 +135,11 @@ void updateAnims()
 	chestAnimTimer += GetDeltaTime();
     //anim coffres
     
-    open_chest();
+    if (chestAnimTimer > 0.2f)
+    {
+        open_chest();
+		chestAnimTimer = 0.0f;
+    }
     
 
 	//anim button
@@ -193,15 +214,15 @@ void updateAnims()
 
 void displayAnims(sfRenderWindow* _window)
 {
-    // Parcourt la grille et dessine uniquement si la cellule d'animation satisfait la condition
+    // Parcourt la grille et dessine uniquement si la cellule d'animation est voulu
     for (int i = 0; i < mapSizeY; ++i)
     {
         for (int j = 0; j < mapSizeX; ++j)
         {
-            int ax = obj.animObj[i][j].x; // indice de frame
-            int ay = obj.animObj[i][j].y; // ligne du tileset
+            int ax = obj.animObj[i][j].x;
+            int ay = obj.animObj[i][j].y;
             // condition : dessiner uniquement quand ax est entre 2 et 4 (ou adaptez selon besoin)
-            if (ax >= 2 && ax <= 4)
+            if (ax >= 0 && ax <= 7)
             {
                 sfIntRect rect = { ax * tileSize, ay * tileSize, tileSize, tileSize };
                 sfSprite_setTextureRect(obj.spObj, rect);
