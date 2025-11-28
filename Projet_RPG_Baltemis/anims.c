@@ -122,19 +122,23 @@ void updateAnims()
     
 
 	//anim button
-    for (int i = 0; i < mapSizeY; i++)
+    if (animTrapTimer > 0.2f)
     {
-        for (int j = 0; j < mapSizeX; j++)
+        for (int i = 0; i < mapSizeY; i++)
         {
-            if (buttonCollision(skeleton.SpritePositionSkeleton) || buttonCollision(bat.SpritePositionBat))
+            for (int j = 0; j < mapSizeX; j++)
             {
+                if (buttonCollision(skeleton.SpritePositionSkeleton) || buttonCollision(bat.SpritePositionBat))
+                {
                     not_activated_trap(i, j);
-            }
-            else
-            {
+                }
+                else
+                {
                     activated_trap(i, j);
+                }
             }
         }
+        animTrapTimer = 0.0f;
     }
 
     // Anim continue (rapide)
@@ -162,7 +166,7 @@ void updateAnims()
     {
         animLentePlaying = sfTrue;
     }
-    if (animLentePlaying && animTimerCont_l > 0.2f)
+    if (animLentePlaying && animTimerCont_l > 0.1f)
     {
         for (int i = 0; i < mapSizeY; i++)
         {

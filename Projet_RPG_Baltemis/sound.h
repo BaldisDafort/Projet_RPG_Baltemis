@@ -7,6 +7,8 @@
 
 extern sfMusic* g_musicTitleScreen;
 extern sfMusic* g_MusicDeadlyLevel;
+extern sfMusic* g_MusicToxicLevel;
+extern sfMusic* g_MusicLavaLevel;
 extern sfSound* g_SoundButton;
 extern sfSoundBuffer* g_SoundBufferButton;
 extern sfSoundStatus g_SoundStatusButton;
