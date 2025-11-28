@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="anims.c" />
     <ClCompile Include="collisions.c" />
+    <ClCompile Include="dialogue.c" />
     <ClCompile Include="editor.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="options.c" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="anims.h" />
     <ClInclude Include="collisions.h" />
+    <ClInclude Include="dialogue.h" />
     <ClInclude Include="editor.h" />
     <ClInclude Include="options.h" />
     <ClInclude Include="player.h" />
