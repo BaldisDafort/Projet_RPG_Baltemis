@@ -205,8 +205,8 @@ void updateMap(sfRenderWindow* _window)
 				}
 			}
 
-		//poser les tuiles
-		else if (worldGet.x < mapSizeX * tileSize && worldGet.x > 0 && worldGet.y > 0 && worldGet.y < mapSizeY * tileSize && firstPosTimer > 0.2f)
+		//poser les tuiles (avec une tile de moin sur chaque bord pour bloquer l'acces)
+		else if (worldGet.x < mapSizeX * tileSize - tileSize && worldGet.x > tileSize && worldGet.y > tileSize && worldGet.y < mapSizeY * tileSize - tileSize && firstPosTimer > 0.2f)
 		{
 			nexPosInTab.x = worldGet.x / tileSize;
 			nexPosInTab.y = worldGet.y / tileSize;

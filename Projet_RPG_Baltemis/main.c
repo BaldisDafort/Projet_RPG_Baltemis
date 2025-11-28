@@ -62,6 +62,7 @@ int main()
 						{
 							state = GAME;
 							g_PreviewState = 1;
+							loadMap();
 							updatePositionsPlayers();
 							setPlayerPositions();
 						}
