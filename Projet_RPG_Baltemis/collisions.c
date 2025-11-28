@@ -186,25 +186,48 @@ sfBool open_chest()
 	sfVector2i point4 = { (skeleton.SpritePositionSkeleton.x + tileSize-1) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize/2) / tileSize };
 
 	//ouvrir le coffre
-	if ((arr.mapObj[point1.y][point1.x].y == 1 && (arr.mapObj[point1.y][point1.x].x == 0 || arr.mapObj[point1.y][point1.x].x == 2 || arr.mapObj[point1.y][point1.x].x == 4)) && (sfKeyboard_isScancodePressed(sfScanSpace)))
+	if (sfKeyboard_isScancodePressed(sfScanSpace))
 	{
-		arr.mapObj[point1.y][point1.x].x ++;
-		return sfTrue;
-	}
-	if ((arr.mapObj[point2.y][point2.x].y == 1 && (arr.mapObj[point1.y][point1.x].x == 0 || arr.mapObj[point1.y][point1.x].x == 2 || arr.mapObj[point1.y][point1.x].x == 4)) && (sfKeyboard_isScancodePressed(sfScanSpace)))
-	{
-		arr.mapObj[point2.y][point2.x].x++;
-		return sfTrue;
-	}
-	if ((arr.mapObj[point3.y][point3.x].y == 1 && (arr.mapObj[point1.y][point1.x].x == 0 || arr.mapObj[point1.y][point1.x].x == 2 || arr.mapObj[point1.y][point1.x].x == 4)) && (sfKeyboard_isScancodePressed(sfScanSpace)))
-	{
-		arr.mapObj[point3.y][point3.x].x++;
-		return sfTrue;
-	}
-	if ((arr.mapObj[point4.y][point4.x].y == 1 && (arr.mapObj[point1.y][point1.x].x == 0 || arr.mapObj[point1.y][point1.x].x == 2 || arr.mapObj[point1.y][point1.x].x == 4)) && (sfKeyboard_isScancodePressed(sfScanSpace)))
-	{
-		arr.mapObj[point4.y][point4.x].x++;
-		return sfTrue;
+		if (arr.mapObj[point1.y][point1.x].y == 1 && (arr.mapObj[point1.y][point1.x].x == 0 || arr.mapObj[point1.y][point1.x].x == 2 || arr.mapObj[point1.y][point1.x].x == 4))
+		{
+			arr.mapObj[point1.y][point1.x].x++;
+			return sfTrue;
+		}
+		if (arr.mapObj[point2.y][point2.x].y == 1 && (arr.mapObj[point2.y][point2.x].x == 0 || arr.mapObj[point2.y][point2.x].x == 2 || arr.mapObj[point2.y][point2.x].x == 4))
+		{
+			arr.mapObj[point2.y][point2.x].x++;
+			return sfTrue;
+		}
+		if (arr.mapObj[point3.y][point3.x].y == 1 && (arr.mapObj[point3.y][point3.x].x == 0 || arr.mapObj[point3.y][point3.x].x == 2 || arr.mapObj[point3.y][point3.x].x == 4))
+		{
+			arr.mapObj[point3.y][point3.x].x++;
+			return sfTrue;
+		}
+		if (arr.mapObj[point4.y][point4.x].y == 1 && (arr.mapObj[point4.y][point4.x].x == 0 || arr.mapObj[point4.y][point4.x].x == 2 || arr.mapObj[point4.y][point4.x].x == 4))
+		{
+			arr.mapObj[point4.y][point4.x].x++;
+			return sfTrue;
+		}
+		if (arr.mapObj[point1.y][point1.x].y == 1 && (arr.mapObj[point1.y][point1.x].x == 1 || arr.mapObj[point1.y][point1.x].x == 3 || arr.mapObj[point1.y][point1.x].x == 5))
+		{
+			arr.mapObj[point1.y][point1.x].x--;
+			return sfTrue;
+		}
+		if (arr.mapObj[point2.y][point2.x].y == 1 && (arr.mapObj[point2.y][point2.x].x == 1 || arr.mapObj[point2.y][point2.x].x == 3 || arr.mapObj[point2.y][point2.x].x == 5))
+		{
+			arr.mapObj[point2.y][point2.x].x--;
+			return sfTrue;
+		}
+		if (arr.mapObj[point3.y][point3.x].y == 1 && (arr.mapObj[point3.y][point3.x].x == 1 || arr.mapObj[point3.y][point3.x].x == 3 || arr.mapObj[point3.y][point3.x].x == 5))
+		{
+			arr.mapObj[point3.y][point3.x].x--;
+			return sfTrue;
+		}
+		if (arr.mapObj[point4.y][point4.x].y == 1 && (arr.mapObj[point4.y][point4.x].x == 1 || arr.mapObj[point4.y][point4.x].x == 3 || arr.mapObj[point4.y][point4.x].x == 5))
+		{
+			arr.mapObj[point4.y][point4.x].x--;
+			return sfTrue;
+		}
 	}
 	return sfFalse;
 }
