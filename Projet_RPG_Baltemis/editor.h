@@ -111,6 +111,7 @@ Array arr;
 extern float firstPosTimer;
 extern sfVector2f posBaseBat;
 extern sfVector2f posBaseSkeleton;
+extern int mapBase;
 
 //map creation
 void initMap();

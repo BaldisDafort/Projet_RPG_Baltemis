@@ -3,6 +3,7 @@
 //positions des joueurs
 sfVector2f posBaseBat = { 1.0f, 1.0f };
 sfVector2f posBaseSkeleton = { 1.0f, 1.0f };
+int mapBase = 0;
 
 //timer
 firstPosTimer = 0.0f;
@@ -163,11 +164,15 @@ void updateMap(sfRenderWindow* _window)
 			}
 			if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y < 3 * tileSize && worldGet.y > tileSize && (currentTileset == SPAWN))
 			{
-				//recuperer les tuiles du ground
+				//recuperer les tuile du spawn
 				worldGet.x -= (mapSizeX)*tileSize;
 				worldGet.y -= tileSize;
 		
 				blockSpawn = arr.tileSpawn[(int)worldGet.x / tileSize][(int)worldGet.y / tileSize];
+				if (blockSpawn == 1 || blockSpawn == 2)
+				{
+					mapBase = currentMap;
+				}
 
 			}
 			else if (worldGet.x > (mapSizeX)*tileSize && worldGet.x < originEditor.x + 2 * tileSize && worldGet.y > 13 * tileSize && worldGet.y <= 25 * tileSize && (currentTileset == GROUND || currentTileset == OBJ))
