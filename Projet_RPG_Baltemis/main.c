@@ -64,6 +64,7 @@ int main()
 							g_PreviewState = 1;
 							loadMap();
 							updatePositionsPlayers();
+							printf("lalala");
 							setPlayerPositions();
 						}
 
