@@ -135,7 +135,7 @@ void updateAnims()
 	chestAnimTimer += GetDeltaTime();
     //anim coffres
     
-    if (chestAnimTimer > 0.2f)
+    if (chestAnimTimer > 0.3f)
     {
         open_chest();
 		chestAnimTimer = 0.0f;

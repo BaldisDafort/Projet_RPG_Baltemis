@@ -5,6 +5,7 @@
 #include "player.h"
 #include "anims.h"
 #include "collisions.h"
+#include "dialogue.h"
 
 sfVector2i g_mousePixelPos;
 sfVector2f g_mouseWorldPos;
@@ -32,6 +33,7 @@ int main()
 	initOptions();
 	initPlayer();
 	initAnims();
+	initDialogue();
 
 	float keytimer = 0.0f;
 	loading_map = 0;
@@ -365,6 +367,7 @@ int main()
 		//updateOptions(window);
 		updateSound();
 		updatePlayer();
+		updateDialogue();
 		updateAnims();
 
 		if (state == GAME)
@@ -477,6 +480,7 @@ int main()
 				displayPlayer(window);
 				displayAnims(window);
 				displayView(window);
+				displayDialogue(window);
 				break;
 		case MENU:
 				displayView(window);

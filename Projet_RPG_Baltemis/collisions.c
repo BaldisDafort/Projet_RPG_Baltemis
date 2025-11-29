@@ -186,7 +186,7 @@ sfBool open_chest()
 	sfVector2i point4 = { (skeleton.SpritePositionSkeleton.x + tileSize-1) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize/2) / tileSize };
 
 	//ouvrir le coffre
-	if (sfKeyboard_isScancodePressed(sfScanSpace))
+	if (sfKeyboard_isScancodePressed(sfScanZ))
 	{
 		if (arr.mapObj[point1.y][point1.x].y == 1 && (arr.mapObj[point1.y][point1.x].x == 0 || arr.mapObj[point1.y][point1.x].x == 2 || arr.mapObj[point1.y][point1.x].x == 4))
 		{
@@ -208,6 +208,7 @@ sfBool open_chest()
 			arr.mapObj[point4.y][point4.x].x++;
 			return sfTrue;
 		}
+		
 		if (arr.mapObj[point1.y][point1.x].y == 1 && (arr.mapObj[point1.y][point1.x].x == 1 || arr.mapObj[point1.y][point1.x].x == 3 || arr.mapObj[point1.y][point1.x].x == 5))
 		{
 			arr.mapObj[point1.y][point1.x].x--;
@@ -228,6 +229,40 @@ sfBool open_chest()
 			arr.mapObj[point4.y][point4.x].x--;
 			return sfTrue;
 		}
+	}
+	return sfFalse;
+}
+
+//dialogue pnj
+sfBool talkToPnj()
+{
+	sfVector2i point1 = { (skeleton.SpritePositionSkeleton.x) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize + 2) / tileSize };
+	sfVector2i point2 = { (skeleton.SpritePositionSkeleton.x - 1) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize / 2) / tileSize };
+	sfVector2i point3 = { (skeleton.SpritePositionSkeleton.x + tileSize) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize + 2) / tileSize };
+	sfVector2i point4 = { (skeleton.SpritePositionSkeleton.x + tileSize - 1) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize / 2) / tileSize };
+
+	//ouvrir le coffre
+	if (sfKeyboard_isScancodePressed(sfScanZ) && ((arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 1 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].x == 6) ||
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 1 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x == 6)))
+	{
+		return sfTrue;
+
+	}
+	return sfFalse;
+}
+
+sfBool talkToChest()
+{
+	sfVector2i point1 = { (skeleton.SpritePositionSkeleton.x) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize + 2) / tileSize };
+	sfVector2i point2 = { (skeleton.SpritePositionSkeleton.x - 1) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize / 2) / tileSize };
+	sfVector2i point3 = { (skeleton.SpritePositionSkeleton.x + tileSize) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize + 2) / tileSize };
+	sfVector2i point4 = { (skeleton.SpritePositionSkeleton.x + tileSize - 1) / tileSize, (skeleton.SpritePositionSkeleton.y + tileSize / 2) / tileSize };
+
+	//ouvrir le coffre
+	if (sfKeyboard_isScancodePressed(sfScanZ) && ((arr.mapObj[nexPosInTab.y][nexPosInTab.x].y == 1 && arr.mapObj[nexPosInTab.y][nexPosInTab.x].x == 0) ||
+		(arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].y == 1 && arr.mapObj[nexPosInTab2.y][nexPosInTab2.x].x <= 6)))
+	{
+		return sfTrue;
 	}
 	return sfFalse;
 }

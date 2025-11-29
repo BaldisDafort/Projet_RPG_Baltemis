@@ -10,5 +10,7 @@ sfVector2i buttonAnimation(sfVector2f _playerPos);
 sfBool levelChangement_next();
 sfBool levelChangement_before();
 sfBool open_chest();
+sfBool talkToPnj();
+sfBool talkToChest();
 
  
