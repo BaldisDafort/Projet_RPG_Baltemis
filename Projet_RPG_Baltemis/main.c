@@ -113,6 +113,7 @@ int main()
 							if (sfFloatRect_contains(&rectGeneralButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 							{
 								SetGeneralMuted(!GetGeneralMuted());
+								ChangeVolumeSound(g_SoundButton, g_VolumeSound);
 								ChangeVolume(g_musicTitleScreen, g_VolumeMusic);
 								ChangeVolume(g_MusicDeadlyLevel, g_VolumeMusic);
 								ChangeVolume(g_MusicToxicLevel, g_VolumeMusic);
@@ -126,7 +127,7 @@ int main()
 								g_GeneralTurnUpVolumeRect.left = g_GeneralTurnUpVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteGeneralTurnUpVolume, g_GeneralTurnUpVolumeRect);
 								// General & Music
-								if (!GetGeneralMuted() || !GetMusicMuted())
+								if (!GetGeneralMuted() && !GetMusicMuted())
 								{
 									printf("%f\n", g_VolumeMusic);
 									g_VolumeMusic += 10.0f;
@@ -146,7 +147,7 @@ int main()
 								}
 
 								// General & Sound
-								if (!GetGeneralMuted() || !GetSFXMuted())
+								if (!GetGeneralMuted() && !GetSFXMuted())
 								{
 									printf("%f\n", g_VolumeSound);
 									g_VolumeSound += 10.0f;
@@ -170,7 +171,7 @@ int main()
 								sfSprite_setTextureRect(g_SpriteGeneralTurnDownVolume, g_GeneralTurnDownVolumeRect);
 
 								// General & Music
-								if (!GetGeneralMuted() || !GetMusicMuted())
+								if (!GetGeneralMuted() && !GetMusicMuted())
 								{
 									printf("%f\n", g_VolumeMusic);
 									g_VolumeMusic -= 10.f;
@@ -190,7 +191,7 @@ int main()
 								}
 
 								// General & Sound
-								if (!GetGeneralMuted() || !GetSFXMuted())
+								if (!GetGeneralMuted() && !GetSFXMuted())
 								{
 									printf("%f\n", g_VolumeSound);
 									g_VolumeSound -= 10.0f;
@@ -223,7 +224,7 @@ int main()
 							{
 								g_MusicTurnUpVolumeRect.left = g_MusicTurnUpVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteMusicTurnUpVolume, g_MusicTurnUpVolumeRect);
-								if (!GetMusicMuted())
+								if (!GetGeneralMuted() && !GetMusicMuted())
 								{
 									printf("%f\n", g_VolumeMusic);
 									g_VolumeMusic += 10.0f;
@@ -247,7 +248,7 @@ int main()
 							{
 								g_MusicTurnDownVolumeRect.left = g_MusicTurnDownVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteMusicTurnDownVolume, g_MusicTurnDownVolumeRect);
-								if (!GetMusicMuted())
+								if (!GetGeneralMuted() && !GetMusicMuted())
 								{
 									printf("%f\n", g_VolumeMusic);
 									g_VolumeMusic -= 10.f;
@@ -267,13 +268,21 @@ int main()
 								}
 							}
 
+							if (sfFloatRect_contains(&rectSFXButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
+							{
+								SetSFXMuted(!GetSFXMuted());
+								ChangeVolumeSound(g_SoundButton, g_VolumeSound);
+								g_SFXSoundRect.left = g_SFXSoundRect.width * GetSFXMuted();
+								sfSprite_setTextureRect(g_SpriteSFXSound, g_SFXSoundRect);
+							}
+
 							if (sfFloatRect_contains(&rectSFXSoundTurnUpVolumeButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
 							{
 
 								g_SFXTurnUpVolumeRect.left = g_SFXTurnUpVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteSFXTurnUpVolume, g_SFXTurnUpVolumeRect);
 								// General & Sound
-								if (!GetGeneralMuted() || !GetSFXMuted())
+								if (!GetGeneralMuted() && !GetSFXMuted())
 								{
 									printf("%f\n", g_VolumeSound);
 									g_VolumeSound += 10.0f;
@@ -295,7 +304,7 @@ int main()
 								g_SFXTurnDownVolumeRect.left = g_SFXTurnDownVolumeRect.width;
 								sfSprite_setTextureRect(g_SpriteSFXTurnDownVolume, g_SFXTurnDownVolumeRect);
 								// General & Sound
-								if (!GetGeneralMuted() || !GetSFXMuted())
+								if (!GetGeneralMuted() && !GetSFXMuted())
 								{
 									printf("%f\n", g_VolumeSound);
 									g_VolumeSound -= 10.0f;
@@ -311,23 +320,6 @@ int main()
 									keytimer = 0.0f;
 								}
 							}
-
-
-
-
-
-						}
-
-
-						if (sfFloatRect_contains(&rectSFXButton, g_mouseWorldPos.x, g_mouseWorldPos.y))
-						{
-							if (events.type == sfEvtMouseButtonPressed)
-							{
-								SetSFXMuted(!GetSFXMuted());
-								g_SFXSoundRect.left = g_SFXSoundRect.width * GetSFXMuted();
-								sfSprite_setTextureRect(g_SpriteSFXSound, g_SFXSoundRect);
-							}
-
 						}
 					}
 

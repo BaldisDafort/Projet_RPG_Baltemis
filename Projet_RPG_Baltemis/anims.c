@@ -1,5 +1,8 @@
 #include "anims.h"
 
+int g_ActivateTrap;
+int g_DesactivateTrap;
+
 void trap_anims(sfIntRect _irect)
 {
     for (int i = 1; i < mapSizeY; i++)
@@ -46,6 +49,7 @@ void activated_trap(int i, int j)
 {
     if (arr.mapObj[i][j].y == 6)
     {
+        g_ActivateTrap = 1;
         if (arr.mapObj[i][j].x != 2)
         {
             arr.mapObj[i][j].x++;
@@ -54,6 +58,7 @@ void activated_trap(int i, int j)
     }
     else if (arr.mapObj[i][j].y == 8)
     {
+        g_ActivateTrap = 2;
         if (arr.mapObj[i][j].x < 7)
         {
             arr.mapObj[i][j].x++;
@@ -67,6 +72,7 @@ void activated_trap(int i, int j)
     }
     else if (arr.mapObj[i][j].y == 10)
     {
+        g_ActivateTrap = 3;
         if (arr.mapObj[i][j].x == 2 || arr.mapObj[i][j].x == 3 || arr.mapObj[i][j].x == 4)
         {
             arr.mapObj[i][j].x++;
@@ -84,6 +90,7 @@ void not_activated_trap(int i, int j)
 {
         if (arr.mapObj[i][j].y == 6 || arr.mapObj[i][j].y == 8 || arr.mapObj[i][j].y == 10)
         {
+
             //if (arr.mapGround[i][j] == arr.mapGround[obj.buttonPos.y][obj.buttonPos.x])
             //{
                 if (arr.mapObj[i][j].x != 7)
@@ -152,6 +159,10 @@ void updateAnims()
                 if (buttonCollision(skeleton.SpritePositionSkeleton) || buttonCollision(bat.SpritePositionBat))
                 {
                     not_activated_trap(i, j);
+                    if (g_ActivateTrap == 1)
+                    {
+
+                    }
                 }
                 else
                 {

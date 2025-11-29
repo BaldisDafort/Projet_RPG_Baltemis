@@ -1,5 +1,6 @@
 #include "player.h"
 #include "sound.h"
+#include "anims.h"
 
 sfMusic* g_musicTitleScreen;
 sfMusic* g_MusicDeadlyLevel;
@@ -10,20 +11,7 @@ sfMusic* g_MusicLavaLevel;
 sfSound* g_SoundButton;
 sfSoundBuffer* g_SoundBufferButton;
 sfSoundStatus g_SoundStatusButton;
-
-sfSound* g_SoundDeadlyTrap;
-sfSoundBuffer* g_SoundBufferDeadlyTrap;
-sfSoundStatus g_SoundStatusDeadlyTrap;
-
-sfSound* g_SoundToxicTrap;
-sfSoundBuffer* g_SoundBufferToxicTrap;
-sfSoundStatus g_SoundStatusToxicTrap;
-
-sfSound* g_SoundLavaTrap;
-sfSoundBuffer* g_SoundBufferLavaTrap;
-sfSoundStatus g_SoundStatusLavaTrap;
-sfBool g_buttonPressed = sfFalse;
-
+sfBool  g_buttonPressed;
 int musicTitleScreenIsPlaying = 0;
 int g_musicDeadlyLevelIsPlaying = 0;
 int g_musicToxicLevelIsPlaying = 0;
@@ -39,6 +27,13 @@ void ChangeVolume(sfMusic* _music, float _volume)
 {
 	sfMusic_setVolume(_music, (GetGeneralMuted() | GetMusicMuted()) ? 0.f : _volume);
 }
+
+void ChangeVolumeSound(sfSound* _sound, float _volume)
+{
+	sfSound_setVolume(_sound, (GetGeneralMuted() | GetSFXMuted()) ? 0.f : _volume);
+}
+
+
 
 void SetGeneralMuted(char _value)
 {
@@ -127,26 +122,10 @@ void initSound()
 	g_SoundButton = sfSound_create();
 	g_SoundBufferButton = sfSoundBuffer_createFromFile("..\\Resources\\SoundsFX\\soundButton.ogg");
 	sfSound_setBuffer(g_SoundButton, g_SoundBufferButton);
-	// Sound Deadly Trap
-	g_SoundDeadlyTrap = sfSound_create();
-	g_SoundBufferDeadlyTrap = sfSoundBuffer_createFromFile("..\\Resources\\SoundsFX\\soundDeadlyTrap.ogg");
-	sfSound_setBuffer(g_SoundDeadlyTrap, g_SoundBufferDeadlyTrap);
-	// Sound Toxic Trap
-	g_SoundToxicTrap = sfSound_create();
-	g_SoundBufferToxicTrap = sfSoundBuffer_createFromFile("..\\Resources\\SoundsFX\\soundToxicTrap.ogg");
-	sfSound_setBuffer(g_SoundToxicTrap, g_SoundBufferToxicTrap);
-	// Sound Lava Trap
-	g_SoundLavaTrap = sfSound_create();
-	g_SoundBufferLavaTrap = sfSoundBuffer_createFromFile("..\\Resources\\SoundsFX\\soundLavaTrap.ogg");
-	sfSound_setBuffer(g_SoundLavaTrap, g_SoundBufferLavaTrap);
-
 	sfSound_setVolume(g_SoundButton, g_VolumeSound);
-	sfSound_setVolume(g_SoundDeadlyTrap, g_VolumeSound);
-	sfSound_setVolume(g_SoundToxicTrap, g_VolumeSound);
-	sfSound_setVolume(g_SoundLavaTrap, g_VolumeSound);
 
 	musicTitleScreenIsPlaying = 1;
-
+	g_buttonPressed = sfFalse;
 
 
 	if (state == MENU || state == OPTION)
@@ -173,7 +152,6 @@ void updateSound()
 	{
 		g_buttonPressed = sfFalse;
 	}
-
 
 	if (state != MENU && state != OPTION)
 	{

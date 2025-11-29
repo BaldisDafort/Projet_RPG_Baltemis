@@ -31,6 +31,7 @@ void initSound();
 void updateSound();
 
 void ChangeVolume(sfMusic* _music, float _volume);
+void ChangeVolumeSound(sfSound* _sound, float _volume);
 void SetGeneralMuted(char _value);
 void SetMusicMuted(char _value);
 void SetSFXMuted(char _value);
