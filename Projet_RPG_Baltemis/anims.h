@@ -28,3 +28,6 @@ void displayAnims(sfRenderWindow* window);
 void trap_anims(sfIntRect _irect);
 void activated_trap();
 void not_activated_trap();
+
+extern int g_ActivateTrap;
+extern int g_DesactivateTrap;
